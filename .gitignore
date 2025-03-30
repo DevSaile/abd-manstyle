@@ -1,0 +1,33 @@
+# Build results
+bin/
+obj/
+
+# Visual Studio Code
+.vs/
+
+# User-specific files
+*.user
+*.suo
+*.vsidx
+*.db-shm
+*.db-wal
+
+# NuGet packages
+packages/
+
+# Other
+*.log
+*.cache
+*.txt
+*.backup.json
+
+# Ignore specific project files
+*.pdb
+*.dll
+*.xml
+
+# Ignore specific debug files
+**/Debug/
+
+# ASP.NET related ignore files
+applicationhost.config
