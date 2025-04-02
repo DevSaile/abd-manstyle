@@ -70,7 +70,7 @@ namespace BLL
                     Marca = p.Marca,
                     CantidadCompra = ce.CantidadCompra,
                     Precio_Compra = ce.Precio_Compra,
-                    Detalles = p.DetalleS,
+                    Detalles = p.Detalles,
                     Descripcion_Sucursal = su.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Secundaria", // Ajuste en el texto
                     Nombre_Sucursal = su.Nombre,
                     Fecha_Compra = ce.Fecha_Compra ?? DateTime.MinValue // Manejo de nulos en Fecha_Compra
@@ -105,7 +105,7 @@ namespace BLL
                     CantidadCompra = ce.CantidadCompra,
                     Precio_Compra = ce.Precio_Compra, // aqui modifique esto
                     /*Precio_Producto = p.Precio_Producto,*/  //segun mi logica no hay que usar info del producto en la compra entrada
-                    Detalles = p.DetalleS,
+                    Detalles = p.Detalles,
                     Descripcion_Sucursal = su.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Primaria",
                     Nombre_Sucursal = su.Nombre,
 

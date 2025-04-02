@@ -24,6 +24,14 @@ namespace Models
 
         public string url_image { get; set; }
 
+        public int? ID_Proveedor { get; set; }
+
+
+        /* VARIBALES PARA PROVEEDOR*/
+
+        public string Descripcion_Proveedor { get; set; }
+
+        /*FIN VARIBALES PROVEEDOR*/
 
 
         /* VARIBALES PARA SUCURSAL*/

@@ -12,28 +12,21 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Vendedor
+    public partial class Proveedor
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Vendedor()
+        public Proveedor()
         {
-            this.Venta_Factura = new HashSet<Venta_Factura>();
+            this.Producto = new HashSet<Producto>();
         }
     
-        public int ID_Vendedor { get; set; }
-        public Nullable<int> ID_Rol { get; set; }
+        public int ID_Proveedor { get; set; }
         public string Nombre { get; set; }
-        public string Cedula { get; set; }
-        public Nullable<System.DateTime> Edad { get; set; }
-        public string Usuario { get; set; }
-        public string contra { get; set; }
-        public string Email { get; set; }
-        public Nullable<int> ID_Sucursal { get; set; }
+        public string Numero { get; set; }
+        public string Direccion { get; set; }
         public Nullable<int> Estado { get; set; }
     
-        public virtual Rol Rol { get; set; }
-        public virtual Sucursal Sucursal { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Venta_Factura> Venta_Factura { get; set; }
+        public virtual ICollection<Producto> Producto { get; set; }
     }
 }

@@ -39,7 +39,7 @@ namespace BLL
                         Cantidad = p.Cantidad,
                         Precio_Compra = p.Precio_Compra,
                         Precio_Producto = p.Precio_Producto,
-                        Detalles = p.DetalleS // Asegúrate de incluir la propiedad si es relevante
+                        Detalles = p.Detalles // Asegúrate de incluir la propiedad si es relevante
 
 
                     }).ToList();
@@ -64,7 +64,7 @@ namespace BLL
                         Cantidad = p.Cantidad,
                         //Precio_Compra = p.Precio_Compra,
                         Precio_Producto = p.Precio_Producto,
-                        Detalles = p.DetalleS // Asegúrate de incluir la propiedad si es relevante
+                        Detalles = p.Detalles // Asegúrate de incluir la propiedad si es relevante
 
 
                     }).ToList();
@@ -94,7 +94,7 @@ namespace BLL
                         Precio_Producto = p.Precio_Producto,
                         Precio_Compra = p.Precio_Compra,
 
-                        Detalles = p.DetalleS // Asegúrate de incluir la propiedad si es relevante
+                        Detalles = p.Detalles // Asegúrate de incluir la propiedad si es relevante
 
 
                     }).FirstOrDefault();
@@ -122,7 +122,7 @@ namespace BLL
                         Cantidad = p.Cantidad,
                         //Precio_Compra = p.Precio_Compra,
                         Precio_Producto = p.Precio_Producto,
-                        Detalles = p.DetalleS // Asegúrate de incluir la propiedad si es relevante
+                        Detalles = p.Detalles // Asegúrate de incluir la propiedad si es relevante
 
 
                     }).ToList();
@@ -147,7 +147,7 @@ namespace BLL
                         Cantidad = p.Cantidad,
                         //Precio_Compra = p.Precio_Compra,
                         Precio_Producto = p.Precio_Producto,
-                        Detalles = p.DetalleS // Asegúrate de incluir la propiedad si es relevante
+                        Detalles = p.Detalles // Asegúrate de incluir la propiedad si es relevante
 
 
                     }).ToList();
@@ -193,7 +193,7 @@ namespace BLL
                 Marca = p.Marca,
                 Cantidad = p.Cantidad,
                 Precio_Producto = p.Precio_Producto,
-                Detalles = p.DetalleS
+                Detalles = p.Detalles
 
             }).ToList();
         }
@@ -216,7 +216,8 @@ namespace BLL
                     Cantidad = p.Cantidad,
                     //Precio_Compra = p.Precio_Compra,
                     Precio_Producto = p.Precio_Producto,
-                    Detalles = p.DetalleS // Asegúrate de incluir la propiedad si es relevante
+                    Descripcion_Proveedor = p.Proveedor.Nombre, // Accede al nombre del proveedor
+                    Detalles = p.Detalles // Asegúrate de incluir la propiedad si es relevante
                 }).ToList();
 
             return resultado; // Esto ahora devuelve List<ProductoDTO>
@@ -236,7 +237,7 @@ namespace BLL
                     Precio_Compra = produ.Precio_Compra,
                     Precio_Producto = produ.Precio_Producto,
                     Marca = produ.Marca,
-                    DetalleS = produ.Detalles,
+                    Detalles = produ.Detalles,
 
                     ID_Categoria = produ.ID_Categoria,
                     ID_Sucursal = produ.ID_Sucursal,
@@ -280,7 +281,7 @@ namespace BLL
 
                 newProdu.Nombre = produ.Nombre;
                 newProdu.Marca = produ.Marca;
-                newProdu.DetalleS = produ.Detalles;
+                newProdu.Detalles = produ.Detalles;
                 newProdu.Cantidad += produ.Cantidad;
                 newProdu.Precio_Compra = produ.Precio_Compra;
                 newProdu.Precio_Producto = produ.Precio_Producto;
@@ -320,7 +321,7 @@ namespace BLL
                 newProdu.ID_Categoria = produ.ID_Categoria;
                 newProdu.Nombre = produ.Nombre;
                 newProdu.Marca = produ.Marca;
-                newProdu.DetalleS = produ.Detalles;
+                newProdu.Detalles = produ.Detalles;
                 newProdu.Cantidad = produ.Cantidad;
                 newProdu.Precio_Compra = produ.Precio_Compra;
                 newProdu.Precio_Producto = produ.Precio_Producto;

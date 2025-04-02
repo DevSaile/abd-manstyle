@@ -54,75 +54,78 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Categoria.cs">
-      <DependentUpon>MansModel.tt</DependentUpon>
+      <DependentUpon>ModelMan.tt</DependentUpon>
     </Compile>
     <Compile Include="Class1.cs" />
     <Compile Include="Cliente.cs">
-      <DependentUpon>MansModel.tt</DependentUpon>
+      <DependentUpon>ModelMan.tt</DependentUpon>
     </Compile>
     <Compile Include="Compra_Entrada.cs">
-      <DependentUpon>MansModel.tt</DependentUpon>
+      <DependentUpon>ModelMan.tt</DependentUpon>
     </Compile>
-    <Compile Include="MansModel.Context.cs">
+    <Compile Include="ModelMan.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MansModel.Context.tt</DependentUpon>
+      <DependentUpon>ModelMan.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="MansModel.cs">
+    <Compile Include="ModelMan.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MansModel.tt</DependentUpon>
+      <DependentUpon>ModelMan.tt</DependentUpon>
     </Compile>
-    <Compile Include="MansModel.Designer.cs">
+    <Compile Include="ModelMan.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MansModel.edmx</DependentUpon>
+      <DependentUpon>ModelMan.edmx</DependentUpon>
     </Compile>
     <Compile Include="Producto.cs">
-      <DependentUpon>MansModel.tt</DependentUpon>
+      <DependentUpon>ModelMan.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proveedor.cs">
+      <DependentUpon>ModelMan.tt</DependentUpon>
+    </Compile>
     <Compile Include="Rol.cs">
-      <DependentUpon>MansModel.tt</DependentUpon>
+      <DependentUpon>ModelMan.tt</DependentUpon>
     </Compile>
     <Compile Include="Sucursal.cs">
-      <DependentUpon>MansModel.tt</DependentUpon>
+      <DependentUpon>ModelMan.tt</DependentUpon>
     </Compile>
     <Compile Include="Vendedor.cs">
-      <DependentUpon>MansModel.tt</DependentUpon>
+      <DependentUpon>ModelMan.tt</DependentUpon>
     </Compile>
     <Compile Include="Venta_Detalles.cs">
-      <DependentUpon>MansModel.tt</DependentUpon>
+      <DependentUpon>ModelMan.tt</DependentUpon>
     </Compile>
     <Compile Include="Venta_Factura.cs">
-      <DependentUpon>MansModel.tt</DependentUpon>
+      <DependentUpon>ModelMan.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="MansModel.edmx">
+    <EntityDeploy Include="ModelMan.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MansModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>ModelMan.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="MansModel.edmx.diagram">
-      <DependentUpon>MansModel.edmx</DependentUpon>
+    <None Include="ModelMan.edmx.diagram">
+      <DependentUpon>ModelMan.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MansModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MansModel.edmx</DependentUpon>
-      <LastGenOutput>MansModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="MansModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MansModel.edmx</DependentUpon>
-      <LastGenOutput>MansModel.cs</LastGenOutput>
-    </Content>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Content Include="ModelMan.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelMan.edmx</DependentUpon>
+      <LastGenOutput>ModelMan.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="ModelMan.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelMan.edmx</DependentUpon>
+      <LastGenOutput>ModelMan.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

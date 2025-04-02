@@ -84,10 +84,7 @@ namespace BLL
             return resultado;
         }
 
-
-
-        /*Esto de aqui es para el dashboard, luego lo usare*/
-        /*public Dictionary<string, decimal> ObtenerTotalesSucursal(int idSucursal)
+        public Dictionary<string, decimal> ObtenerTotalesSucursal(int idSucursal)
         {
 
             // Asegúrate de que la suma sea de tipo decimal
@@ -116,11 +113,11 @@ namespace BLL
                     { "Marcas", totalMarcas }
                 };
 
-        }*/
+        }
 
 
-        // Esto de aqui es para el dashboard, luego lo usare
-        /*public List<ProductoPorCategoriaDTO> ObtenerProductosPorCategoria(int idSucursal)
+
+        public List<ProductoPorCategoriaDTO> ObtenerProductosPorCategoria(int idSucursal)
         {
             return db.Producto
                     .Where(p => p.ID_Sucursal == idSucursal)
@@ -130,7 +127,7 @@ namespace BLL
                         Categoria = g.Key,
                         Cantidad = g.Count()
                     }).ToList();
-        }*/
+        }
 
         public List<ProductoDTO> ObtenerTop5MayorStock(int idSucursal)
         {
@@ -155,6 +152,7 @@ namespace BLL
                         Cantidad = p.Cantidad
                     }).ToList();
         }
+
 
     }
 

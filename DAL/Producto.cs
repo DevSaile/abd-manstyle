@@ -24,19 +24,21 @@ namespace DAL
     
         public int ID_Producto { get; set; }
         public Nullable<int> ID_Categoria { get; set; }
+        public Nullable<int> ID_Proveedor { get; set; }
         public string Nombre { get; set; }
         public string Marca { get; set; }
         public Nullable<int> Cantidad { get; set; }
         public Nullable<decimal> Precio_Compra { get; set; }
         public Nullable<decimal> Precio_Producto { get; set; }
         public Nullable<int> ID_Sucursal { get; set; }
-        public string DetalleS { get; set; }
+        public string Detalles { get; set; }
         public string Image_URL { get; set; }
         public Nullable<int> Estado { get; set; }
     
         public virtual Categoria Categoria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Compra_Entrada> Compra_Entrada { get; set; }
+        public virtual Proveedor Proveedor { get; set; }
         public virtual Sucursal Sucursal { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venta_Detalles> Venta_Detalles { get; set; }

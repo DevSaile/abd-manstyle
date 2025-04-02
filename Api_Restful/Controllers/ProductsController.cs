@@ -39,5 +39,6 @@ namespace WebManStyle_ABD.Controllers
                 return InternalServerError(ex);
             }
         }
+
     }
 }
