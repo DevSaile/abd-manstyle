@@ -235,7 +235,8 @@ namespace BLL
                         Paga = venta.pagacon ?? 0m,
                         Cambio = venta.cambio ?? 0m,
                         PrecioProducto = venta.PrecioProducto ?? 0m,
-                        Cantidad = venta.Cantidad
+                        Cantidad = venta.Cantidad,
+                        ID_Sucursal = venta.ID_Sucursal
                     };
 
                     db.Venta_Factura.Add(newVenta);
@@ -297,7 +298,8 @@ namespace BLL
                               Total = venta.Total,
                               pagacon = venta.Paga,
                               cambio = venta.Cambio,
-                              NombreSucursal = sucursal.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Secundaria"
+                              NombreSucursal = sucursal.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Secundaria",
+                              VentaHechaEN = venta.ID_Sucursal == 1 ? sucursal.Nombre : sucursal.Nombre
                               //NombreSucursal = sucursal.Nombre // Supone que `Sucursal` tiene un atributo `Nombre`
 
                           }).ToList();

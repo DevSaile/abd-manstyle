@@ -18,27 +18,74 @@ namespace WebManStyle_ABD.Controllers
         // Instancia de tu clase de negocio (como lo haces en tu capa de presentación)
         private readonly ProductoMCN MetodosProducto = new ProductoMCN();
 
-
-        // Método para obtener la lista de roles
+        // Obtener la lista de productos activos
         [HttpGet]
-        [Route("")] // Ruta: GET api/roles
-
+        [Route("")]
         public IHttpActionResult ObtenerProductos()
         {
-            try
-            {
-                // Llama al método de negocio para obtener la lista de roles
-                List<ProductoDTO> Productos = MetodosProducto.verproductos();
+            var productos = MetodosProducto.verproductos();
+            if (productos == null || productos.Count == 0)
+                return NotFound();
 
-                // Devuelve los datos en formato JSON
-                return Ok(Productos);
-            }
-            catch (System.Exception ex)
-            {
-                // Manejo de errores
-                return InternalServerError(ex);
-            }
+            return Ok(productos);
         }
+
+        public IHttpActionResult AgregarProducto([FromBody] ProductoDTO nuevoProducto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            int resultado = MetodosProducto.AgregarProducto(nuevoProducto);
+            if (resultado == -1)
+                return InternalServerError();
+
+            return Ok(new { mensaje = "Producto agregado correctamente.", ID_Producto = resultado });
+        }
+
+        [Route("{id:int}")]
+
+        public IHttpActionResult ActualizarProducto(int id, [FromBody] ProductoDTO productoActualizado)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (id != productoActualizado.ID_Producto)
+                return BadRequest("El ID del producto no coincide.");
+
+            int resultado = MetodosProducto.ActulizarProducto(productoActualizado);
+            if (resultado == -1)
+                return NotFound();
+
+            return Ok("Producto actualizado correctamente.");
+        }
+
+        [Route("estado/{id:int}")]
+
+        public IHttpActionResult ActualizarEstadoProducto(int id, [FromBody] ProductoDTO productoActualizado)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (id != productoActualizado.ID_Producto)
+                return BadRequest("El ID del producto no coincide.");
+
+            int resultado = MetodosProducto.KILLProductoExistente(productoActualizado);
+            if (resultado == -1)
+                return NotFound();
+
+            return Ok("Estado del producto actualizado correctamente.");
+        }
+
+        [Route("{id:int}")]
+        public IHttpActionResult BuscarProductoPorID(int id)
+        {
+            var producto = MetodosProducto.BuscarPorID(id);
+            if (producto == null)
+                return NotFound(); // Retorna 404 si no existe el producto
+
+            return Ok(producto); // Retorna el producto si se encuentra
+        }
+
 
     }
 }

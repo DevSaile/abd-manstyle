@@ -14,6 +14,9 @@ namespace Models
         public int? ID_Cliente { get; set; }
         public int? ID_Vendedor { get; set; }
 
+        public int? ID_Sucursal { get; set; }
+
+
         public decimal? PrecioProducto { get; set; }
 
         public DateTime? Fecha_Venta { get; set; }
@@ -36,6 +39,7 @@ namespace Models
         public string NombreProducto { get; set; } // Nuevo campo para el nombre de la sucursal
 
 
+        public string VentaHechaEN { get; set; } // Nuevo campo para el nombre de la sucursal
 
     }
 

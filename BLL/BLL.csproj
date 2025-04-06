@@ -58,6 +58,7 @@
     <Compile Include="EmpleadoMCN.cs" />
     <Compile Include="ProductoMCN.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProveedorMCN.cs" />
     <Compile Include="RolMCN.cs" />
     <Compile Include="SucursalMCN.cs" />
     <Compile Include="VentaFacturaMCN.cs" />
