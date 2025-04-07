@@ -4,64 +4,60 @@ import { motion } from "framer-motion";
 import { obtenerProductos } from "../services/ProductosService";
 
 import Header from "../components/common/Header";
-import StatCard from "../components/common/StatCard";
-import { AlertTriangle, DollarSign, Package, Search, TrendingUp } from "lucide-react";
-import SellsPerCategory from "../components/overview/VentasPorCategoria";
-import SalesTrendChart from "../components/products/SalesTrendChart";
 import ComboBox from "../components/common/ComboBox";
 import ProductCard from "../components/products/ProductCard";
+import SalesTrendChart from "../components/products/SalesTrendChart";
+import SellsPerCategory from "../components/overview/VentasPorCategoria";
 
 const ProductsPage = () => {
-
-    // Categorías, precios y marcas para el filtro
-    const CATEGORIES = ["All", "Electronics", "Accessories", "Fitness", "Home"];
-    const PRICES = ["All", "Under $50", "$50 - $100", "Above $100"];
-    const BRANDS = ["All", "Brand A", "Brand B", "Brand C", "Brand D", "Brand E"];
-
-    // Estado para productos y filtros
     const [productos, setProductos] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [selectedPrice, setSelectedPrice] = useState("All");
     const [selectedBrand, setSelectedBrand] = useState("All");
 
-    // Llamada a la API para obtener productos
+    // Fetch products from the API
     useEffect(() => {
-        obtenerProductos().then((data) => setProductos(data));
+        obtenerProductos().then((data) => {
+            setProductos(data);
+            setFilteredProducts(data); // Initialize filtered products
+        });
     }, []);
 
+    // Filter products whenever filters change
+    useEffect(() => {
+        const filtered = productos.filter((product) => {
+            const matchesSearchTerm = product.Nombre.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesCategory = selectedCategory === "All" || product.Descripcion_Categoria === selectedCategory;
+            const matchesPrice =
+                selectedPrice === "All" ||
+                (selectedPrice === "Under $50" && product.Precio_Producto < 50) ||
+                (selectedPrice === "$50 - $100" && product.Precio_Producto >= 50 && product.Precio_Producto <= 100) ||
+                (selectedPrice === "Above $100" && product.Precio_Producto > 100);
+            const matchesBrand = selectedBrand === "All" || product.Marca === selectedBrand;
 
-    // Filtrar productos según los criterios
-    const filteredProducts = productos.filter((product) => {
+            return matchesSearchTerm && matchesCategory && matchesPrice && matchesBrand;
+        });
 
-        const matchesSearchTerm = product.Nombre.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory = selectedCategory === "All" || product.Descripcion_Categoria === selectedCategory;
-        const matchesPrice =
-            selectedPrice === "All" ||
-            (selectedPrice === "Under $50" && product.Precio_Producto < 50) ||
-            (selectedPrice === "$50 - $100" && product.Precio_Producto >= 50 && product.Precio_Producto <= 100) ||
-            (selectedPrice === "Above $100" && product.Precio_Producto > 100);
-        const matchesBrand = selectedBrand === "All" || product.Marca === selectedBrand;
-
-        return matchesSearchTerm && matchesCategory && matchesPrice && matchesBrand;
-
-    });
+        setFilteredProducts(filtered);
+    }, [searchTerm, selectedCategory, selectedPrice, selectedBrand, productos]);
 
     return (
         <div className="flex-1 overflow-auto relative z-10">
             <Header title="Products" />
 
             <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
-                {/* Filtros */}
+                {/* Filters */}
                 <motion.div
                     className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1 }}
                 >
-                    <ComboBox name={"Categorias"} options={CATEGORIES} onSelect={setSelectedCategory} />
-                    <ComboBox name={"Precio"} options={PRICES} onSelect={setSelectedPrice} />
-                    <ComboBox name={"Marca"} options={BRANDS} onSelect={setSelectedBrand} />
+                    <ComboBox name={"Categorias"} options={["All", "Electronics", "Clothing", "Home"]} onSelect={setSelectedCategory} />
+                    <ComboBox name={"Precio"} options={["All", "Under $50", "$50 - $100", "Above $100"]} onSelect={setSelectedPrice} />
+                    <ComboBox name={"Marca"} options={["All", "Brand A", "Brand B", "Brand C"]} onSelect={setSelectedBrand} />
                     <div className="relative">
                         <input
                             type="text"
@@ -73,9 +69,9 @@ const ProductsPage = () => {
                     </div>
                 </motion.div>
 
-                {/* Tarjetas de Productos */}
+                {/* Product Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
-                    {productos.map((product) => (
+                    {filteredProducts.map((product) => (
                         <ProductCard
                             key={product.ID_Producto}
                             name={product.Nombre}
@@ -83,21 +79,19 @@ const ProductsPage = () => {
                             brand={product.Marca}
                             category={product.Descripcion_Categoria}
                             stock={product.Cantidad}
-                            image={product.image ? product.image : "https://via.placeholder.com/150"} // Usa una imagen predeterminada si está vacía
+                            image={product.image ? product.image : "https://via.placeholder.com/150"}
                         />
                     ))}
-
                 </div>
 
-                                {/* CHARTS */}
-                <div className='grid grid-col-1 lg:grid-cols-2 gap-8'>
+                {/* Charts */}
+                <div className="grid grid-col-1 lg:grid-cols-2 gap-8">
                     <SalesTrendChart />
                     <SellsPerCategory />
                 </div>
             </main>
         </div>
     );
-
 };
 
 export default ProductsPage;
