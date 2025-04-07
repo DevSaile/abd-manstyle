@@ -21,9 +21,7 @@ const ProductCard = ({ name, price, brand, category, stock, image, onClick }) =>
             <div className="p-3">
                 <h3 className="text-lg font-semibold text-gray-100 truncate">{name}</h3>
                 <div className="mt-2 text-sm text-gray-400">
-                <p>
-                        <span className="font-medium text-gray-300">{name}</span> ${price}
-                    </p>
+
                     <p>
                         <span className="font-medium text-gray-300">Price:</span> ${price}
                     </p>
@@ -33,9 +31,9 @@ const ProductCard = ({ name, price, brand, category, stock, image, onClick }) =>
                     <p>
                         <span className="font-medium text-gray-300">Category:</span> {category}
                     </p>
-                        <p>
-                            <span className="font-medium text-gray-300">Stock:</span> {stock}
-                        </p>
+                     <p>
+                        <span className="font-medium text-gray-300">Stock:</span> {stock}
+                    </p>
                     
                 </div>
             </div>
