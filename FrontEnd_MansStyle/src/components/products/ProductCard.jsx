@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Image } from "lucide-react"; // Placeholder icon for the product image
 
-const ProductCard = ({ name, price, brand, category, stock, image, onClick }) => {
+const ProductCard = ({ name, Sucursal, price, brand, category, stock, image, onClick }) => {
     return (
         <motion.div
             className="bg-gray-800 bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-700 h-80"
@@ -21,7 +21,9 @@ const ProductCard = ({ name, price, brand, category, stock, image, onClick }) =>
             <div className="p-3">
                 <h3 className="text-lg font-semibold text-gray-100 truncate">{name}</h3>
                 <div className="mt-2 text-sm text-gray-400">
-
+                    <p>
+                        <span className="font-medium text-gray-300">Esta en:</span> {Sucursal}
+                    </p>
                     <p>
                         <span className="font-medium text-gray-300">Price:</span> ${price}
                     </p>
