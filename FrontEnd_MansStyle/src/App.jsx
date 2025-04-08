@@ -2,14 +2,15 @@ import { Route, Routes } from "react-router-dom";
 
 import Sidebar from "./components/common/Sidebar";
 
-import OverviewPage from "./pages/OverviewPage";
+import ClientsPage from "./pages/Clientes";
+import BuyingPage from "./pages/Compras";
 import ProductsPage from "./pages/Productos";
-import UsersPage from "./pages/Clientes";
-import CashierPage from "./pages/SalesPage";
-import OrdersPage from "./pages/OrdersPage";
-import AnalyticsPage from "./pages/AnalyticsPage";
-import SettingsPage from "./pages/SettingsPage";
-import Clients from "./pages/Clientes";
+
+import OverviewPage from "./pages/PanelInicial";
+import RegistersPage from "./pages/Registros";
+
+import CashierPage from "./pages/Ventas";
+import UsersPage from "./pages/Usuarios";
 
 function App() {
 	return (
@@ -23,12 +24,13 @@ function App() {
 			<Sidebar />
 			<Routes>
 				<Route path='/' element={<OverviewPage />} />
-				<Route path='/products' element={<ProductsPage/>} />
-				<Route path='/clients' element={<Clients/>} />
-				<Route path='/sales' element={<CashierPage />} />
-				<Route path='/orders' element={<OrdersPage />} />
-				<Route path='/analytics' element={<AnalyticsPage />} />
-				<Route path='/settings' element={<SettingsPage />} />
+				<Route path='/productos' element={<ProductsPage/>} />
+				<Route path='/compra' element={<BuyingPage />} />
+
+				<Route path='/clientes' element={<ClientsPage/>} />
+				<Route path='/venta' element={<CashierPage />} />
+				<Route path='/registros' element={<RegistersPage />} />
+				<Route path='/usuarios' element={<UsersPage />} />
 			</Routes>
 		</div>
 	);

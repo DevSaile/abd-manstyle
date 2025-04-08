@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 
 import Header from "../components/common/Header";
 import StatCard from "../components/common/StatCard";
-import ClientsTable from "../components/users/TablaClientes";
-import UserGrowthChart from "../components/users/UserGrowthChart";
-import UserActivityHeatmap from "../components/users/UserActivityHeatmap";
-import UserDemographicsChart from "../components/users/UserDemographicsChart";
+import ClientsTable from "../components/clientes/TablaClientes";
+import UserGrowthChart from "../components/clientes/UserGrowthChart";
+import UserActivityHeatmap from "../components/clientes/UserActivityHeatmap";
+import UserDemographicsChart from "../components/clientes/UserDemographicsChart";
 
 const userStats = {
 	totalUsers: 152845,
@@ -15,7 +15,7 @@ const userStats = {
 	churnRate: "2.4%",
 };
 
-const Clients = () => {
+const ClientsPage = () => {
 	return (
 		<div className='flex-1 overflow-auto relative z-10'>
 			<Header title='Users' />
@@ -56,4 +56,4 @@ const Clients = () => {
 		</div>
 	);
 };
-export default Clients;
+export default ClientsPage;

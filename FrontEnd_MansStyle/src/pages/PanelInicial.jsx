@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 
 import Header from "../components/common/Header";
 import StatCard from "../components/common/StatCard";
-import SalesOverviewChart from "../components/overview/SalesOverviewChart";
-import SellsPerCategory from "../components/overview/VentasPorCategoria";
-import SalesChannelChart from "../components/overview/SalesChannelChart";
+import SalesOverviewChart from "../components/panelinicial/SalesOverviewChart";
+import SellsPerCategory from "../components/panelinicial/VentasPorCategoria";
+import SalesChannelChart from "../components/panelinicial/SalesChannelChart";
 const OverviewPage = () => {
 	return (
 		<div className='flex-1 overflow-auto relative z-10'>

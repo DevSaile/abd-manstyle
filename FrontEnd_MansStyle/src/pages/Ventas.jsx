@@ -2,8 +2,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 import Header from "../components/common/Header";
-import ProductCard from "../components/products/ProductCard";
-import CartSummary from "../components/sales/CartSummary";
+import ProductCard from "../components/productos/ProductCard";
+import CartSummary from "../components/ventas/CartSummary";
 import { CheckCircle } from "lucide-react";
 
 const CashierPage = () => {

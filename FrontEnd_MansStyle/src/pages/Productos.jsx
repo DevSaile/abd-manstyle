@@ -7,9 +7,9 @@ import { obtenerSucursales} from "../services/SucursalService";
 
 import Header from "../components/common/Header";
 import ComboBox from "../components/common/ComboBox";
-import ProductCard from "../components/products/ProductCard";
-import SalesTrendChart from "../components/products/SalesTrendChart";
-import SellsPerCategory from "../components/overview/VentasPorCategoria";
+import ProductCard from "../components/productos/ProductCard";
+import SalesTrendChart from "../components/productos/SalesTrendChart";
+import SellsPerCategory from "../components/panelinicial/VentasPorCategoria";
 
 const ProductsPage = () => {
 
