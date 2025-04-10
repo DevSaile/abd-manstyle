@@ -2,10 +2,11 @@ import { motion } from "framer-motion";
 import { Image } from "lucide-react"; // Placeholder icon for the product image
 import { Button } from "@rewind-ui/core";
 
-const ProductCard = ({ name, Sucursal, price, brand, category, stock, image, onClickEdit, onClickDelete }) => {
+const ProductCardSales = ({ name, Sucursal, price, brand, category, stock, image, onClick, onClickDelete }) => {
     return (
         <motion.div
-            className="bg-gray-800 bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-700 h-80"
+            className="bg-gray-800 bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-700"
+            onClick={onClick} 
             whileHover={{ y: -5, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)" }}
         >
             {/* Product Image */}
@@ -20,20 +21,7 @@ const ProductCard = ({ name, Sucursal, price, brand, category, stock, image, onC
             {/* Product Details */}
             <div className="p-3 grid grid-cols-4">
                 <h3 className="col-span-2 text-lg font-semibold text-gray-100 truncate">{name}</h3>
-                <div className="col-span-2 flex items-center justify-end">
-                    <button
-                        className="text-indigo-400 hover:text-indigo-300 mr-2"
-                        onClick={onClickEdit}
-                    >
-                        Editar
-                    </button>
-                    <button
-                        onClick={ onClickDelete }
-                        className="text-red-400 hover:text-red-300"
-                    >
-                        Eliminar
-                    </button>
-                </div>
+                    
                 
                 <div className="mt-2 text-sm text-gray-400">
                     <p>
@@ -57,4 +45,4 @@ const ProductCard = ({ name, Sucursal, price, brand, category, stock, image, onC
     );
 };
 
-export default ProductCard;
+export default ProductCardSales;

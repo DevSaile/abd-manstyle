@@ -10,17 +10,21 @@ import ComboBox from "../components/common/ComboBox";
 import ProductCard from "../components/productos/ProductCard";
 import SalesTrendChart from "../components/productos/SalesTrendChart";
 import SellsPerCategory from "../components/panelinicial/VentasPorCategoria";
+import { Modal } from "@rewind-ui/core";
 
 const ProductsPage = () => {
 
     const [productos, setProductos] = useState([]);
     const [Sucursales, setSucursales] = useState([]);
-
+    
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [selectedPrice, setSelectedPrice] = useState("All");
     const [selectedBrand, setSelectedBrand] = useState("All");
+    const [openDelete, setOpenDelete] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
+    const [selectedProducto, setSelectedProduct] = useState(null);
 
     // Fetch products from the API
     useEffect(() => {
@@ -82,27 +86,79 @@ const ProductsPage = () => {
                 </motion.div>
 
                 {/* Product Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
-                    {filteredProducts.map((product) => (
-                        <ProductCard
-                            key={product.ID_Producto}
-                            name={product.Nombre}
-                            Sucursal={product.versucu}
-                            price={product.Precio_Producto}
-                            brand={product.Marca}
-                            category={product.Descripcion_Categoria}
-                            stock={product.Cantidad}
-                            image={product.image ? product.image : "https://via.placeholder.com/150"}
-                        />
-                    ))}
-                </div>
+               {/* Product Cards */}
+               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
+    {filteredProducts.map((product) => (
+        <ProductCard
+            key={product.ID_Producto}
+            name={product.Nombre}
+            Sucursal={product.versucu}
+            price={product.Precio_Producto}
+            brand={product.Marca}
+            category={product.Descripcion_Categoria}
+            stock={product.Cantidad}
+            image={product.image ? product.image : "https://via.placeholder.com/150"}
+            onClickDelete={() => {setOpenDelete(true);
+            setSelectedProduct(product);}}
+            onClickEdit={() => {setOpenEdit(true);
+            setSelectedProduct(product);}
+            }
+        />
+    ))}
+</div>
+
+<Modal
+    open={openEdit}
+    onClose={() => setOpenEdit(false)}
+    title="Edit Product"
+    size="xl"
+    className="bg-gray-800 text-gray-100 border border-gray-700 rounded-lg shadow-2xl p-6 grid grid-cols-2 h-2/3" // Consistent styles
+    transition={{ duration: 1.5 }} // Slower animation
+>
+    Testing
+</Modal>
+
+{/* Modal Eliminar */}
+<Modal
+    open={openDelete}
+    onClose={() => setOpenDelete(false)}
+    title="Confirm Delete"
+    size="l" // Make the modal larger
+    className="bg-gray-800 text-gray-100 border border-gray-700 rounded-lg shadow-2xl p-6 grid grid-cols-2" // Consistent styles
+    transition={{ duration: 1.5 }} // Slower animation
+>
+    <p className="text-gray-300 text-lg text-center mb-6 col-span-2">
+        Are you sure you want to delete this product? <strong>{selectedProducto?.Nombre}</strong>
+    </p>
+    <div className="content-center justify-center flex gap-4 col-span-2">
+        <button
+            onClick={() => setOpenDelete(false)}
+            className="bg-gray-700 text-gray-300 hover:bg-gray-600 px-6 py-2 rounded-lg transition duration-200"
+        >
+            Cancel
+        </button>
+        <button
+            onClick={() => {
+                // Add your delete logic here
+                setOpenDelete(false);
+            }}
+            className="bg-red-600 text-gray-100 hover:bg-red-500 px-6 py-2 rounded-lg transition duration-200"
+        >
+            Delete
+        </button>
+    </div>
+</Modal>
+{/*Modal Editar*/}
 
                 {/* Charts */}
                 <div className="grid grid-col-1 lg:grid-cols-2 gap-8">
                     <SalesTrendChart />
                     <SellsPerCategory />
                 </div>
+
             </main>
+
+         
         </div>
     );
 };

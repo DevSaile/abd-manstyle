@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import Sidebar from "./components/common/Sidebar";
 
 import ClientsPage from "./pages/Clientes";
-import BuyingPage from "./pages/Compras";
 import ProductsPage from "./pages/Productos";
 
 import OverviewPage from "./pages/PanelInicial";
@@ -25,7 +24,6 @@ function App() {
 			<Routes>
 				<Route path='/' element={<OverviewPage />} />
 				<Route path='/productos' element={<ProductsPage/>} />
-				<Route path='/compra' element={<BuyingPage />} />
 
 				<Route path='/clientes' element={<ClientsPage/>} />
 				<Route path='/venta' element={<CashierPage />} />

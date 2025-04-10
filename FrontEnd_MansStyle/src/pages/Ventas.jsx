@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 import Header from "../components/common/Header";
-import ProductCard from "../components/productos/ProductCard";
+import ProductCardSales from "../components/ventas/ProductCardSales";
 import CartSummary from "../components/ventas/CartSummary";
 import { CheckCircle } from "lucide-react";
 
@@ -48,7 +48,7 @@ const CashierPage = () => {
                         transition={{ duration: 1 }}
                     >
                         {products.map((product) => (
-                            <ProductCard
+                            <ProductCardSales
                                 key={product.id}
                                 name={product.name}
                                 price={`$${product.price.toFixed(2)}`}
