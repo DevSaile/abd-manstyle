@@ -74,7 +74,7 @@ const OverviewPage = () => {
                 {/* CHARTS */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <SalesOverviewChart />
-                    <SellsPerCategory />
+					<SellsPerCategory idSucursal={1} />
                     <SalesChannelChart />
                 </div>
 
@@ -123,7 +123,7 @@ const OverviewPage = () => {
                 {/* CHARTS */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <SalesOverviewChart />
-                    <SellsPerCategory />
+					<SellsPerCategory idSucursal={2} />
                     <SalesChannelChart />
                 </div>
             </main>
