@@ -33,7 +33,7 @@ namespace BLL
 
         }
 
-        public int ObtenerSucursalID(int? idempleado) // obtiene la sucursal que le pertence al empleado en ese momento
+        public int ObtenerSucursalID(int? idempleado) 
         {
             var sucu = (from v in db.Vendedor
                         where v.ID_Vendedor == idempleado
@@ -42,7 +42,7 @@ namespace BLL
             return sucu ?? -1;
         }
 
-        public string DevolverSucursalProductos(int? idsucuproducto) // obtiene la sucursal que le pertence al prodcuto en ese momento
+        public string DevolverSucursalProductos(int? idsucuproducto) 
         {
             var sucu = (from p in db.Producto
                         where p.ID_Producto == idsucuproducto
@@ -53,7 +53,7 @@ namespace BLL
             return devolver;
         }
 
-        public string DevolverMarcaProductos(int? idsucuproducto) // obtiene la Marca que le pertence al prodcuto en ese momento
+        public string DevolverMarcaProductos(int? idsucuproducto) 
         {
             var sucu = (from p in db.Producto
                         where p.ID_Producto == idsucuproducto
@@ -65,19 +65,18 @@ namespace BLL
         }
 
 
-        public List<SucursalDTO> ObtenerSucursalesPorID(int? ID_cate) // obtner el id de la categiria que pertenece al producto
+        public List<SucursalDTO> ObtenerSucursalesPorID(int? idsucuproducto) 
         {
-            // Verifica que ID_sucu no sea null antes de proceder
-            if (!ID_cate.HasValue)
+            if (!idsucuproducto.HasValue)
                 return new List<SucursalDTO>();
 
             // Realiza la consulta
             var resultado = db.Sucursal
-                .Where(c => c.Producto.Any(p => p.ID_Sucursal == ID_cate)) // Filtra categorías según los productos en la sucursal
+                .Where(c => c.Producto.Any(p => p.ID_Sucursal == idsucuproducto)) 
                 .Select(c => new SucursalDTO
                 {
                     ID_Sucursal = c.ID_Sucursal,
-                    Nombre = c.Nombre, // Mapear el nombre de la categoría
+                    Nombre = c.Nombre, 
 
                 }).ToList();
 
@@ -86,12 +85,9 @@ namespace BLL
 
         public Dictionary<string, decimal> ObtenerTotalesSucursal(int idSucursal)
         {
-
-            // Asegúrate de que la suma sea de tipo decimal
             decimal totalGanancias = db.Venta_Factura
+                .Where(vf => vf.ID_Sucursal == idSucursal)
                 .Join(db.Venta_Detalles, vf => vf.ID_Venta, vd => vd.ID_Venta, (vf, vd) => new { vf, vd })
-                .Join(db.Producto, v => v.vd.ID_Producto, p => p.ID_Producto, (v, p) => new { v.vf, v.vd, p })
-                .Where(v => v.p.ID_Sucursal == idSucursal)
                 .Sum(v => (decimal)(v.vd.Cantidad * v.vd.PrecioProducto));
 
             int totalMarcas = db.Producto
@@ -101,56 +97,55 @@ namespace BLL
                 .Count();
 
             return new Dictionary<string, decimal>
-                {
-                    { "Clientes", db.Cliente.Count() },
-                    { "Empleados", db.Vendedor.Count() },
-                    { "Productos", db.Producto.Count(p => p.ID_Sucursal == idSucursal) },
-                    { "Ventas", db.Venta_Factura
-                        .Join(db.Venta_Detalles, vf => vf.ID_Venta, vd => vd.ID_Venta, (vf, vd) => new { vf, vd })
-                        .Join(db.Producto, v => v.vd.ID_Producto, p => p.ID_Producto, (v, p) => new { v.vf, p })
-                        .Count(v => v.p.ID_Sucursal == idSucursal) },
-                    { "GananciasTotales", totalGanancias },
-                    { "Marcas", totalMarcas }
-                };
-
+            {
+                { "Clientes", db.Cliente.Count() },
+                { "Empleados", db.Vendedor.Count(v => v.ID_Sucursal == idSucursal) }, // Filtramos empleados por sucursal
+                { "Productos", db.Producto.Count(p => p.ID_Sucursal == idSucursal) },
+                { "Ventas", db.Venta_Factura.Count(vf => vf.ID_Sucursal == idSucursal) }, // Conteo directo por sucursal
+                { "GananciasTotales", totalGanancias },
+                { "Marcas", totalMarcas }
+            };
         }
+
 
 
 
         public List<ProductoPorCategoriaDTO> ObtenerProductosPorCategoria(int idSucursal)
         {
             return db.Producto
-                    .Where(p => p.ID_Sucursal == idSucursal)
-                    .GroupBy(p => p.Categoria.Nombre)
-                    .Select(g => new ProductoPorCategoriaDTO
-                    {
-                        Categoria = g.Key,
-                        Cantidad = g.Count()
-                    }).ToList();
+                .Where(p => p.ID_Sucursal == idSucursal)
+                .GroupBy(p => p.Categoria.Nombre)
+                .Select(g => new ProductoPorCategoriaDTO
+                {
+                    Categoria = g.Key,
+                    Cantidad = g.Count()
+                }).ToList();
         }
+
 
         public List<ProductoDTO> ObtenerTop5MayorStock(int idSucursal)
         {
             return db.Producto
-                    .Where(p => p.ID_Sucursal == idSucursal)
-                    .OrderByDescending(p => p.Cantidad)
-                    .Take(5)
-                    .Select(p => new ProductoDTO
-                    {
-                        Nombre = p.Nombre,
-                        Cantidad = p.Cantidad
-                    }).ToList();
+                .Where(p => p.ID_Sucursal == idSucursal)
+                .OrderByDescending(p => p.Cantidad)
+                .Take(5)
+                .Select(p => new ProductoDTO
+                {
+                    Nombre = p.Nombre,
+                    Cantidad = p.Cantidad
+                }).ToList();
         }
+
 
         public List<ProductoDTO> ObtenerProductosBajoStock(int idSucursal, int umbral)
         {
             return db.Producto
-                    .Where(p => p.ID_Sucursal == idSucursal && p.Cantidad < umbral)
-                    .Select(p => new ProductoDTO
-                    {
-                        Nombre = p.Nombre,
-                        Cantidad = p.Cantidad
-                    }).ToList();
+                .Where(p => p.ID_Sucursal == idSucursal && p.Cantidad < umbral)
+                .Select(p => new ProductoDTO
+                {
+                    Nombre = p.Nombre,
+                    Cantidad = p.Cantidad
+                }).ToList();
         }
 
 
