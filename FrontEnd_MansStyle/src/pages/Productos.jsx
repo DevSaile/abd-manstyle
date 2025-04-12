@@ -72,7 +72,7 @@ const ProductsPage = () => {
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
         {/* Filters */}
         <motion.div
-          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8"
+          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5 mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
@@ -101,11 +101,13 @@ const ProductsPage = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-        </motion.div>
 
         {/* Product Cards */}
         {/* Product Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4
+        mb-8 p-10 col-span-4
+        bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800
+        border border-gray-700 rounded-xl shadow-lg">
           {filteredProducts.map((product) => (
             <ProductCard
               key={product.ID_Producto}
@@ -131,6 +133,7 @@ const ProductsPage = () => {
             />
           ))}
         </div>
+        </motion.div>
 
     
 

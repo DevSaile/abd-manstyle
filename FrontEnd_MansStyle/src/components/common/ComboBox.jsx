@@ -31,7 +31,7 @@ const ComboBox = ({ name, options = [], onSelect }) => {
 
   return (
     <div
-      className="relative w-64"
+      className="relative"
       ref={comboBoxRef}
       onClick={(e) => e.stopPropagation()} // Prevent event propagation to the modal
     >
@@ -54,7 +54,7 @@ const ComboBox = ({ name, options = [], onSelect }) => {
       </button>
       {isOpen && (
         <motion.div
-          className="absolute bg-gray-700 border rounded-lg mt-1 w-full shadow-lg z-10"
+          className="absolute bg-gray-700 rounded-lg mt-1 w-full shadow-lg z-10"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
@@ -63,7 +63,7 @@ const ComboBox = ({ name, options = [], onSelect }) => {
         >
           <input
             type="text"
-            className="bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2"
+            className="bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 py-2 focus:outline-none focus:ring-2"
             placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
