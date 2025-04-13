@@ -70,6 +70,7 @@ export const obtenerTotalesPorSucursal = async (idSucursal) => {
 export const obtenerProductosPorCategoria = async (idSucursal) => {
     try {
         const response = await api.get(`/sucursales/categorias/${idSucursal}`);
+        console.log("Productos por categoría:", response.data); // Log para verificar la respuesta
         return response.data;
     } catch (error) {
         console.error("Error al obtener productos por categoría:", error);

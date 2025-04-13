@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 
 import { obtenerProductos } from "../services/ProductosService";
 import { obtenerSucursales } from "../services/SucursalService";
+import { obtenerCategoriasActivas } from "../services/CategoriasService";
 
 import Header from "../components/common/Header";
 import ComboBox from "../components/common/ComboBox";
@@ -13,15 +14,21 @@ import ModalEditar from "../components/productos/ModalEditar";
 import { Modal } from "@rewind-ui/core";
 
 const ProductsPage = () => {
+
   const [productos, setProductos] = useState([]);
   const [Sucursales, setSucursales] = useState([]);
+  const [Categorias, setCategorias] = useState([]);
+
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedPrice, setSelectedPrice] = useState("All");
   const [selectedBrand, setSelectedBrand] = useState("All");
+
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+
   const [selectedProducto, setSelectedProduct] = useState(null);
 
   // Fetch products from the API
@@ -39,14 +46,24 @@ const ProductsPage = () => {
     });
   }, []);
 
+  useEffect(() => {
+    obtenerCategoriasActivas().then((data) => {
+      const opciones = data.map((Categoria) => Categoria.Nombre); // Extrae solo los nombres
+      setCategorias(["All", ...opciones]); // Agrega la opción "All" como predeterminada
+    });
+  }, []);
+
   // Filter products whenever filters change
   useEffect(() => {
     const filtered = productos.filter((product) => {
+
       const matchesSearchTerm = product.Nombre.toLowerCase().includes(
         searchTerm.toLowerCase()
       );
+
       const matchesCategory =
-        selectedCategory === "All" || product.versucu === selectedCategory;
+        selectedCategory === "All" || product.Descripcion_Categoria === selectedCategory;
+
       const matchesPrice =
         selectedPrice === "All" ||
         (selectedPrice === "Under $50" && product.Precio_Producto < 50) ||
@@ -54,12 +71,14 @@ const ProductsPage = () => {
           product.Precio_Producto >= 50 &&
           product.Precio_Producto <= 100) ||
         (selectedPrice === "Above $100" && product.Precio_Producto > 100);
+
       const matchesBrand =
         selectedBrand === "All" || product.Marca === selectedBrand;
 
       return (
         matchesSearchTerm && matchesCategory && matchesPrice && matchesBrand
       );
+
     });
 
     setFilteredProducts(filtered);
@@ -79,7 +98,7 @@ const ProductsPage = () => {
         >
           <ComboBox
             name={"Categorias"}
-            options={Sucursales}
+            options={Categorias}
             onSelect={setSelectedCategory}
           />
           <ComboBox
@@ -169,14 +188,18 @@ const ProductsPage = () => {
           </div>
         </Modal>
 
-        {/*Modal Editar*/}
         <ModalEditar
-          openEdit={openEdit}
-          EditModalClose={() => setOpenEdit(false)}
-          selectedProduct={selectedProducto}
-          setSelectedProduct={setSelectedProduct}
-          />
-
+            openEdit={openEdit}
+            EditModalClose={() => setOpenEdit(false)}
+            selectedProducto={selectedProducto}
+            setSelectedProduct={setSelectedProduct}
+            refrescarProductos={() => {
+                obtenerProductos().then((data) => {
+                    setProductos(data);
+                    setFilteredProducts(data); // Refrescar la lista después de editar
+                });
+            }}
+        />
 
         <div className="grid grid-col-1 lg:grid-cols-2 gap-8">
           <SalesTrendChart />
