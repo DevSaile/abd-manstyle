@@ -223,6 +223,17 @@ namespace BLL
             return resultado; // Esto ahora devuelve List<ProductoDTO>
         }
 
+        public List<string> ObtenerMarcas()
+        {
+            var marcasUnicas = db.Producto
+                .Where(p => p.Estado == 1) // Filtra productos activos
+                .Select(p => p.Marca.ToLower()) // Convierte las marcas a minúsculas para comparación
+                .Distinct() // Elimina duplicados después de normalizar el caso
+                .ToList();
+
+            return marcasUnicas;
+        }
+
         public int AgregarProducto(ProductoDTO produ)
         {
 

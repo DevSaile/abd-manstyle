@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-import { obtenerProductos } from "../services/ProductosService";
+import { obtenerProductos, obtenerProductoPorID } from "../services/ProductosService";
 import { obtenerSucursales } from "../services/SucursalService";
 import { obtenerCategoriasActivas } from "../services/CategoriasService";
 
@@ -188,17 +188,18 @@ const ProductsPage = () => {
           </div>
         </Modal>
 
+
         <ModalEditar
             openEdit={openEdit}
             EditModalClose={() => setOpenEdit(false)}
-            selectedProducto={selectedProducto}
-            setSelectedProduct={setSelectedProduct}
             refrescarProductos={() => {
                 obtenerProductos().then((data) => {
                     setProductos(data);
                     setFilteredProducts(data); // Refrescar la lista después de editar
                 });
             }}
+            fetchProductoByID={obtenerProductoPorID} // Nueva prop para cargar producto por ID
+            productoID={selectedProducto?.ID_Producto || null} // Pasar ID del producto seleccionado
         />
 
         <div className="grid grid-col-1 lg:grid-cols-2 gap-8">

@@ -76,6 +76,7 @@ namespace WebManStyle_ABD.Controllers
             return Ok("Estado del producto actualizado correctamente.");
         }
 
+        [HttpGet]
         [Route("{id:int}")]
         public IHttpActionResult BuscarProductoPorID(int id)
         {
@@ -84,6 +85,17 @@ namespace WebManStyle_ABD.Controllers
                 return NotFound(); // Retorna 404 si no existe el producto
 
             return Ok(producto); // Retorna el producto si se encuentra
+        }
+
+        [HttpGet]
+        [Route("marcas")]
+        public IHttpActionResult ObtenerMarcas()
+        {
+            var marcas = MetodosProducto.ObtenerMarcas();
+            if (marcas == null || marcas.Count == 0)
+                return NotFound();
+
+            return Ok(marcas);
         }
 
 
