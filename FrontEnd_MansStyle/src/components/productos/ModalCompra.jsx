@@ -42,7 +42,7 @@ const ModalCompra = ({
         {/* Name */}
         <div className="col-span-2">
           <label className="block text-sm font-medium text-gray-300 mb-1">
-            Name
+            Nombre
           </label>
           <input
             type="text"
@@ -58,7 +58,7 @@ const ModalCompra = ({
         {/* Buying Price */}
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-1">
-            Buying Price
+            Precio de Compra
           </label>
           <input
             type="number"
@@ -74,7 +74,7 @@ const ModalCompra = ({
         {/* Selling Price */}
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-1">
-            Selling Price
+            Precio de Venta
           </label>
           <input
             type="number"
@@ -90,7 +90,7 @@ const ModalCompra = ({
         {/* Brand */}
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-1">
-            Brand
+            Marca
           </label>
           <ComboBox
             name="Brand"
@@ -122,7 +122,7 @@ const ModalCompra = ({
         {/* Category */}
         <div className="col-span-2">
           <label className="block text-sm font-medium text-gray-300 mb-1">
-            Category
+            Categoria
           </label>
           <ComboBox
             name="Category"
@@ -138,7 +138,7 @@ const ModalCompra = ({
         {/* Image Upload */}
         <div className="col-span-2">
           <label className="block text-sm font-medium text-gray-300 mb-1">
-            Upload Image
+            Cargar Imagen
           </label>
           <input
             type="file"
@@ -164,13 +164,13 @@ const ModalCompra = ({
             onClick={AddModalClose}
             className="bg-gray-700 text-gray-300 hover:bg-gray-600 px-6 py-2 rounded-lg transition duration-200"
           >
-            Cancel
+            Cancelar
           </button>
           <button
             type="submit"
             className="bg-blue-600 text-gray-100 hover:bg-blue-500 px-6 py-2 rounded-lg transition duration-200"
           >
-            Add Product
+            Agregar Producto
           </button>
         </div>
       </form>

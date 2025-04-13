@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-import { obtenerProductos, obtenerProductoPorID } from "../services/ProductosService";
+import {
+  obtenerProductos,
+  obtenerProductoPorID,
+} from "../services/ProductosService";
 import { obtenerSucursales } from "../services/SucursalService";
 import { obtenerCategoriasActivas } from "../services/CategoriasService";
 
@@ -12,9 +15,9 @@ import SalesTrendChart from "../components/productos/SalesTrendChart";
 import SellsPerCategory from "../components/panelinicial/VentasPorCategoria";
 import ModalEditar from "../components/productos/ModalEditar";
 import { Modal } from "@rewind-ui/core";
+import ModalCompra from "../components/productos/ModalCompra";
 
 const ProductsPage = () => {
-
   const [productos, setProductos] = useState([]);
   const [Sucursales, setSucursales] = useState([]);
   const [Categorias, setCategorias] = useState([]);
@@ -30,6 +33,7 @@ const ProductsPage = () => {
   const [openEdit, setOpenEdit] = useState(false);
 
   const [selectedProducto, setSelectedProduct] = useState(null);
+  const [openAdd, setOpenAdd] = useState(false);
 
   // Fetch products from the API
   useEffect(() => {
@@ -56,13 +60,13 @@ const ProductsPage = () => {
   // Filter products whenever filters change
   useEffect(() => {
     const filtered = productos.filter((product) => {
-
       const matchesSearchTerm = product.Nombre.toLowerCase().includes(
         searchTerm.toLowerCase()
       );
 
       const matchesCategory =
-        selectedCategory === "All" || product.Descripcion_Categoria === selectedCategory;
+        selectedCategory === "All" ||
+        product.Descripcion_Categoria === selectedCategory;
 
       const matchesPrice =
         selectedPrice === "All" ||
@@ -78,7 +82,6 @@ const ProductsPage = () => {
       return (
         matchesSearchTerm && matchesCategory && matchesPrice && matchesBrand
       );
-
     });
 
     setFilteredProducts(filtered);
@@ -115,48 +118,66 @@ const ProductsPage = () => {
             <input
               type="text"
               placeholder="Search products..."
-              className="bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="col-span-2 bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
-        {/* Product Cards */}
-        {/* Product Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4
+          {/* Product Cards */}
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4
         mb-8 p-10 col-span-4 overflow-y-auto custom-scrollbar
         bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800
-        border border-gray-700 rounded-xl shadow-lg h-5/6"> 
-          {filteredProducts.map((product) => (
-            <ProductCard
-              key={product.ID_Producto}
-              name={product.Nombre}
-              Sucursal={product.versucu}
-              price={product.Precio_Producto}
-              brand={product.Marca}
-              category={product.Descripcion_Categoria}
-              stock={product.Cantidad}
-              image={
-                product.image
-                  ? product.image
-                  : "https://via.placeholder.com/150"
-              }
-              onClickDelete={() => {
-                setOpenDelete(true);
-                setSelectedProduct(product);
-              }}
-              onClickEdit={() => {
-                setOpenEdit(true);
-                setSelectedProduct(product);
-              }}
-            />
-          ))}
-        </div>
+        border border-gray-700 rounded-xl shadow-lg h-5/6"
+          >
+            {filteredProducts.map((product) => (
+              <ProductCard
+                key={product.ID_Producto}
+                name={product.Nombre}
+                price={product.Precio_Producto}
+                category={product.Descripcion_Categoria}
+                stock={product.Cantidad}
+                image={
+                  product.image
+                    ? product.image
+                    : "https://via.placeholder.com/150"
+                }
+                onClick={() => {
+                  setSelectedProduct(product);
+                  console.log(selectedProducto);
+                }}
+              />
+            ))}
+            
+          </div>
+
+          <div className="flex flex-col gap-4">
+        <button
+          className="bg-transparent text-blue-600 border border-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
+          onClick={() => {
+            setOpenEdit(true);}}
+        > 
+          Editar
+        </button>
+        <button
+          className="bg-transparent text-green-600 border border-green-600 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
+        onClick={() => {
+          setOpenAdd(true);
+        }}
+        >
+          Agregar
+        </button>
+        <button
+          className="bg-transparent text-red-600 border border-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
+        >
+          Eliminar
+        </button>
+      </div>
         </motion.div>
 
-    
 
-        {/* Modal Eliminar */}
+
         <Modal
           open={openDelete}
           onClose={() => setOpenDelete(false)}
@@ -188,18 +209,22 @@ const ProductsPage = () => {
           </div>
         </Modal>
 
+        <ModalCompra
+        openAdd={openAdd}
+        AddModalClose={() => setOpenAdd(false)}
+        />
 
         <ModalEditar
-            openEdit={openEdit}
-            EditModalClose={() => setOpenEdit(false)}
-            refrescarProductos={() => {
-                obtenerProductos().then((data) => {
-                    setProductos(data);
-                    setFilteredProducts(data); // Refrescar la lista después de editar
-                });
-            }}
-            fetchProductoByID={obtenerProductoPorID} // Nueva prop para cargar producto por ID
-            productoID={selectedProducto?.ID_Producto || null} // Pasar ID del producto seleccionado
+          openEdit={openEdit}
+          EditModalClose={() => setOpenEdit(false)}
+          refrescarProductos={() => {
+            obtenerProductos().then((data) => {
+              setProductos(data);
+              setFilteredProducts(data); // Refrescar la lista después de editar
+            });
+          }}
+          fetchProductoByID={obtenerProductoPorID} // Nueva prop para cargar producto por ID
+          productoID={selectedProducto?.ID_Producto || null} // Pasar ID del producto seleccionado
         />
 
         <div className="grid grid-col-1 lg:grid-cols-2 gap-8">
