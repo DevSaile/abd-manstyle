@@ -2,14 +2,15 @@ import { motion } from "framer-motion";
 import { Image } from "lucide-react"; // Placeholder icon for the product image
 import { Button } from "@rewind-ui/core";
 
-const ProductCard = ({ name, Sucursal, price, brand, category, stock, image, onClickEdit, onClickDelete }) => {
+const ProductCard = ({ name, price, category, stock, image, onClick}) => {
     return (
         <motion.div
-            className="bg-gray-800 bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-700 h-80"
+            className="bg-gray-800 bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-700 h-72"
             whileHover={{ y: -5, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)" }}
+            onClick={onClick}
         >
             {/* Product Image */}
-            <div className="h-3/5 bg-gray-700 flex items-center justify-center">
+            <div className="h-1/2 bg-gray-700 flex items-center justify-center">
                 {image ? (
                     <img src={image} alt={name} className="h-full w-full object-cover" />
                 ) : (
@@ -18,40 +19,21 @@ const ProductCard = ({ name, Sucursal, price, brand, category, stock, image, onC
             </div>
 
             {/* Product Details */}
-            <div className="p-3 grid grid-cols-4">
-                <h3 className="col-span-2 text-lg font-semibold text-gray-100 truncate">{name}</h3>
-                <div className="col-span-2 flex items-center justify-end">
-                    <button
-                        className="text-indigo-400 hover:text-indigo-300 mr-2"
-                        onClick={onClickEdit}
-                    >
-                        Editar
-                    </button>
-                    <button
-                        onClick={ onClickDelete }
-                        className="text-red-400 hover:text-red-300"
-                    >
-                        Eliminar
-                    </button>
-                </div>
+            <div className="p-3 grid grid-cols-flow grid-rows-4">
+                <h3 className="text-lg font-semibold text-gray-100 truncate">{name}</h3>
+              
                 
-                <div className="mt-2 text-sm text-gray-400">
+                   
                     <p>
-                        <span className="font-medium text-gray-300">Esta en:</span> {Sucursal}
+                        <span className="font-medium font text-s text-gray-300">Precio:</span> <strong className='text-s'>${price}</strong>
+                    </p>
+                 
+                    <p>
+                        <span className="font- text-s text-gray-300">Categoria:</span> <strong className="text-s">{category}</strong>
                     </p>
                     <p>
-                        <span className="font-medium text-gray-300">Price:</span> ${price}
+                        <span className="font-medium text-s text-gray-300">Existencias:</span> <strong className="text-s">{stock}</strong>
                     </p>
-                    <p>
-                        <span className="font-medium text-gray-300">Brand:</span> {brand}
-                    </p>
-                    <p>
-                        <span className="font-medium text-gray-300">Category:</span> {category}
-                    </p>
-                    <p>
-                        <span className="font-medium text-gray-300">Stock:</span> {stock}
-                    </p>
-                </div>
             </div>
         </motion.div>
     );

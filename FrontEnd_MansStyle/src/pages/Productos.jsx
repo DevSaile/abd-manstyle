@@ -124,9 +124,9 @@ const ProductsPage = () => {
         {/* Product Cards */}
         {/* Product Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4
-        mb-8 p-10 col-span-4
+        mb-8 p-10 col-span-4 overflow-y-auto custom-scrollbar
         bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800
-        border border-gray-700 rounded-xl shadow-lg">
+        border border-gray-700 rounded-xl shadow-lg h-5/6"> 
           {filteredProducts.map((product) => (
             <ProductCard
               key={product.ID_Producto}
