@@ -25,7 +25,7 @@ export const agregarProducto = async (producto) => {
 // Actualizar un producto
 export const actualizarProducto = async (id, producto) => {
     try {
-        const response = await api.put(`/productos/${id}`, producto);
+        const response = await api.put(`/productos/actualizar/${id}`, producto);
         return response.data;
     } catch (error) {
         console.error("Error al actualizar producto:", error);
