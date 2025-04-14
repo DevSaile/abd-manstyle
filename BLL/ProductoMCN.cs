@@ -93,7 +93,7 @@ namespace BLL
                         //Precio_Compra = p.Precio_Compra,
                         Precio_Producto = p.Precio_Producto,
                         Precio_Compra = p.Precio_Compra,
-
+                        url_image = p.Image_URL,
                         Detalles = p.Detalles // Asegúrate de incluir la propiedad si es relevante
 
 
@@ -214,6 +214,7 @@ namespace BLL
                     versucu = p.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Primaria",
                     Descripcion_Sucursal = p.Sucursal.Nombre,   // Accede al nombre de la sucursal
                     Cantidad = p.Cantidad,
+                    url_image = p.Image_URL,
                     //Precio_Compra = p.Precio_Compra,
                     Precio_Producto = p.Precio_Producto,
                     Descripcion_Proveedor = p.Proveedor.Nombre, // Accede al nombre del proveedor
@@ -315,42 +316,39 @@ namespace BLL
 
         public int ActulizarProducto(ProductoDTO produ)
         {
-
             try
             {
+                // Verificar existencia del producto
+                var productoExistente = db.Producto.Find(produ.ID_Producto);
+                if (productoExistente == null) return -1;
 
-                Producto newProdu = db.Producto.Find(produ.ID_Producto);
+                // Verificar que sucursal y categoría existan
+                if (!db.Sucursal.Any(s => s.ID_Sucursal == produ.ID_Sucursal) ||
+                    !db.Categoria.Any(c => c.ID_Categoria == produ.ID_Categoria))
+                    return -2; // Nuevo código para referencias inválidas
 
-                if (newProdu is null)
-                {
+                // Actualizar propiedades
+                productoExistente.ID_Sucursal = produ.ID_Sucursal;
+                productoExistente.ID_Categoria = produ.ID_Categoria;
+                productoExistente.Nombre = produ.Nombre.Trim();
+                productoExistente.Marca = produ.Marca?.Trim();
+                productoExistente.Detalles = produ.Detalles?.Trim();
+                productoExistente.Precio_Producto = produ.Precio_Producto;
+                //productoExistente.Precio_Compra = produ.Precio_Compra;
+                productoExistente.Image_URL = string.IsNullOrEmpty(produ.url_image) ? null : produ.url_image.Trim();
+                //productoExistente.Cantidad = produ.Cantidad;
 
-                    return -1;
-
-                }
-
-                newProdu.ID_Sucursal = produ.ID_Sucursal;
-                newProdu.ID_Categoria = produ.ID_Categoria;
-                newProdu.Nombre = produ.Nombre;
-                newProdu.Marca = produ.Marca;
-                newProdu.Detalles = produ.Detalles;
-                newProdu.Cantidad = produ.Cantidad;
-                newProdu.Precio_Compra = produ.Precio_Compra;
-                newProdu.Precio_Producto = produ.Precio_Producto;
-
-                db.Entry(newProdu).State = System.Data.Entity.EntityState.Modified;
+                db.Entry(productoExistente).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return newProdu.ID_Producto;
-
+                return productoExistente.ID_Producto;
             }
-            catch
+            catch (Exception ex)
             {
-
+                // Loggear el error
+                System.Diagnostics.Debug.WriteLine($"Error al actualizar producto: {ex.Message}");
                 return -1;
-
-
             }
-
         }
         public int KILLProductoExistente(ProductoDTO produ)
         {

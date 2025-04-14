@@ -1,5 +1,5 @@
 import React, { useEffect, useState, version } from "react";
-import ComboBox from "../common/ComboBox";
+import ComboBoxID from "../common/ComboxID";
 import { Modal } from "@rewind-ui/core";
 import { obtenerCategoriasActivas } from "../../services/CategoriasService";
 import { obtenerSucursales } from "../../services/SucursalService";
@@ -25,11 +25,17 @@ const ModalEditar = ({
   useEffect(() => {
     Promise.all([obtenerCategoriasActivas(), obtenerSucursales()]).then(
       ([categoriasData, sucursalesData]) => {
-        setCategorias(categoriasData.map((categoria) => categoria.Nombre));
-        setSucursales(sucursalesData.map((sucursal) => sucursal.Nombre));
+        setCategorias(categoriasData.map(categoria => ({
+          label: categoria.Nombre, 
+          value: categoria.ID_Categoria
+        })));
+        setSucursales(sucursalesData.map(sucursal => ({
+          label: sucursal.Nombre, 
+          value: sucursal.ID_Sucursal
+        })));
       }
     );
-  }, []); // Sin dependencias: solo se ejecuta al montar el componente
+  }, []);
 
   useEffect(() => {
     obtenerMarcas().then((marcas) => {
@@ -46,57 +52,51 @@ const ModalEditar = ({
     }
   }, [openEdit, productoID]);
 
-  // Establecer automáticamente la categoría y sucursal en el ComboBox cuando se abra el modal
-  useEffect(() => {
-    if (openEdit && selectedProducto) {
-      // Solo actualiza si los valores son diferentes
-      const categoriaValida = categorias.includes(
-        selectedProducto.Descripcion_Categoria
-      )
-        ? selectedProducto.Descripcion_Categoria
-        : "";
 
-      const sucursalValida = sucursales.includes(selectedProducto.Sucursal)
-        ? selectedProducto.Sucursal
-        : "";
 
-      if (
-        selectedProducto.Descripcion_Categoria !== categoriaValida ||
-        selectedProducto.Sucursal !== sucursalValida
-      ) {
-        setSelectedProducto((prev) => ({
-          ...prev,
-          Descripcion_Categoria: categoriaValida,
-          Sucursal: sucursalValida,
-        }));
-      }
-    }
-  }, [openEdit, categorias, sucursales]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!selectedProducto?.ID_Producto) return;
-
-    const productoActualizado = {
-      Nombre: selectedProducto.Nombre,
-      Marca: selectedProducto.Marca,
-      Precio_Producto: selectedProducto.Precio_Producto,
-      Sucursal: selectedProducto.Sucursal, //Recordatorio para jeser del futuro: Cambiar a ID_Sucursal
-      Descripcion_Categoria: selectedProducto.Descripcion_Categoria, //Recordatorio para jeser del futuro: Cambiar a ID_Categoria
-      image: selectedProducto.image,
+    // Verifica si es una URL válida
+    const esURLValida = (url) => {
+        return typeof url === "string" && url.startsWith("http");
     };
 
-    const resultado = await actualizarProducto(
-      selectedProducto.ID_Producto,
-      productoActualizado
-    );
-    if (resultado) {
-      refrescarProductos();
-      EditModalClose();
-    } else {
-      alert("Hubo un error al actualizar el producto.");
-    }
-  };
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      
+      if (!selectedProducto?.ID_Producto) {
+        alert("No se ha seleccionado ningún producto");
+        return;
+      }
+    
+      try {
+        const productoActualizado = {
+          ID_Producto: selectedProducto.ID_Producto,
+          Nombre: selectedProducto.Nombre.trim(),
+          Marca: selectedProducto.Marca?.trim() || "",
+          Precio_Producto: parseFloat(selectedProducto.Precio_Producto),
+          ID_Sucursal: selectedProducto.ID_Sucursal,
+          ID_Categoria: selectedProducto.ID_Categoria,
+          url_image: esURLValida(selectedProducto.url_image) ? selectedProducto.url_image : null, // Cambiado a url_image
+          Detalles: selectedProducto.Detalles?.trim() || "",
+          //Cantidad: selectedProducto.Cantidad || 0, // Añadido
+          //Precio_Compra: selectedProducto.Precio_Compra || 0 // Añadido si es necesario
+        };
+        
+        console.log("Producto actualizado:", productoActualizado);
+        const resultado = await actualizarProducto(
+          selectedProducto.ID_Producto,
+          productoActualizado
+        );
+    
+        if (!resultado) throw new Error("Error al actualizar");
+        
+        refrescarProductos();
+        EditModalClose();
+        
+      } catch (error) {
+        console.error("Error:", error);
+        alert(error.response?.data?.message || "Error al actualizar el producto");
+      }
+    };
 
   return (
     <Modal
@@ -134,7 +134,7 @@ const ModalEditar = ({
             <label className="block text-sm font-medium text-gray-300 mb-1">
               Brand
             </label>
-            <ComboBox
+            <ComboBoxID
               name={selectedProducto.Marca}
               options={marcas}
               selected={selectedProducto.Marca || ""}
@@ -168,14 +168,22 @@ const ModalEditar = ({
             <label className="block text-sm font-medium text-gray-300 mb-1">
               Sucursal
             </label>
-            <ComboBox
+            <ComboBoxID
               name={selectedProducto.versucu}
               options={sucursales}
-              selected={selectedProducto.versucu || ""}
-              onSelect={(value) =>
-                setSelectedProducto({ ...selectedProducto, versucu: value })
+              selected={{
+                label: selectedProducto.Nombre_Sucursal || "", // Muestra el nombre
+                value: selectedProducto.ID_Sucursal || ""      // Pero maneja el ID
+              }}
+              onSelect={(selectedOption) =>
+                setSelectedProducto({
+                  ...selectedProducto,
+                  ID_Sucursal: selectedOption.value,          // Guarda el ID
+                  Nombre_Sucursal: selectedOption.label       // Opcional: guarda el nombre para mostrar
+                })
               }
             />
+            
           </div>
 
           {/* Category */}
@@ -183,29 +191,93 @@ const ModalEditar = ({
             <label className="block text-sm font-medium text-gray-300 mb-1">
               Category
             </label>
-            <ComboBox
+            <ComboBoxID
               name={selectedProducto.Descripcion_Categoria}
               options={categorias}
-              selected={selectedProducto.Descripcion_Categoria || ""}
-              onSelect={(value) =>
+              selected={{
+                label: selectedProducto.Nombre_Categoria || "",
+                value: selectedProducto.ID_Categoria || ""
+              }}
+              onSelect={(selectedOption) =>
                 setSelectedProducto({
                   ...selectedProducto,
-                  Descripcion_Categoria: value,
+                  ID_Categoria: selectedOption.value,
+                  Nombre_Categoria: selectedOption.label
                 })
               }
             />
           </div>
+          {/* Product Image Section */}
+            <div className="col-span-4 grid grid-cols-2 gap-4">
+                {/* Vista previa de la imagen */}
+                <div className="flex flex-col items-center">
+                    <label className="block text-sm font-medium text-gray-300 mb-2">Vista Previa</label>
+                    <div className="w-40 h-40 rounded-lg overflow-hidden border border-gray-600">
+                    <img
+                        src={
+                        selectedProducto.url_image
+                            ? selectedProducto.url_image
+                            : "https://via.placeholder.com/150"
+                        }
+                        alt="Vista previa"
+                        className="w-full h-full object-cover"
+                    />
+                    </div>
+                </div>
+
+                {/* Entrada de imagen */}
+                <div className="flex flex-col justify-between">
+                    <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                        Subir Imagen (opcional)
+                    </label>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                            setSelectedProducto({
+                                ...selectedProducto,
+                                url_image: reader.result,
+                            });
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                        }}
+                        className="text-gray-300"
+                    />
+                    </div>
+
+                    <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                        O ingresa una URL de imagen
+                    </label>
+                    <input
+                        type="text"
+                        value={selectedProducto.url_image || ""}
+                        onChange={(e) =>
+                        setSelectedProducto({ ...selectedProducto, url_image: e.target.value })
+                        }
+                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="https://..."
+                    />
+                    </div>
+                </div>
+            </div>
           {/* Description */}
           <div className="col-span-4">
             <label className="block text-sm font-medium text-gray-300 mb-1">
               Descripcion
             </label>
             <textarea
-              value={selectedProducto.Descripcion || ""}
+              value={selectedProducto.Detalles || ""}
               onChange={(e) =>
                 setSelectedProducto({
                   ...selectedProducto,
-                  Descripcion: e.target.value,
+                  Detalles: e.target.value,
                 })
               }
               className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"

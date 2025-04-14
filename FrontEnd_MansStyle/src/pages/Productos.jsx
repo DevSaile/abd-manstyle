@@ -149,8 +149,8 @@ const ProductsPage = () => {
                 category={product.Descripcion_Categoria}
                 stock={product.Cantidad}
                 image={
-                  product.image
-                    ? product.image
+                  product.url_image
+                    ? product.url_image
                     : "https://via.placeholder.com/150"
                 }
                 onClick={() => {

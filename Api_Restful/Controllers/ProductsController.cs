@@ -42,8 +42,8 @@ namespace WebManStyle_ABD.Controllers
             return Ok(new { mensaje = "Producto agregado correctamente.", ID_Producto = resultado });
         }
 
-        [Route("{id:int}")]
-
+        [HttpPut]
+        [Route("actualizar/{id:int}")]
         public IHttpActionResult ActualizarProducto(int id, [FromBody] ProductoDTO productoActualizado)
         {
             if (!ModelState.IsValid)
@@ -52,12 +52,26 @@ namespace WebManStyle_ABD.Controllers
             if (id != productoActualizado.ID_Producto)
                 return BadRequest("El ID del producto no coincide.");
 
+            // Validación adicional de precio
+            if (productoActualizado.Precio_Producto <= 0)
+                return BadRequest("El precio debe ser mayor que cero.");
+
             int resultado = MetodosProducto.ActulizarProducto(productoActualizado);
+
             if (resultado == -1)
                 return NotFound();
 
-            return Ok("Producto actualizado correctamente.");
+            if (resultado == -2)
+                return BadRequest("La sucursal o categoría especificada no existe");
+
+            return Ok(new
+            {
+                success = true,
+                message = "Producto actualizado correctamente",
+                productId = resultado
+            });
         }
+
 
         [Route("estado/{id:int}")]
 
