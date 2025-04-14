@@ -16,8 +16,10 @@ import SellsPerCategory from "../components/panelinicial/VentasPorCategoria";
 import ModalEditar from "../components/productos/ModalEditar";
 import { Modal } from "@rewind-ui/core";
 import ModalCompra from "../components/productos/ModalCompra";
+import ModalDetalles from "../components/productos/ModalDetalles";
 
 const ProductsPage = () => {
+  const [openDetails, setOpenDetails] = useState(false);
   const [productos, setProductos] = useState([]);
   const [Sucursales, setSucursales] = useState([]);
   const [Categorias, setCategorias] = useState([]);
@@ -118,11 +120,19 @@ const ProductsPage = () => {
             <input
               type="text"
               placeholder="Search products..."
-              className="col-span-2 bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-gray-700 text-white placeholder-gray-400 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+          <button
+              className=" bg-gray-700 text-white placeholder-gray-400 rounded-lg py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onClick={() => {
+            setOpenDetails(true);
+          }}
+       >
+          Detalles
+        </button>
 
           {/* Product Cards */}
           <div
@@ -170,9 +180,13 @@ const ProductsPage = () => {
         </button>
         <button
           className="bg-transparent text-red-600 border border-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
+          onClick={() => {
+            setOpenDelete(true);
+          }}
         >
           Eliminar
         </button>
+      
       </div>
         </motion.div>
 
@@ -206,6 +220,7 @@ const ProductsPage = () => {
             >
               Delete
             </button>
+            
           </div>
         </Modal>
 
@@ -226,6 +241,12 @@ const ProductsPage = () => {
           }}
           fetchProductoByID={obtenerProductoPorID} // Nueva prop para cargar producto por ID
           productoID={selectedProducto?.ID_Producto || null} // Pasar ID del producto seleccionado
+        />
+
+        <ModalDetalles
+          openDetails={openDetails}
+          DetailsModalClose={() => setOpenDetails(false)}
+          product={selectedProducto}
         />
 
         <div className="grid grid-col-1 lg:grid-cols-2 gap-8">
