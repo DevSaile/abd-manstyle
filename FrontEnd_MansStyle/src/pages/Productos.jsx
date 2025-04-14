@@ -209,6 +209,7 @@ const ProductsPage = () => {
           </div>
         </Modal>
 
+        
         <ModalCompra
         openAdd={openAdd}
         AddModalClose={() => setOpenAdd(false)}

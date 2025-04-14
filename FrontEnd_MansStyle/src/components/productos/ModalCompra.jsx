@@ -33,10 +33,11 @@ const ModalCompra = ({
       open={openAdd}
       onClose={AddModalClose}
       title="Add Product"
-      size="xl"
+      size="lg"
       className="bg-gray-800 text-gray-100 border border-gray-700 rounded-lg shadow-2xl p-6 grid grid-cols-1 gap-4"
       transition={{ duration: 1.5 }}
       overlayCloseOnClick={false}
+    
     >
       <form className="grid grid-cols-2 gap-4" onSubmit={handleSubmit}>
         {/* Name */}
@@ -134,6 +135,21 @@ const ModalCompra = ({
             className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
+        {/* Description */}
+<div className="col-span-2">
+  <label className="block text-sm font-medium text-gray-300 mb-1">
+    Descripción
+  </label>
+  <textarea
+    value={newProduct.Descripcion || ""}
+    onChange={(e) =>
+      setNewProduct({ ...newProduct, Descripcion: e.target.value })
+    }
+    className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    rows="4"
+    placeholder="Añadir descripción del producto..."
+  />
+</div>
 
         {/* Image Upload */}
         <div className="col-span-2">
@@ -155,6 +171,7 @@ const ModalCompra = ({
             }}
             className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+
         </div>
 
         {/* Buttons */}
