@@ -19,7 +19,7 @@ namespace WebManStyle_ABD.Controllers
 
         // Agregar una nueva compra de producto
         [HttpPost]
-        [Route("")]
+        [Route("agregar")]
         public IHttpActionResult AgregarCompraProducto([FromBody] Compra_EntradaDTO nuevaCompra)
         {
             if (!ModelState.IsValid)

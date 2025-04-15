@@ -239,6 +239,12 @@ const ProductsPage = () => {
         <ModalCompra
         openAdd={openAdd}
         AddModalClose={() => setOpenAdd(false)}
+        refrescarProductos={() => {
+          obtenerProductos().then((data) => {
+            setProductos(data);
+            setFilteredProducts(data); // Refrescar la lista después de editar
+          });
+        }}
         />
 
         <ModalEditar

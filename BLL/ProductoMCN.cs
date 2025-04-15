@@ -250,10 +250,10 @@ namespace BLL
                     Precio_Producto = produ.Precio_Producto,
                     Marca = produ.Marca,
                     Detalles = produ.Detalles,
-
+                    Image_URL = produ.url_image,
                     ID_Categoria = produ.ID_Categoria,
                     ID_Sucursal = produ.ID_Sucursal,
-                    Estado = produ.Estado
+                    Estado = 1
 
 
                 };

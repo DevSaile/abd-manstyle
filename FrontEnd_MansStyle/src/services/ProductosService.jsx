@@ -14,7 +14,7 @@ export const obtenerProductos = async () => {
 // Agregar un nuevo producto
 export const agregarProducto = async (producto) => {
     try {
-        const response = await api.post("/productos", producto);
+        const response = await api.post("/productos/agregar", producto);
         return response.data;
     } catch (error) {
         console.error("Error al agregar producto:", error);

@@ -30,6 +30,8 @@ namespace WebManStyle_ABD.Controllers
             return Ok(productos);
         }
 
+        [HttpPost]
+        [Route("agregar")]
         public IHttpActionResult AgregarProducto([FromBody] ProductoDTO nuevoProducto)
         {
             if (!ModelState.IsValid)
