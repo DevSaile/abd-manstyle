@@ -41,20 +41,39 @@ const ModalCompra = ({
     >
       <form className="grid grid-cols-2 gap-4" onSubmit={handleSubmit}>
         {/* Name */}
-        <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-300 mb-1">
-            Nombre
-          </label>
-          <input
-            type="text"
-            value={newProduct.Nombre}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, Nombre: e.target.value })
-            }
-            className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
+        <div className="col-span-2 grid grid-cols-5 gap-4">
+  {/* Nombre */}
+  <div className="col-span-4">
+    <label className="block text-sm font-medium text-gray-300 mb-1">
+      Nombre
+    </label>
+    <input
+      type="text"
+      value={newProduct.Nombre}
+      onChange={(e) =>
+        setNewProduct({ ...newProduct, Nombre: e.target.value })
+      }
+      className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      required
+    />
+  </div>
+
+  {/* Cantidad */}
+  <div className="col-span-1">
+    <label className="block text-sm font-medium text-gray-300 mb-1">
+      Cantidad
+    </label>
+    <input
+      type="number"
+      value={newProduct.Cantidad || ""}
+      onChange={(e) =>
+        setNewProduct({ ...newProduct, Cantidad: e.target.value })
+      }
+      className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      required
+    />
+  </div>
+</div>
 
         {/* Buying Price */}
         <div>
