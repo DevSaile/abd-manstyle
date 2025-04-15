@@ -7,7 +7,7 @@ import {
 } from "../services/ProductosService";
 import { obtenerSucursales } from "../services/SucursalService";
 import { obtenerCategoriasActivas } from "../services/CategoriasService";
-
+import { Plus } from "lucide-react";
 import Header from "../components/common/Header";
 import ComboBox from "../components/common/ComboBox";
 import ProductCard from "../components/productos/ProductCard";
@@ -163,12 +163,14 @@ const ProductsPage = () => {
           </div>
 
           <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-2 gap-4">
         <button
-          className="bg-transparent text-blue-600 border border-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
-          onClick={() => {
-            setOpenEdit(true);}}
-        > 
-          Editar
+          className="bg-transparent text-green-600 border border-green-600 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
+        onClick={() => {
+          setOpenAdd(true);
+        }}
+        >
+          <Plus/>Nuevo
         </button>
         <button
           className="bg-transparent text-green-600 border border-green-600 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
@@ -176,8 +178,17 @@ const ProductsPage = () => {
           setOpenAdd(true);
         }}
         >
-          Agregar
+          <Plus/>Existente
         </button>
+        </div>
+        <button
+          className="bg-transparent text-blue-600 border border-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
+          onClick={() => {
+            setOpenEdit(true);}}
+        > 
+          Editar
+        </button>
+    
         <button
           className="bg-transparent text-red-600 border border-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
           onClick={() => {
