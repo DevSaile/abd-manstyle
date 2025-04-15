@@ -112,14 +112,14 @@ const ModalCompra = ({
           <label className="block text-sm font-medium text-gray-300 mb-1">
             Marca
           </label>
-          <ComboBox
-            name="Brand"
-            options={["Brand A", "Brand B", "Brand C"]}
-            selected={newProduct.Marca}
-            onSelect={(value) =>
-              setNewProduct({ ...newProduct, Marca: value })
+          <input
+            type="text"
+            value={newProduct.Marca}
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, Marca: e.target.value })
             }
             className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
           />
         </div>
 
