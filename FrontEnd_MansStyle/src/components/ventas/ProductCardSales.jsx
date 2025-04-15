@@ -5,7 +5,7 @@ import { Button } from "@rewind-ui/core";
 const ProductCardSales = ({ name, Sucursal, price, brand, category, stock, image, onClick, onClickDelete }) => {
     return (
         <motion.div
-            className="bg-gray-800 bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-700 flex"
+            className="bg-gray-800 bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-700 flex "
             onClick={onClick}
             whileHover={{ y: -5, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)" }}
         >
