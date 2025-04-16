@@ -365,7 +365,7 @@ namespace BLL
 
                 }
 
-                newProdu.Estado = produ.Estado;
+                newProdu.Estado = 0;
 
                 db.Entry(newProdu).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();

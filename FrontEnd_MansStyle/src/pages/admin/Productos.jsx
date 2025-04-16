@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import {
   obtenerProductos,
   obtenerProductoPorID,
+  eliminarProducto
 } from "../../services/ProductosService";
 import { obtenerSucursales } from "../../services/SucursalService";
 import { obtenerCategoriasActivas } from "../../services/CategoriasService";
@@ -88,6 +89,45 @@ const ProductsPage = () => {
 
     setFilteredProducts(filtered);
   }, [searchTerm, selectedCategory, selectedPrice, selectedBrand, productos]);
+
+  
+  const deletefuncion = async () => {
+
+    if (!selectedProducto?.ID_Producto) {
+      alert("No se ha seleccionado ningún producto para eliminar.");
+      return;
+    }
+
+    try {
+      const productoEliminado = {
+        ID_Producto: selectedProducto.ID_Producto,
+        Estado: 0, // Cambiar estado a 0 (eliminado)
+
+      };
+        
+      const resultado = await eliminarProducto(
+        selectedProducto.ID_Producto,
+        productoEliminado
+      );
+      
+      if (resultado){
+        obtenerProductos().then((data) => {
+          setProductos(data);
+          setFilteredProducts(data); // Refrescar la lista después de editar
+        });
+  
+        alert("Producto eliminado correctamente");
+  
+      }
+      else 
+      ("Error al eliminar el producto");
+        
+    } catch (error) {
+      console.error("Error:", error);
+      alert(error.response?.data?.message || "Error al eliminar el producto");
+    }
+
+  };
 
   return (
     <div className="flex-1 overflow-auto relative z-10">
@@ -224,7 +264,7 @@ const ProductsPage = () => {
             </button>
             <button
               onClick={() => {
-                // Add your delete logic here
+                deletefuncion();
                 setOpenDelete(false);
               }}
               className="bg-red-600 text-gray-100 hover:bg-red-500 px-6 py-2 rounded-lg transition duration-200"
