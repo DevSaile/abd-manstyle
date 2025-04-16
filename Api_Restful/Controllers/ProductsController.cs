@@ -74,18 +74,18 @@ namespace WebManStyle_ABD.Controllers
             });
         }
 
+        [HttpPut]
+        [Route("eliminar/{id:int}")] // Este de aqui baicamente es el que me ayuda a elimiarr el producto o cambiar el estado a inactivo o sea 0
 
-        [Route("estado/{id:int}")]
-
-        public IHttpActionResult ActualizarEstadoProducto(int id, [FromBody] ProductoDTO productoActualizado)
+        public IHttpActionResult EliminarProducto(int id, [FromBody] ProductoDTO productoEliminado)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (id != productoActualizado.ID_Producto)
+            if (id != productoEliminado.ID_Producto)
                 return BadRequest("El ID del producto no coincide.");
 
-            int resultado = MetodosProducto.KILLProductoExistente(productoActualizado);
+            int resultado = MetodosProducto.KILLProductoExistente(productoEliminado);
             if (resultado == -1)
                 return NotFound();
 

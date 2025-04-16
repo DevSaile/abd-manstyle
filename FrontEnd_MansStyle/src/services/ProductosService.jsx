@@ -34,9 +34,9 @@ export const actualizarProducto = async (id, producto) => {
 };
 
 // Eliminar o cambiar estado de un producto
-export const actualizarEstadoProducto = async (id, estado) => {
+export const eliminarProducto = async (id, productoEliminado) => {
     try {
-        const response = await api.put(`/productos/estado/${id}`, { ID_Producto: id, Estado: estado });
+        const response = await api.put(`/productos/eliminar/${id}`, productoEliminado);
         return response.data;
     } catch (error) {
         console.error("Error al cambiar estado del producto:", error);
