@@ -4,18 +4,20 @@ import { motion } from "framer-motion";
 import Header from "../../components/common/Header";
 import ProductCardSales from "../../components/ventas/ProductCardSales";
 import CartSummary from "../../components/ventas/CartSummary";
+import ComboBox from "../../components/common/ComboBox";
 import { CheckCircle } from "lucide-react";
 
 const CashierPage = () => {
     const [cartItems, setCartItems] = useState([]);
     const [searchTerm, setSearchTerm] = useState(""); // State for the search term
+    const [selectedSucursal, setSelectedSucursal] = useState("Sucursal 1"); // Default branch
 
     const products = [
-        { id: 1, name: "Product 1", price: 10.0, stock: 10 },
-        { id: 2, name: "Product 2", price: 15.0, stock: 5 },
-        { id: 3, name: "Product 3", price: 20.0, stock: 8 },
-        { id: 4, name: "Product 4", price: 25.0, stock: 12 },
-        { id: 5, name: "Product 5", price: 30.0, stock: 20 },
+        { id: 1, name: "Product 1", price: 10.0, stock: 10, sucursal: "Sucursal 1" },
+        { id: 2, name: "Product 2", price: 15.0, stock: 5, sucursal: "Sucursal 2" },
+        { id: 3, name: "Product 3", price: 20.0, stock: 8, sucursal: "Sucursal 1" },
+        { id: 4, name: "Product 4", price: 25.0, stock: 12, sucursal: "Sucursal 2" },
+        { id: 5, name: "Product 5", price: 30.0, stock: 20, sucursal: "Sucursal 1" },
     ];
 
     const addToCart = (product) => {
@@ -43,9 +45,11 @@ const CashierPage = () => {
         );
     };
 
-    // Filter products based on the search term
-    const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    // Filter products based on the search term and selected branch
+    const filteredProducts = products.filter(
+        (product) =>
+            product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+            product.sucursal === selectedSucursal
     );
 
     return (
@@ -53,16 +57,24 @@ const CashierPage = () => {
             <Header title="Cashier" />
 
             <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
-                {/* Search Bar */}
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="Search products..."
-                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                </div>
+                {/* Search Bar and ComboBox */}
+                <div className="mb-4 flex gap-4">
+    <input
+        type="text"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Search products..."
+        className="flex-1 bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+    <div className="min-w-[250px]">
+        <ComboBox
+            name={selectedSucursal}
+            options={["Sucursal 1", "Sucursal 2"]}
+            onSelect={(sucursal) => setSelectedSucursal(sucursal)}
+            enableSearchBar={false}
+        />
+    </div>
+</div>
 
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* PRODUCT LIST */}

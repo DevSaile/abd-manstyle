@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
-const ComboBox = ({ name, options = [], onSelect }) => {
+const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // Used for filtering options
+  const [selectedOption, setSelectedOption] = useState(name); // Tracks the selected option
   const comboBoxRef = useRef(null); // Reference to the ComboBox container
 
   const toggleDropdown = (e) => {
@@ -43,7 +44,7 @@ const ComboBox = ({ name, options = [], onSelect }) => {
           toggleDropdown(e);
         }}
       >
-        {name}
+        {selectedOption}
         <svg
           className="fill-current h-4 w-4 ml-2"
           xmlns="http://www.w3.org/2000/svg"
@@ -61,14 +62,16 @@ const ComboBox = ({ name, options = [], onSelect }) => {
           transition={{ duration: 0.2 }}
           onClick={(e) => e.stopPropagation()} // Prevent event propagation
         >
-          <input
-            type="text"
-            className="bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 py-2 focus:outline-none focus:ring-2"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onClick={(e) => e.stopPropagation()} // Prevent event propagation
-          />
+          {enableSearchBar && (
+            <input
+              type="text"
+              className="bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 py-2 focus:outline-none focus:ring-2"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onClick={(e) => e.stopPropagation()} // Prevent event propagation
+            />
+          )}
           <ul className="max-h-40 overflow-y-auto custom-scrollbar mb-2">
             {filteredItems.length > 0 ? (
               filteredItems.map((item, index) => (
@@ -77,8 +80,9 @@ const ComboBox = ({ name, options = [], onSelect }) => {
                   className="hover:bg-gray-800 py-2 px-4 cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation(); // Prevent event propagation
-                    setSearchTerm(item);
-                    setIsOpen(false);
+                    setSelectedOption(item); // Update the selected option
+                    setSearchTerm(""); // Clear the search term
+                    setIsOpen(false); // Close the dropdown
                     onSelect(item); // Notify parent of the selected item
                   }}
                 >
