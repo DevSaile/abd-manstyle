@@ -17,6 +17,7 @@ import ModalEditar from "../../components/productos/ModalEditar";
 import { Modal } from "@rewind-ui/core";
 import ModalCompra from "../../components/productos/ModalCompra";
 import ModalDetalles from "../../components/productos/ModalDetalles";
+import ModalCompraExistente from "../../components/productos/ModalCompraExistente";
 
 const ProductsPage = () => {
   const [openDetails, setOpenDetails] = useState(false);
@@ -30,6 +31,7 @@ const ProductsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedPrice, setSelectedPrice] = useState("All");
   const [selectedBrand, setSelectedBrand] = useState("All");
+  const [openExistente, setOpenExistente] = useState(false);
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
@@ -175,7 +177,7 @@ const ProductsPage = () => {
         <button
           className="bg-transparent text-green-600 border border-green-600 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
         onClick={() => {
-          setOpenAdd(true);
+          setOpenExistente(true);
         }}
         >
           <Plus/>Existente
@@ -246,6 +248,18 @@ const ProductsPage = () => {
           });
         }}
         />
+
+<ModalCompraExistente
+  openExistente={openExistente}
+  ExistenteModalClose={() => setOpenExistente(false)}
+  refrescarProductos={() => {
+    obtenerProductos().then((data) => {
+      setProductos(data);
+      setFilteredProducts(data); // Refresh the product list after adding
+    });
+  }}
+  selectedProducto={selectedProducto} // Pass the selected product to the modal
+/>;
 
         <ModalEditar
           openEdit={openEdit}
