@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { BarChart2, ShoppingBag, Users, ChartNoAxesCombined, Contact, User } from "lucide-react";
 
-import Header from "../components/common/Header";
-import StatCard from "../components/common/StatCard";
-import SalesOverviewChart from "../components/panelinicial/SalesOverviewChart";
-import SellsPerCategory from "../components/panelinicial/VentasPorCategoria";
-import SalesChannelChart from "../components/panelinicial/SalesChannelChart";
+import Header from "../../components/common/Header";
+import StatCard from "../../components/common/StatCard";
+import SalesOverviewChart from "../../components/panelinicial/SalesOverviewChart";
+import SellsPerCategory from "../../components/panelinicial/VentasPorCategoria";
+import SalesChannelChart from "../../components/panelinicial/SalesChannelChart";
 
-import { obtenerTotalesPorSucursal } from "../services/SucursalService";
+import { obtenerTotalesPorSucursal } from "../../services/SucursalService";
 
 const OverviewPage = () => {
     const [totalesPrincipal, setTotalesPrincipal] = useState(null); // Datos de Tienda Principal

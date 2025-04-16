@@ -4,19 +4,19 @@ import { motion } from "framer-motion";
 import {
   obtenerProductos,
   obtenerProductoPorID,
-} from "../services/ProductosService";
-import { obtenerSucursales } from "../services/SucursalService";
-import { obtenerCategoriasActivas } from "../services/CategoriasService";
+} from "../../services/ProductosService";
+import { obtenerSucursales } from "../../services/SucursalService";
+import { obtenerCategoriasActivas } from "../../services/CategoriasService";
 import { Plus } from "lucide-react";
-import Header from "../components/common/Header";
-import ComboBox from "../components/common/ComboBox";
-import ProductCard from "../components/productos/ProductCard";
-import SalesTrendChart from "../components/productos/SalesTrendChart";
-import SellsPerCategory from "../components/panelinicial/VentasPorCategoria";
-import ModalEditar from "../components/productos/ModalEditar";
+import Header from "../../components/common/Header";
+import ComboBox from "../../components/common/ComboBox";
+import ProductCard from "../../components/productos/ProductCard";
+import SalesTrendChart from "../../components/productos/SalesTrendChart";
+import SellsPerCategory from "../../components/panelinicial/VentasPorCategoria";
+import ModalEditar from "../../components/productos/ModalEditar";
 import { Modal } from "@rewind-ui/core";
-import ModalCompra from "../components/productos/ModalCompra";
-import ModalDetalles from "../components/productos/ModalDetalles";
+import ModalCompra from "../../components/productos/ModalCompra";
+import ModalDetalles from "../../components/productos/ModalDetalles";
 
 const ProductsPage = () => {
   const [openDetails, setOpenDetails] = useState(false);

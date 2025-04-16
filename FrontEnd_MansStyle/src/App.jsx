@@ -1,37 +1,35 @@
 import { Route, Routes } from "react-router-dom";
 
-import Sidebar from "./components/common/Sidebar";
+import AdminLayout from "./layouts/AdminLayout";
+import PublicLayout from "./layouts/PublicLayout";
 
-import ClientsPage from "./pages/Clientes";
-import ProductsPage from "./pages/Productos";
-
-import OverviewPage from "./pages/PanelInicial";
-import RegistersPage from "./pages/Registros";
-
-import CashierPage from "./pages/Ventas";
-import UsersPage from "./pages/Usuarios";
+import Landing from "./pages/public/Landing";
+import OverviewPage from "./pages/admin/PanelInicial";
+import ProductsPage from "./pages/admin/Productos";
+import ClientsPage from "./pages/admin/Clientes";
+import CashierPage from "./pages/admin/Ventas";
+import RegistersPage from "./pages/admin/Registros";
+import UsersPage from "./pages/admin/Usuarios";
 
 function App() {
-	return (
-		<div className='flex h-screen bg-gray-900 text-gray-100 overflow-hidden'>
-			{/* BG */}
-			<div className='fixed inset-0 z-0'>
-				<div className='absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-80' />
-				<div className='absolute inset-0 backdrop-blur-sm' />
-			</div>
+    return (
+        <Routes>
+            {/* Public Routes */}
+            <Route element={<PublicLayout />}>
+                <Route path='/inicio' element={<Landing />} />
+            </Route>
 
-			<Sidebar />
-			<Routes>
-				<Route path='/' element={<OverviewPage />} />
-				<Route path='/productos' element={<ProductsPage/>} />
-
-				<Route path='/clientes' element={<ClientsPage/>} />
-				<Route path='/venta' element={<CashierPage />} />
-				<Route path='/registros' element={<RegistersPage />} />
-				<Route path='/usuarios' element={<UsersPage />} />
-			</Routes>
-		</div>
-	);
+            {/* Admin Routes */}
+            <Route element={<AdminLayout />}>
+                <Route path='/' element={<OverviewPage />} />
+                <Route path='/productos' element={<ProductsPage />} />
+                <Route path='/clientes' element={<ClientsPage />} />
+                <Route path='/venta' element={<CashierPage />} />
+                <Route path='/registros' element={<RegistersPage />} />
+                <Route path='/usuarios' element={<UsersPage />} />
+            </Route>
+        </Routes>
+    );
 }
 
 export default App;
