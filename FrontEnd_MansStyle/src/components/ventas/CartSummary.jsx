@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 
-const CartSummary = ({ cartItems, updateCartItemQuantity }) => {
+const CartSummary = ({ cartItems, updateCartItemQuantity, removeFromCart }) => {
+    const [amountGiven, setAmountGiven] = useState(""); // Allow empty input
     const total = cartItems.reduce((sum, item) => sum + item.quantity * item.price, 0);
+    const exchange = Math.max((parseFloat(amountGiven) || 0) - total, 0); // Calculate exchange
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 overflow-y-auto">
             {cartItems.map((item) => (
                 <div
                     key={item.id}
@@ -64,12 +66,42 @@ const CartSummary = ({ cartItems, updateCartItemQuantity }) => {
                             +
                         </button>
                     </div>
+
+                    {/* Remove Button */}
+                    <button
+                        className="text-red-500 hover:text-red-700 ml-4"
+                        onClick={() => removeFromCart(item.id)}
+                    >
+                        x
+                    </button>
                 </div>
             ))}
+
+            {/* Total Section */}
             <div className="border-t border-gray-600 pt-4 flex justify-between text-gray-100 font-semibold">
                 <span>Total:</span>
                 <span>${total.toFixed(2)}</span>
-                
+            </div>
+
+            {/* Amount Given Input */}
+            <div className="mt-4">
+                <label htmlFor="amountGiven" className="block text-gray-100 font-medium mb-2">
+                    Amount Given:
+                </label>
+                <input
+                    type="number"
+                    id="amountGiven"
+                    value={amountGiven}
+                    onChange={(e) => setAmountGiven(e.target.value)} // Allow empty input
+                    className="w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter amount given by the client"
+                />
+            </div>
+
+            {/* Exchange Section */}
+            <div className="mt-4 flex justify-between text-gray-100 font-semibold">
+                <span>Exchange:</span>
+                <span>${exchange.toFixed(2)}</span>
             </div>
         </div>
     );
