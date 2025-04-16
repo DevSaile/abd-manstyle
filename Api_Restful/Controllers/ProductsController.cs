@@ -114,6 +114,16 @@ namespace WebManStyle_ABD.Controllers
             return Ok(marcas);
         }
 
+        [HttpGet]
+        [Route("sucursal/{idSucursal}")]
+        public IHttpActionResult ObtenerProductosPorSucursal(int idSucursal)
+        {
+            var productos = MetodosProducto.BuscarProductoPorSucursal(idSucursal);
 
+            if (productos == null || productos.Count == 0)
+                return NotFound(); // Si no hay productos o la sucursal no existe
+
+            return Ok(productos); // Devuelve la lista de productos como respuesta
+        }
     }
 }

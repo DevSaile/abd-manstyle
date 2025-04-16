@@ -64,3 +64,13 @@ export const obtenerMarcas = async () => {
         return []; // Devuelve un array vacío en caso de error
     }
 };
+
+export const obtenerProductosPorSucursal = async (idSucursal) => {
+    try {
+        const response = await api.get(`/productos/sucursal/${idSucursal}`);
+        return response.data; // Devuelve los productos obtenidos
+    } catch (error) {
+        console.error("Error al obtener productos por sucursal:", error);
+        return []; // Devuelve un array vacío en caso de error
+    }
+};

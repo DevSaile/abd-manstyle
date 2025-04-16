@@ -21,29 +21,24 @@ namespace BLL
             db = new bddVariedadesMansStyleEntities();
         }
 
-        public List<ProductoDTO> BuscarPorSucursal(int sucursalprodu)
+        public List<ProductoDTO> BuscarProductoPorSucursal(int sucursalprodu)
         {
+            var productos = (from p in db.Producto
+                             where p.ID_Sucursal == sucursalprodu && p.Estado != 0
+                             select new ProductoDTO
+                             {
+                                 ID_Producto = p.ID_Producto,
+                                 Descripcion_Categoria = p.Categoria != null ? p.Categoria.Nombre : "Sin categoría",
+                                 Nombre = p.Nombre,
+                                 Marca = p.Marca,
+                                 Cantidad = p.Cantidad,
+                                 Precio_Producto = p.Precio_Producto,
+                                 Detalles = p.Detalles,
+                                 url_image = p.Image_URL
 
-            return (from p in db.Producto
-                    where p.ID_Sucursal == sucursalprodu && p.Estado != 0
-                    select new ProductoDTO
-                    {
+                             }).ToList();
 
-                        ID_Producto = p.ID_Producto,
-                        EstadoProducto = p.Estado == 1 ? "Activo" : "Inactivo",
-                        versucu = p.ID_Sucursal == 1 ? "Tienda Principal " /*+ p.Sucursal.Nombre*/ : "Tienda Primaria" /*+ p.Sucursal.Nombre*/,
-                        Descripcion_Categoria = p.Categoria.Nombre, // Accede al nombre de la categoría
-
-                        Nombre = p.Nombre,
-                        Marca = p.Marca,
-                        Cantidad = p.Cantidad,
-                        Precio_Compra = p.Precio_Compra,
-                        Precio_Producto = p.Precio_Producto,
-                        Detalles = p.Detalles // Asegúrate de incluir la propiedad si es relevante
-
-
-                    }).ToList();
-
+            return productos.Any() ? productos : new List<ProductoDTO>();
         }
 
         public List<ProductoDTO> BuscarPorCategoria(int categoriaprodu)
