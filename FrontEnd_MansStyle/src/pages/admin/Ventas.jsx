@@ -11,6 +11,9 @@ const CashierPage = () => {
     const [cartItems, setCartItems] = useState([]);
     const [searchTerm, setSearchTerm] = useState(""); // State for the search term
     const [selectedSucursal, setSelectedSucursal] = useState("Sucursal 1"); // Default branch
+    const [selectedClient, setSelectedClient] = useState("Cliente 1"); // Default client
+
+    const clients = ["Cliente 1", "Cliente 2", "Cliente 3", "Cliente 4"]; // Example clients
 
     const products = [
         { id: 1, name: "Product 1", price: 10.0, stock: 10, sucursal: "Sucursal 1" },
@@ -45,10 +48,6 @@ const CashierPage = () => {
         );
     };
 
-    const removeFromCart = (id) => {
-        setCartItems((prevCart) => prevCart.filter((item) => item.id !== id));
-    };
-
     // Filter products based on the search term and selected branch
     const filteredProducts = products.filter(
         (product) =>
@@ -61,7 +60,7 @@ const CashierPage = () => {
             <Header title="Cashier" />
 
             <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
-                {/* Search Bar and ComboBox */}
+                {/* Search Bar and ComboBoxes */}
                 <div className="mb-4 flex gap-4">
                     <input
                         type="text"
@@ -69,12 +68,20 @@ const CashierPage = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         placeholder="Search products..."
                         className="flex-1 bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        style={{ flex: "2" }} // Reduce the width of the search input
                     />
-                    <div className="min-w-[250px]">
+                    <div className="min-w-[200px]">
                         <ComboBox
                             name={selectedSucursal}
                             options={["Sucursal 1", "Sucursal 2"]}
                             onSelect={(sucursal) => setSelectedSucursal(sucursal)}
+                        />
+                    </div>
+                    <div className="min-w-[200px]">
+                        <ComboBox
+                            name={selectedClient}
+                            options={clients}
+                            onSelect={(client) => setSelectedClient(client)}
                         />
                     </div>
                 </div>
@@ -99,7 +106,6 @@ const CashierPage = () => {
                         <CartSummary
                             cartItems={cartItems}
                             updateCartItemQuantity={updateCartItemQuantity}
-                            removeFromCart={removeFromCart} // Pass remove function
                         />
                         <button className="mt-6 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center w-full">
                             <CheckCircle className="mr-2" size={18} />

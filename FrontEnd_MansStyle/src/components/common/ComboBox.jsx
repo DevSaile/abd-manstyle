@@ -65,7 +65,7 @@ const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
           {enableSearchBar && (
             <input
               type="text"
-              className="bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 py-2 focus:outline-none focus:ring-2"
+              className="bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-3 py-2 focus:outline-none focus:ring-2"
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
