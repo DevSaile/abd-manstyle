@@ -289,17 +289,17 @@ const ProductsPage = () => {
         }}
         />
 
-<ModalCompraExistente
-  openExistente={openExistente}
-  ExistenteModalClose={() => setOpenExistente(false)}
-  refrescarProductos={() => {
-    obtenerProductos().then((data) => {
-      setProductos(data);
-      setFilteredProducts(data); // Refresh the product list after adding
-    });
-  }}
-  selectedProducto={selectedProducto} // Pass the selected product to the modal
-/>;
+      <ModalCompraExistente
+        openExistente={openExistente}
+        ExistenteModalClose={() => setOpenExistente(false)}
+        refrescarProductos={() => {
+          obtenerProductos().then((data) => {
+            setProductos(data);
+            setFilteredProducts(data); // Refresh the product list after adding
+          });
+        }}
+        selectedProducto={selectedProducto} // Pass the selected product to the modal
+      />;
 
         <ModalEditar
           openEdit={openEdit}
@@ -319,11 +319,16 @@ const ProductsPage = () => {
           DetailsModalClose={() => setOpenDetails(false)}
           product={selectedProducto}
         />
-
+        
         <div className="grid grid-col-1 lg:grid-cols-2 gap-8">
+          {/*       Se usara después, por esto se deja comentado
+
           <SalesTrendChart />
           <SellsPerCategory />
+          */}
+          
         </div>
+
       </main>
     </div>
   );
