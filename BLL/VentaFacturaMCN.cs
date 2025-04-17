@@ -29,6 +29,7 @@ namespace BLL
                     Estado = venta.Estado,
                     ID_Cliente = venta.ID_Cliente,
                     ID_Vendedor = venta.ID_Vendedor,
+                    ID_Sucursal = venta.ID_Sucursal,
                     Fecha_Venta = venta.Fecha_Venta,
                     Cantidad = venta.Cantidad,
                     Subtotal = venta.Subtotal,
@@ -220,6 +221,12 @@ namespace BLL
 
         public int AgregarVentaPRO(Venta_FacturaDTO venta)
         {
+            if (venta.Detalles == null || !venta.Detalles.Any())
+                return -1; // No hay detalles de venta
+
+            if (venta.ID_Cliente == null || venta.ID_Sucursal == null)
+                return -1; // Falta información esencial
+
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
@@ -244,9 +251,10 @@ namespace BLL
 
                     foreach (var detalle in venta.Detalles)
                     {
-                        var producto = db.Producto.Find(detalle.ID_Producto);
+                        var producto = db.Producto.FirstOrDefault(p => p.ID_Producto == detalle.ID_Producto);
                         if (producto == null || producto.Cantidad < detalle.Cantidad)
                         {
+                            Console.WriteLine($"Producto ID {detalle.ID_Producto} no disponible o stock insuficiente.");
                             transaction.Rollback();
                             return -1;
                         }
@@ -272,8 +280,13 @@ namespace BLL
                 catch (DbUpdateException ex)
                 {
                     transaction.Rollback();
-                    // Registrar la excepción interna
                     Console.WriteLine($"Error: {ex.InnerException.Message}");
+                    return -1;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Console.WriteLine($"Error General: {ex.Message}");
                     return -1;
                 }
             }
@@ -284,7 +297,6 @@ namespace BLL
             var ventas = (from venta in db.Venta_Factura
                           join detalle in db.Venta_Detalles on venta.ID_Venta equals detalle.ID_Venta
                           join producto in db.Producto on detalle.ID_Producto equals producto.ID_Producto
-                          join sucursal in db.Sucursal on producto.ID_Sucursal equals sucursal.ID_Sucursal
                           select new Venta_FacturaDTO
                           {
                               ID_Venta = venta.ID_Venta,
@@ -298,8 +310,7 @@ namespace BLL
                               Total = venta.Total,
                               pagacon = venta.Paga,
                               cambio = venta.Cambio,
-                              NombreSucursal = sucursal.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Secundaria",
-                              VentaHechaEN = venta.ID_Sucursal == 1 ? sucursal.Nombre : sucursal.Nombre
+                              VentaHechaEN = venta.ID_Sucursal == 1 ? "Tienda Primaria" : "Tienda Secundaria"
                               //NombreSucursal = sucursal.Nombre // Supone que `Sucursal` tiene un atributo `Nombre`
 
                           }).ToList();

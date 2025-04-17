@@ -1,42 +1,42 @@
 import React, { useState } from "react";
 
 const CartSummary = ({ cartItems, updateCartItemQuantity, removeFromCart }) => {
-    const [amountGiven, setAmountGiven] = useState(""); // Allow empty input
-    const total = cartItems.reduce((sum, item) => sum + item.quantity * item.price, 0);
-    const exchange = Math.max((parseFloat(amountGiven) || 0) - total, 0); // Calculate exchange
+    const [amountGiven, setAmountGiven] = useState(""); // Permitir input vacío
+    const total = cartItems.reduce((sum, item) => sum + item.quantity * item.Precio_Producto, 0);
+    const exchange = Math.max((parseFloat(amountGiven) || 0) - total, 0);
 
     return (
         <div className="space-y-4 overflow-y-auto">
             {cartItems.map((item) => (
                 <div
-                    key={item.id}
+                    key={item.ID_Producto}
                     className="flex items-center justify-between bg-gray-700 p-4 rounded-lg"
                 >
-                    {/* Product Image */}
+                    {/* Imagen del producto */}
                     <div className="w-16 h-16 flex-shrink-0">
                         <img
-                            src={item.image || "https://via.placeholder.com/64"}
-                            alt={item.name}
+                            src={item.url_image || "https://via.placeholder.com/150"}
+                            alt={item.Nombre}
                             className="w-full h-full object-cover rounded-lg"
                         />
                     </div>
 
-                    {/* Product Details */}
+                    {/* Detalles del producto */}
                     <div className="flex-1 px-4">
                         <h3 className="text-sm font-medium text-gray-100 truncate">
-                            {item.name}
+                            {item.Nombre}
                         </h3>
                         <p className="text-sm text-gray-400">
-                            ${item.price.toFixed(2)}
+                            ${item.Precio_Producto?.toFixed(2)}
                         </p>
                     </div>
 
-                    {/* Quantity Selector */}
+                    {/* Selector de cantidad */}
                     <div className="flex items-center">
                         <button
                             className="bg-gray-600 text-gray-300 px-2 py-1 rounded-l-lg hover:bg-gray-500"
                             onClick={() =>
-                                updateCartItemQuantity(item.id, Math.max(item.quantity - 1, 1))
+                                updateCartItemQuantity(item.ID_Producto, Math.max(item.quantity - 1, 1))
                             }
                         >
                             -
@@ -48,59 +48,58 @@ const CartSummary = ({ cartItems, updateCartItemQuantity, removeFromCart }) => {
                                 const newQuantity = parseInt(e.target.value, 10);
                                 if (!isNaN(newQuantity)) {
                                     updateCartItemQuantity(
-                                        item.id,
-                                        Math.min(Math.max(newQuantity, 1), item.stock)
+                                        item.ID_Producto,
+                                        Math.min(Math.max(newQuantity, 1), item.stock || 100)
                                     );
                                 }
                             }}
                             className="w-12 text-center bg-gray-800 text-gray-100 border border-gray-600 focus:outline-none"
                             min="1"
-                            max={item.stock}
                         />
                         <button
                             className="bg-gray-600 text-gray-300 px-2 py-1 rounded-r-lg hover:bg-gray-500"
                             onClick={() =>
-                                updateCartItemQuantity(item.id, Math.min(item.quantity + 1, item.stock))
+                                updateCartItemQuantity(item.ID_Producto, (item.quantity || 1) + 1)
                             }
                         >
                             +
                         </button>
                     </div>
 
-                    {/* Remove Button */}
+                    {/* Botón eliminar */}
                     <button
                         className="text-red-500 hover:text-red-700 ml-4"
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => removeFromCart(item.ID_Producto)}
                     >
                         x
                     </button>
                 </div>
             ))}
 
-            {/* Total Section */}
+            {/* Total */}
             <div className="border-t border-gray-600 pt-4 flex justify-between text-gray-100 font-semibold">
                 <span>Total:</span>
                 <span>${total.toFixed(2)}</span>
             </div>
 
-            {/* Amount Given Input */}
+            {/* Monto dado */}
             <div className="mt-4">
                 <label htmlFor="amountGiven" className="block text-gray-100 font-medium mb-2">
-                    Amount Given:
+                    Monto recibido:
                 </label>
                 <input
                     type="number"
                     id="amountGiven"
                     value={amountGiven}
-                    onChange={(e) => setAmountGiven(e.target.value)} // Allow empty input
+                    onChange={(e) => setAmountGiven(e.target.value)}
                     className="w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter amount given by the client"
+                    placeholder="Ingrese el monto entregado por el cliente"
                 />
             </div>
 
-            {/* Exchange Section */}
+            {/* Cambio */}
             <div className="mt-4 flex justify-between text-gray-100 font-semibold">
-                <span>Exchange:</span>
+                <span>Cambio:</span>
                 <span>${exchange.toFixed(2)}</span>
             </div>
         </div>
