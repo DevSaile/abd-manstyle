@@ -7,6 +7,7 @@ using System.Data.Entity;
 
 using Models;
 using DAL;
+using System.Diagnostics;
 
 namespace BLL
 {
@@ -33,6 +34,7 @@ namespace BLL
                                  Marca = p.Marca,
                                  Cantidad = p.Cantidad,
                                  Precio_Producto = p.Precio_Producto,
+                                 Precio_Compra = p.Precio_Compra,
                                  Detalles = p.Detalles,
                                  url_image = p.Image_URL
 
@@ -270,44 +272,29 @@ namespace BLL
 
         }
 
-        public int ActulizarProductoExistente(ProductoDTO produ)
+        public int ActualizarProductoExistente(ProductoDTO produ)
         {
-
             try
             {
-
-                Producto newProdu = db.Producto.Find(produ.ID_Producto);
-
-                if (newProdu is null)
-                {
-
+                var newProdu = db.Producto.Find(produ.ID_Producto);
+                if (newProdu == null)
                     return -1;
 
-                }
+                newProdu.Cantidad = produ.Cantidad;
 
-
-                newProdu.Nombre = produ.Nombre;
-                newProdu.Marca = produ.Marca;
-                newProdu.Detalles = produ.Detalles;
-                newProdu.Cantidad += produ.Cantidad;
-                newProdu.Precio_Compra = produ.Precio_Compra;
-                newProdu.Precio_Producto = produ.Precio_Producto;
 
                 db.Entry(newProdu).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+                Debug.WriteLine($"Cantidad: {newProdu.ID_Producto}, Precio_Compra: {newProdu.ID_Producto}");
 
                 return newProdu.ID_Producto;
-
             }
             catch
             {
-
                 return -1;
-
-
             }
-
         }
+
 
         public int ActulizarProducto(ProductoDTO produ)
         {

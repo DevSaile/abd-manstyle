@@ -298,7 +298,9 @@ const ProductsPage = () => {
             setFilteredProducts(data); // Refresh the product list after adding
           });
         }}
-        selectedProducto={selectedProducto} // Pass the selected product to the modal
+        fetchProductoByID={obtenerProductoPorID} // Nueva prop para cargar producto por ID
+        productoID={selectedProducto?.ID_Producto || null} // Pasar ID del producto seleccionado
+
       />;
 
         <ModalEditar
@@ -326,7 +328,7 @@ const ProductsPage = () => {
           <SalesTrendChart />
           <SellsPerCategory />
           */}
-          
+
         </div>
 
       </main>
