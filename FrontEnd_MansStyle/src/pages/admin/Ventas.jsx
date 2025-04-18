@@ -22,6 +22,7 @@ const CashierPage = () => {
     const [sucursales, setSucursales] = useState([]);
     const [clients, setClients] = useState([]);
     const [products, setProducts] = useState([]);
+    const [amountGiven, setAmountGiven] = useState(""); // Nuevo estado
 
     useEffect(() => {
         obtenerSucursales().then((sucursalesData) => {
@@ -64,6 +65,10 @@ const CashierPage = () => {
         setCartItems((prevCart) => prevCart.filter((item) => item.ID_Producto !== id));
     };
 
+    const getTotalItems = () => {
+        return cartItems.reduce((acc, item) => acc + item.quantity, 0);
+      };
+
     const handleSale = async () => {
         if (!selectedClient || cartItems.length === 0) {
             alert("Selecciona un cliente y agrega productos al carrito.");
@@ -75,10 +80,10 @@ const CashierPage = () => {
             0
         );
     
-        const pago = parseFloat(prompt("¿Con cuánto paga el cliente?")); // O usa input con estado
+        const pago = parseFloat(amountGiven);
         if (isNaN(pago) || pago < total) {
-            alert("El monto pagado no es válido o es insuficiente.");
-            return;
+          alert("El monto pagado no es válido o es insuficiente.");
+          return;
         }
     
         const venta = {
@@ -90,6 +95,7 @@ const CashierPage = () => {
             Total: total,
             pagacon: pago,
             cambio: pago - total,
+            Cantidad: getTotalItems(), // Total de productos en el carrito
             Detalles: cartItems.map((item) => ({
                 ID_Producto: item.ID_Producto,
                 Cantidad: item.quantity,
@@ -100,11 +106,13 @@ const CashierPage = () => {
         const resultado = await agregarVenta(venta);
         
         if (resultado) {
-            alert("Venta registrada correctamente.");
-            setCartItems([]);
+          alert("Venta registrada correctamente.");
+          setCartItems([]);
+          setAmountGiven(""); 
         } else {
-            alert("Error al registrar la venta.");
+          alert("Error al registrar la venta.");
         }
+
     };
     
 
@@ -165,6 +173,8 @@ const CashierPage = () => {
                             cartItems={cartItems}
                             updateCartItemQuantity={updateCartItemQuantity}
                             removeFromCart={removeFromCart}
+                            amountGiven={amountGiven}
+                            setAmountGiven={setAmountGiven}
                         />
                         <button
                             onClick={handleSale}

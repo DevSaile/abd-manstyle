@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
-const CartSummary = ({ cartItems, updateCartItemQuantity, removeFromCart }) => {
-    const [amountGiven, setAmountGiven] = useState(""); // Permitir input vacío
+const CartSummary = ({ cartItems, updateCartItemQuantity, removeFromCart, amountGiven, setAmountGiven }) => {
     const total = cartItems.reduce((sum, item) => sum + item.quantity * item.Precio_Producto, 0);
     const exchange = Math.max((parseFloat(amountGiven) || 0) - total, 0);
 
