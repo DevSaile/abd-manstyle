@@ -115,9 +115,18 @@ const CashierPage = () => {
     return (
         <div className="flex-1 overflow-auto relative z-10">
             <Header title="Cashier" />
-
+    
             <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
+                {/* ComboBoxes for Sucursal and Cliente */}
                 <div className="mb-4 flex gap-4">
+                      {/* Search Input */}
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Buscar productos..."
+                    className="w-8/12 bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                />
                     <ComboBoxID
                         name="Sucursal"
                         options={sucursales}
@@ -131,45 +140,43 @@ const CashierPage = () => {
                         onSelect={(client) => setSelectedClient(client)}
                     />
                 </div>
-
-                <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Buscar productos..."
-                    className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
-                />
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-6 auto-rows-min">
-                    {filteredProducts.map((product) => (
-                        <ProductCardSales
-                            key={product.ID_Producto}
-                            name={product.Nombre}
-                            price={product.Precio_Producto}
-                            image={product.url_image}
-                            onClick={() => addToCart(product)}
+    
+              
+    
+                {/* Flex Container for Products and Cart Summary */}
+                <div className="flex flex-col lg:flex-row gap-8">
+                    {/* Product List */}
+                    <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 auto-rows-min">
+                        {filteredProducts.map((product) => (
+                            <ProductCardSales
+                                key={product.ID_Producto}
+                                name={product.Nombre}
+                                price={product.Precio_Producto}
+                                image={product.url_image}
+                                onClick={() => addToCart(product)}
+                            />
+                        ))}
+                    </div>
+    
+                    {/* Cart Summary */}
+                    <div className="w-full lg:w-1/3 bg-gray-800 p-6 rounded-lg shadow-lg">
+                        <h2 className="text-xl font-semibold text-gray-100 mb-4">Carrito</h2>
+                        <CartSummary
+                            cartItems={cartItems}
+                            updateCartItemQuantity={updateCartItemQuantity}
+                            removeFromCart={removeFromCart}
                         />
-                    ))}
-                </div>
-
-                <div className="mt-6 bg-gray-800 p-6 rounded-lg shadow-lg">
-                    <h2 className="text-xl font-semibold text-gray-100 mb-4">Carrito</h2>
-                    <CartSummary
-                        cartItems={cartItems}
-                        updateCartItemQuantity={updateCartItemQuantity}
-                        removeFromCart={removeFromCart}
-                    />
-                    <button
-                        onClick={handleSale}
-                        className="mt-6 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center w-full"
-                    >
-                        <CheckCircle className="mr-2" size={18} />
-                        Completar Venta
-                    </button>
+                        <button
+                            onClick={handleSale}
+                            className="mt-6 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center w-full"
+                        >
+                            <CheckCircle className="mr-2" size={18} />
+                            Completar Venta
+                        </button>
+                    </div>
                 </div>
             </main>
         </div>
     );
-};
-
+}
 export default CashierPage;
