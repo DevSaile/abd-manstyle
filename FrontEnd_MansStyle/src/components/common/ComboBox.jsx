@@ -37,7 +37,7 @@ const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
       onClick={(e) => e.stopPropagation()} // Prevent event propagation to the modal
     >
       <button
-        className="bg-gray-700 text-gray-400 font-bold py-2 px-4 rounded-lg inline-flex items-center w-full"
+        className="bg-gray-700 text-gray-400 font-bold py-2 px-4 rounded-lg inline-flex items-center w-full overflow-y-auto"
         onClick={(e) => {
           e.stopPropagation(); // Prevent event propagation
           e.preventDefault(); // Prevent default action

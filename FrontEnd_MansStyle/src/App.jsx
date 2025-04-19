@@ -10,7 +10,6 @@ import ClientsPage from "./pages/admin/Clientes";
 import CashierPage from "./pages/admin/Ventas";
 import RegistersPage from "./pages/admin/Registros";
 import UsersPage from "./pages/admin/Usuarios";
-
 function App() {
     return (
         <Routes>
