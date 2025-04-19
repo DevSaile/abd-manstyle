@@ -3,6 +3,9 @@ import Header from "../../components/common/Header";
 import StatCard from "../../components/common/StatCard";
 import UsersTable from "../../components/usuarios/TablaUsuarios";
 import ManageUser from "../../components/usuarios/EditarUsuarios";
+import DeleteModal from "../../components/common/DeleteModal";
+
+
 const userStats = {
     totalUsers: 152845,
     newUsersToday: 243,
@@ -43,6 +46,7 @@ const UsersPage = () => {
     const [openEdit, setOpenEdit] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
 	const [openCreate, setOpenCreate] = useState(false);
+    const [openDelete , setOpenDelete] = useState(false);
 
     return (
         <div className="flex-1 overflow-auto relative z-10">
@@ -56,6 +60,7 @@ const UsersPage = () => {
                     setSelectedUser={setSelectedUser}
                     openEdit={() => setOpenEdit(true)}
 					openCreate={() => setOpenCreate(true)}
+                    openDelete={() => setOpenDelete(true)}
                 />
 
                 <ManageUser
@@ -70,6 +75,12 @@ const UsersPage = () => {
 				onClose={() => setOpenCreate(false)}
 				sucursales={["Sucursal 1", "Sucursal 2"]}
 				/>
+
+                <DeleteModal
+                open={openDelete}
+                onClose={() => setOpenDelete(false)}   
+                selectedUser={selectedUser} // Pass the selected user to the modal
+                />
             </main>
         </div>
     );
