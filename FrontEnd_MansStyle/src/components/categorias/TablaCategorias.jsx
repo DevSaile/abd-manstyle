@@ -1,19 +1,81 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search, Plus } from "lucide-react";
 
-const CategoryTable = ({ categoryData, openEdit, openDelete, openCerate, selectedCategory, setSelectedCategory }) => {
+const CategoryTable = ({
+    categoryData,
+    openEdit,
+    openDelete,
+    openCreate, // This can be removed if not needed
+    selectedCategory,
+    setSelectedCategory,
+}) => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [filteredCategory, setFilteredCategory] = useState(categoryData); // Initialize with userData prop
+    const [filteredCategory, setFilteredCategory] = useState(categoryData);
+    const [editingId, setEditingId] = useState(null);
+    const [editedName, setEditedName] = useState("");
+    const [isCreating, setIsCreating] = useState(false);
+    const [newCategoryName, setNewCategoryName] = useState("");
+
+    const inputRef = useRef(null);
+    const newInputRef = useRef(null);
+
+    useEffect(() => {
+        if (editingId && inputRef.current) {
+            inputRef.current.focus();
+        }
+        if (isCreating && newInputRef.current) {
+            newInputRef.current.focus();
+        }
+    }, [editingId, isCreating]);
 
     const handleSearch = (e) => {
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
-        const filtered = categoryData.filter(
-            (category) =>
-                category.name.toLowerCase().includes(term)
+        const filtered = categoryData.filter((category) =>
+            category.name.toLowerCase().includes(term)
         );
         setFilteredCategory(filtered);
+    };
+
+    const handleEditClick = (category) => {
+        setEditingId(category.id);
+        setEditedName(category.name);
+    };
+
+    const handleSaveClick = (category) => {
+        const updated = filteredCategory.map((c) =>
+            c.id === category.id ? { ...c, name: editedName } : c
+        );
+        setFilteredCategory(updated);
+        setEditingId(null);
+    };
+
+    const handleCancelClick = () => {
+        setEditingId(null);
+        setEditedName("");
+    };
+
+    const handleAddClick = () => {
+        setIsCreating(true);
+        setNewCategoryName("");
+    };
+
+    const handleCreateSave = () => {
+        if (!newCategoryName.trim()) return;
+
+        const newCategory = {
+            id: Date.now(), // Temp ID — replace with API response ID
+            name: newCategoryName,
+        };
+        setFilteredCategory([newCategory, ...filteredCategory]);
+        setIsCreating(false);
+        setNewCategoryName("");
+    };
+
+    const handleCreateCancel = () => {
+        setIsCreating(false);
+        setNewCategoryName("");
     };
 
     return (
@@ -24,11 +86,12 @@ const CategoryTable = ({ categoryData, openEdit, openDelete, openCerate, selecte
             transition={{ delay: 0.2 }}
         >
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-semibold text-gray-100">Categorias</h2>
+                <h2 className="text-xl font-semibold text-gray-100">Categorías</h2>
                 <div className="flex items-center space-x-4">
                     <button
                         className="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg flex items-center"
-                        onClick={()=> openCreate()}
+                        onClick={handleAddClick}
+                        disabled={isCreating}
                     >
                         <Plus className="mr-2" size={18} />
                         Agregar
@@ -36,7 +99,7 @@ const CategoryTable = ({ categoryData, openEdit, openDelete, openCerate, selecte
                     <div className="relative">
                         <input
                             type="text"
-                            placeholder="Search users..."
+                            placeholder="Buscar categorías..."
                             className="bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             value={searchTerm}
                             onChange={handleSearch}
@@ -56,58 +119,101 @@ const CategoryTable = ({ categoryData, openEdit, openDelete, openCerate, selecte
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                 Nombre
                             </th>
-                        
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                 Acciones
                             </th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-700">
-                        {filteredCategory.map((category) => (
-                            <motion.tr
-                                key={category.id}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ duration: 0.3 }}
-                            >
+                        {isCreating && (
+                            <tr>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="flex items-center">
-                                        <div className="flex-shrink-0 h-10 w-10">
-                                            <div className="h-10 w-10 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white font-semibold">
-                                                {category.name.charAt(0)}
-                                            </div>
-                                        </div>
-                                        <div className="ml-4">
-                                            <div className="text-sm font-medium text-gray-100">
-                                                {category.name}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <input
+                                        ref={newInputRef}
+                                        type="text"
+                                        value={newCategoryName}
+                                        onChange={(e) => setNewCategoryName(e.target.value)}
+                                        className="w-full bg-transparent border rounded-md px-2 py-1 text-white border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
                                 </td>
-                               
-                               
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                                     <button
-                                        className="text-indigo-400 hover:text-indigo-300 mr-2"
-                                        onClick={() => {
-                                            setSelectedCategory(category);
-                                            openEdit();
-                                        }}
+                                        className="text-green-400 hover:text-green-300 mr-2"
+                                        onClick={handleCreateSave}
                                     >
-                                        Editar
+                                        Guardar
                                     </button>
                                     <button
-                                        className="text-red-400 hover:text-red-300"
-                                        onClick={() => {
-                                            setSelectedCategory(category);
-                                            openDelete();
-                                        }}
+                                        className="text-yellow-400 hover:text-yellow-300"
+                                        onClick={handleCreateCancel}
                                     >
-                                        Eliminar
+                                        Cancelar
                                     </button>
                                 </td>
-                            </motion.tr>
-                        ))}
+                            </tr>
+                        )}
+                        {filteredCategory.map((category) => {
+                            const isEditing = editingId === category.id;
+                            return (
+                                <motion.tr
+                                    key={category.id}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <input
+                                            ref={isEditing ? inputRef : null}
+                                            type="text"
+                                            value={isEditing ? editedName : category.name}
+                                            onChange={(e) => setEditedName(e.target.value)}
+                                            disabled={!isEditing}
+                                            className={`w-full bg-transparent border rounded-md px-2 py-1 text-white ${
+                                                isEditing
+                                                    ? "border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                    : "border-transparent"
+                                            }`}
+                                        />
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                                        {isEditing ? (
+                                            <>
+                                                <button
+                                                    className="text-green-400 hover:text-green-300 mr-2"
+                                                    onClick={() => handleSaveClick(category)}
+                                                >
+                                                    Guardar
+                                                </button>
+                                                <button
+                                                    className="text-yellow-400 hover:text-yellow-300"
+                                                    onClick={handleCancelClick}
+                                                >
+                                                    Cancelar
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <button
+                                                    className="text-indigo-400 hover:text-indigo-300 mr-2"
+                                                    onClick={() => handleEditClick(category)}
+                                                >
+                                                    Editar
+                                                </button>
+                                                <button
+                                                    className="text-red-400 hover:text-red-300"
+                                                    onClick={() => {
+                                                        setSelectedCategory(category);
+                                                        openDelete();
+                                                    }}
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </>
+                                        )}
+                                    </td>
+                                </motion.tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>

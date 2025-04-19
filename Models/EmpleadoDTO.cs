@@ -15,7 +15,7 @@ namespace Models
 
         public string Cedula { get; set; }
 
-        public DateTime? Edad { get; set; }
+        public DateTime? FechaNacimiento { get; set; }
 
         public int? Estado { get; set; }
 
@@ -24,6 +24,9 @@ namespace Models
         public string usuario { get; set; }
 
         public string contrasena { get; set; }
+
+        public string correo { get; set; }
+
 
 
         /* Varibales para el rol de usuario */
