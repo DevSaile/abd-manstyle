@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 
 import Header from "../../components/common/Header";
 import StatCard from "../../components/common/StatCard";
-import DailyOrders from "../../components/registros/DailyOrders";
-import OrderDistribution from "../../components/registros/OrderDistribution";
-import OrdersTable from "../../components/registros/OrdersTable";
+import DailyOrders from "../../components/registrosventa/DailyOrders";
+import OrderDistribution from "../../components/registrosventa/OrderDistribution";
+import OrdersTable from "../../components/registrosventa/OrdersTable";
 
 const orderStats = {
 	totalOrders: "1,234",
@@ -14,7 +14,7 @@ const orderStats = {
 	totalRevenue: "$98,765",
 };
 
-const RegistersPage = () => {
+const RegistrosVenta = () => {
 	return (
 		<div className='flex-1 relative z-10 overflow-auto'>
 			<Header title={"Orders"} />
@@ -42,9 +42,9 @@ const RegistersPage = () => {
 					<OrderDistribution />
 				</div>
 
-				<OrdersTable />
+				<ProductsTable  />
 			</main>
 		</div>
 	);
 };
-export default RegistersPage;
+export default RegistrosVenta;

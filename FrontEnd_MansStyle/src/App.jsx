@@ -8,8 +8,10 @@ import OverviewPage from "./pages/admin/PanelInicial";
 import ProductsPage from "./pages/admin/Productos";
 import ClientsPage from "./pages/admin/Clientes";
 import CashierPage from "./pages/admin/Ventas";
-import RegistersPage from "./pages/admin/Registros";
+import RegistrosVenta from "./pages/admin/RegistrosCompra";
 import UsersPage from "./pages/admin/Usuarios";
+import CategoryPage from "./pages/admin/Categorizacion";
+
 function App() {
     return (
         <Routes>
@@ -24,8 +26,9 @@ function App() {
                 <Route path='/productos' element={<ProductsPage />} />
                 <Route path='/clientes' element={<ClientsPage />} />
                 <Route path='/venta' element={<CashierPage />} />
-                <Route path='/registros' element={<RegistersPage />} />
+                <Route path='/registros' element={<RegistrosVenta />} />
                 <Route path='/usuarios' element={<UsersPage />} />
+                <Route path='/categorias' element={<CategoryPage />} />
             </Route>
         </Routes>
     );

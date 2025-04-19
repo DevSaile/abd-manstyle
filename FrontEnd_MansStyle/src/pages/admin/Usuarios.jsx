@@ -3,8 +3,7 @@ import Header from "../../components/common/Header";
 import StatCard from "../../components/common/StatCard";
 import UsersTable from "../../components/usuarios/TablaUsuarios";
 import ManageUser from "../../components/usuarios/EditarUsuarios";
-import DeleteModal from "../../components/common/DeleteModal";
-
+import DeleteModal from "../../components/usuarios/EliminarUsuario";
 
 const userStats = {
     totalUsers: 152845,

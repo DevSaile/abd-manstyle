@@ -1,4 +1,4 @@
-import { BarChart2, CircleUser, DollarSign, Menu, NotebookPen, Settings, ShoppingBag, ShoppingCart, Users } from "lucide-react";
+import { BarChart2, CircleUser, DollarSign, Menu, NotebookPen, Settings, ShoppingBag, ShoppingCart, Users,TableProperties, Table } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -16,6 +16,7 @@ const SIDEBAR_ITEMS = [
 	{ name: "Clientes", icon: Users, color: "#F59E0B", href: "/clientes" },
 	{ name: "Usuarios", icon: CircleUser, color: "#3B82F6", href: "/usuarios" },
 	{ name: "Registros", icon: NotebookPen, color: "#6EE7B7", href: "/registros" },
+	{name: "Categorias", icon: TableProperties, color: "#FBBF24", href: "/categorias"},
 ];
 
 const Sidebar = () => {
