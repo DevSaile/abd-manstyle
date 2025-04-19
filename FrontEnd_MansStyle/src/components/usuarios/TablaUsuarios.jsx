@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search, Plus } from "lucide-react";
 
 const UsersTable = ({ userData, openEdit, openDelete, openCreate, selectedUser, setSelectedUser }) => {
+    
     const [searchTerm, setSearchTerm] = useState("");
-    const [filteredUsers, setFilteredUsers] = useState(userData); // Initialize with userData prop
+    const [filteredUsers, setFilteredUsers] = useState(userData);
+
+    useEffect(() => {
+        // Actualiza los usuarios filtrados cuando cambie el userData
+        setFilteredUsers(userData);
+    }, [userData]);
 
     const handleSearch = (e) => {
         const term = e.target.value.toLowerCase();
@@ -29,7 +35,7 @@ const UsersTable = ({ userData, openEdit, openDelete, openCreate, selectedUser, 
                 <div className="flex items-center space-x-4">
                     <button
                         className="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg flex items-center"
-                        onClick={()=> openCreate()}
+                        onClick={() => openCreate()}
                     >
                         <Plus className="mr-2" size={18} />
                         Agregar

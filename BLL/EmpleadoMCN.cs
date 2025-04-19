@@ -25,12 +25,16 @@ namespace BLL
                 .Select(v => new EmpleadoDTO
                 {
                     ID_Empleado = v.ID_Vendedor,
+                    ID_Rol = v.ID_Rol,
+                    ID_Sucursal = v.ID_Sucursal,
                     NombreEstado = "Activo",
                     Nombre = v.Nombre,
                     Cedula = v.Cedula,
-                    Edad = v.Edad,
+                    FechaNacimiento = v.Edad,
                     NombreRol = v.ID_Rol == 1 ? "Administrador" : "Empleado",
-                    NombreSucursal = v.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Primaria"
+                    NombreSucursal = v.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Primaria",
+                    usuario = v.Usuario,
+                    correo = v.Email
                 })
                 .ToList();
         }
@@ -45,7 +49,7 @@ namespace BLL
                     NombreEstado = "Inactivo",
                     Nombre = v.Nombre,
                     Cedula = v.Cedula,
-                    Edad = v.Edad,
+                    FechaNacimiento = v.Edad,
                     NombreRol = v.ID_Rol == 1 ? "Administrador" : "Empleado",
                     NombreSucursal = v.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Primaria"
                 })
@@ -62,7 +66,7 @@ namespace BLL
                     NombreEstado = "Activo",
                     Nombre = v.Nombre,
                     Cedula = v.Cedula,
-                    Edad = v.Edad,
+                    FechaNacimiento = v.Edad,
                     NombreRol = v.ID_Rol == 1 ? "Administrador" : "Empleado",
                     NombreSucursal = v.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Primaria"
                 })
@@ -77,7 +81,7 @@ namespace BLL
                 {
                     Nombre = e.Nombre,
                     Cedula = e.Cedula,
-                    Edad = e.Edad,
+                    FechaNacimiento = e.Edad,
                     usuario = e.Usuario,
                     contrasena = e.contra
                 })
@@ -92,12 +96,13 @@ namespace BLL
                 {
                     Nombre = empleado.Nombre,
                     Cedula = empleado.Cedula,
-                    Edad = empleado.Edad,
-                    Estado = empleado.Estado,
+                    Edad = empleado.FechaNacimiento,
+                    Estado = 1,
                     Usuario = empleado.usuario,
                     contra = empleado.contrasena,
                     ID_Rol = empleado.ID_Rol,
-                    ID_Sucursal = empleado.ID_Sucursal
+                    ID_Sucursal = empleado.ID_Sucursal,
+                    Email = empleado.correo
                 };
 
                 db.Vendedor.Add(nuevoempleado);
@@ -149,7 +154,7 @@ namespace BLL
                 actempleado.ID_Vendedor = actualEmpleado.ID_Empleado;
                 actempleado.Nombre = actualEmpleado.Nombre;
                 actempleado.Cedula = actualEmpleado.Cedula;
-                actempleado.Edad = actualEmpleado.Edad;
+                actempleado.Edad = actualEmpleado.FechaNacimiento;
                 actempleado.ID_Sucursal = actualEmpleado.ID_Sucursal;
                 actempleado.ID_Rol = actualEmpleado.ID_Rol;
                 actempleado.Usuario = actualEmpleado.usuario;
