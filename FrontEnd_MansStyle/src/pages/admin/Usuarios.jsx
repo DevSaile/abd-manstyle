@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Header from "../../components/common/Header";
 import UsersTable from "../../components/usuarios/TablaUsuarios";
 import ManageUser from "../../components/usuarios/EditarUsuarios";
-<<<<<<< HEAD
 import DeleteModal from "../../components/usuarios/EliminarUsuario";
 
 const userStats = {
@@ -40,10 +39,7 @@ const userData = [
         sucursal: "Sucursal 2",
     },
 ];
-=======
-import DeleteModal from "../../components/common/DeleteModal";
 import { obtenerEmpleadosActivos, eliminarEmpleado } from "../../services/UsuariosService";
->>>>>>> 0d3c4eaf0d096790b363c4983262e499c3df07a0
 
 const UsersPage = () => {
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal } from '@rewind-ui/core';
-const DeleteModal = ({open, onClose, selectedUser}) => {
+const DeleteModal = ({open, onClose,  ObjectName, ObjectProperName, DeleteLogic}) => {
   return (
 <Modal
           open={open}
@@ -11,8 +11,8 @@ const DeleteModal = ({open, onClose, selectedUser}) => {
           transition={{ duration: 1.5 }} // Slower animation
         >
           <p className="text-gray-300 text-lg text-center mb-6 col-span-2">
-            Are you sure you want to delete this product?{" "}
-            <strong>{selectedUser?.name}</strong>
+            Estas seguro de eliminar el siguiente elemento? <br/>
+            <strong>{ObjectName}: {ObjectProperName}</strong>
           </p>
           <div className="content-center justify-center flex gap-4 col-span-2">
             <button
@@ -24,6 +24,7 @@ const DeleteModal = ({open, onClose, selectedUser}) => {
             <button
               onClick={() => {
                 onClose(); // Close the modal
+                DeleteLogic();
               }}
               className="bg-red-600 text-gray-100 hover:bg-red-500 px-6 py-2 rounded-lg transition duration-200"
             >

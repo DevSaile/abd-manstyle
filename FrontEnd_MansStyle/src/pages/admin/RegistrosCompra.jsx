@@ -14,7 +14,7 @@ const orderStats = {
 	totalRevenue: "$98,765",
 };
 
-const RegistrosVenta = () => {
+const RegistrosCompra = () => {
 	return (
 		<div className='flex-1 relative z-10 overflow-auto'>
 			<Header title={"Orders"} />
@@ -47,4 +47,4 @@ const RegistrosVenta = () => {
 		</div>
 	);
 };
-export default RegistrosVenta;
+export default RegistrosCompra;

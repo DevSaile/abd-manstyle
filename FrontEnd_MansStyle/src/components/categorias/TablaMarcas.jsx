@@ -4,7 +4,6 @@ import { Search, Plus } from "lucide-react";
 
 const BrandTable = ({
     brandData,
-    openEdit,
     openDelete,
     selectedBrand,
     setSelectedbrand,

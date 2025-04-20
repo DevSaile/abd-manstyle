@@ -15,7 +15,7 @@ const SIDEBAR_ITEMS = [
 	{ name: "Ventas", icon: DollarSign, color: "#10B981", href: "/venta" },
 	{ name: "Clientes", icon: Users, color: "#F59E0B", href: "/clientes" },
 	{ name: "Usuarios", icon: CircleUser, color: "#3B82F6", href: "/usuarios" },
-	{ name: "Registros", icon: NotebookPen, color: "#6EE7B7", href: "/registros" },
+	{ name: "Registros", icon: NotebookPen, color: "#6EE7B7", href: "/registrosventas" },
 	{name: "Categorias", icon: TableProperties, color: "#FBBF24", href: "/categorias"},
 ];
 

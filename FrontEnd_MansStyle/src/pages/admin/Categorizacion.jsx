@@ -3,7 +3,7 @@ import Header from "../../components/common/Header";
 import StatCard from "../../components/common/StatCard";
 import CategoryTable from "../../components/categorias/TablaCategorias";
 import ManageUser from "../../components/usuarios/EditarUsuarios";
-import DeleteModal from "../../components/usuarios/EliminarUsuario";
+import DeleteModal from "../../components/common/DeleteModal";
 import BrandTable from "../../components/categorias/TablaMarcas";
   
 const userStats = {
@@ -40,10 +40,10 @@ const brandData = [
 ];
 
 const CategoryPage = () => {
-    const [openEdit, setOpenEdit] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
-	const [openCreate, setOpenCreate] = useState(false);
-    const [openDelete , setOpenDelete] = useState(false);
+    const [openDeleteCategory , setOpenDeleteCategory] = useState(false);
+    const [openDeleteBrand, setOpenDeleteBrand] = useState(false);
+    const [selectedBrand, setSelectedBrand] = useState(null);
 
     return (
         <div className="flex-1 overflow-auto relative z-10">
@@ -55,18 +55,36 @@ const CategoryPage = () => {
                     categoryData={categoryData}
                     selectedCategory={selectedCategory}
                     setSelectedCategory={setSelectedCategory}
-                    openEdit={() => setOpenEdit(true)}
-					openCreate={() => setOpenCreate(true)}
-                    openDelete={() => setOpenDelete(true)}
+                    
+                    openDelete={() => setOpenDeleteCategory(true)}
                 />
 
                 <BrandTable
                     brandData={brandData}
+                    selectedBrand={selectedBrand}
+                    setSelectedbrand={setSelectedBrand}
+                    openDelete={() => setOpenDeleteBrand(true)}
+                    
+                    
                    
                 />
 
+                <DeleteModal
+                    open={openDeleteBrand}
+                    onClose={() => setOpenDeleteBrand(false)}
+                    ObjectName="Marca"
+                    ObjectProperName={selectedBrand?.name}
+                />
                 
-
+                <DeleteModal
+                    open={openDeleteCategory}
+                    onClose={() => setOpenDeleteCategory(false)}    
+                    ObjectName="Categoria"
+                    ObjectProperName={selectedCategory?.name}
+                    
+                    
+                    
+                />
             
             </main>
         </div>

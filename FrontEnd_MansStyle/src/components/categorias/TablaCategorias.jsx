@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search, Plus } from "lucide-react";
+import { ToastContainer,useToast } from "@rewind-ui/core";
+
 
 const CategoryTable = ({
     categoryData,
@@ -77,6 +79,8 @@ const CategoryTable = ({
         setIsCreating(false);
         setNewCategoryName("");
     };
+
+    const toast = useToast();
 
     return (
         <motion.div

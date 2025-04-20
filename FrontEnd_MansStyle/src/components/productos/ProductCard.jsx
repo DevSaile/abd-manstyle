@@ -1,13 +1,19 @@
 import { motion } from "framer-motion";
 import { Image } from "lucide-react"; // Placeholder icon for the product image
 import { Button } from "@rewind-ui/core";
+import { useState } from "react";
 
 const ProductCard = ({ name, price, category, stock, image, onClick}) => {
+    const [isSelected, setSelected] = useState(false);
     return (
         <motion.div
-            className="bg-gray-800 bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-700 h-72"
+            className={`bg-gray-800 bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border  h-72 ${isSelected ? "border-blue-500" : "border-gray-700"} `}
             whileHover={{ y: -5, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)" }}
-            onClick={onClick}
+            onClick={()=>{
+                onClick();
+                setSelected(true);
+            
+            }}
         >
             {/* Product Image */}
             <div className="h-1/2 bg-gray-700 flex items-center justify-center">
