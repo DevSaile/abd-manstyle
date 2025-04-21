@@ -11,6 +11,7 @@ import CashierPage from "./pages/admin/Ventas";
 import UsersPage from "./pages/admin/Usuarios";
 import CategoryPage from "./pages/admin/Categorizacion";
 import RegistrosVenta from "./pages/admin/RegistrosVentas";
+import RegistroCompra from "./pages/admin/RegistrosCompra";
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
                 <Route path='/clientes' element={<ClientsPage />} />
                 <Route path='/venta' element={<CashierPage />} />
                 <Route path='/registrosventas' element={<RegistrosVenta />} />
+                <Route path='/registroscompras' element={<RegistroCompra />} />
                 <Route path='/usuarios' element={<UsersPage />} />
                 <Route path='/categorias' element={<CategoryPage />} />
             </Route>

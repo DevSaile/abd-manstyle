@@ -59,14 +59,14 @@ const SaleCard = ({
       </div>
 
       {/* Expanded Content */}
-      <AnimatePresence>
-        {expanded && (
+      <AnimatePresence initial={false}>
+      {expanded && (
           <motion.div
             className='px-4 pb-6'
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
           >
             <table className='w-full text-sm text-left text-gray-300 mt-2'>
               <thead className='text-xs uppercase text-gray-400 border-b border-gray-600'>
