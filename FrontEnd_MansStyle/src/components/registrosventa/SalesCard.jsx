@@ -14,7 +14,7 @@ const SaleCard = ({
   client,
   date,
   total,
-  products,
+  products = [],
   amountGiven,
   exchange
 }) => {
@@ -30,11 +30,11 @@ const SaleCard = ({
         <div className='grid grid-cols-2 gap-4'>
           <div className='flex items-center text-sm text-gray-400'>
             <User className='mr-2 text-blue-400' size={18} />
-            <span>Employee: {employee}</span>
+            <span>Employee: {employee || "N/A"}</span>
           </div>
           <div className='flex items-center justify-end text-sm text-gray-400'>
             <UserCircle className='mr-2 text-green-400' size={18} />
-            <span>Client: {client}</span>
+            <span>Client: {client || "N/A"}</span>
           </div>
         </div>
 
@@ -42,11 +42,11 @@ const SaleCard = ({
         <div className='grid grid-cols-2 gap-4 mt-2'>
           <div className='flex items-center text-sm text-gray-400'>
             <Calendar className='mr-2 text-yellow-400' size={18} />
-            <span>Date: {date}</span>
+            <span>Date: {date || "Sin fecha"}</span>
           </div>
           <div className='flex items-center justify-end text-sm text-gray-400'>
             <DollarSign className='mr-2 text-purple-400' size={18} />
-            <span>Total: ${total.toFixed(2)}</span>
+            <span>Total: ${parseFloat(total || 0).toFixed(2)}</span>
           </div>
         </div>
 
@@ -80,18 +80,18 @@ const SaleCard = ({
               <tbody>
                 {products.map((p, i) => (
                   <tr key={i} className='border-b border-gray-700'>
-                    <td className='py-2'>{p.name}</td>
-                    <td>${p.unitPrice.toFixed(2)}</td>
-                    <td>{p.quantity}</td>
-                    <td>${(p.unitPrice * p.quantity).toFixed(2)}</td>
+                    <td className='py-2'>{p.name || "N/A"}</td>
+                    <td>${parseFloat(p.unitPrice || 0).toFixed(2)}</td>
+                    <td>{p.quantity || 0}</td>
+                    <td>${(parseFloat(p.unitPrice || 0) * parseInt(p.quantity || 0)).toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
 
             <div className='mt-4 text-sm text-gray-300'>
-              <p>Amount Given: <span className='text-gray-100'>${amountGiven.toFixed(2)}</span></p>
-              <p>Exchange: <span className='text-gray-100'>${exchange.toFixed(2)}</span></p>
+              <p>Amount Given: <span className='text-gray-100'>${parseFloat(amountGiven || 0).toFixed(2)}</span></p>
+              <p>Exchange: <span className='text-gray-100'>${parseFloat(exchange || 0).toFixed(2)}</span></p>
             </div>
           </motion.div>
         )}

@@ -9,3 +9,13 @@ export const agregarVenta = async (nuevaVenta) => {
         return null; // Devuelve null en caso de error
     }
 };
+
+export const obtenerTodasLasVentas = async () => {
+    try {
+        const response = await api.get("/ventas/todas");
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener las ventas:", error);
+        return [];
+    }
+};
