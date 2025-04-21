@@ -34,7 +34,8 @@ namespace BLL
                     NombreRol = v.ID_Rol == 1 ? "Administrador" : "Empleado",
                     NombreSucursal = v.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Primaria",
                     usuario = v.Usuario,
-                    correo = v.Email
+                    correo = v.Email,
+                    contrasena = v.contra
                 })
                 .ToList();
         }
