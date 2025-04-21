@@ -32,6 +32,18 @@ namespace WebManStyle_ABD.Controllers
             return Ok(new { mensaje = "Venta registrada correctamente.", ID_Venta = resultado }); // Respuesta exitosa
         }
 
+        [HttpGet]
+        [Route("todas")]
+        public IHttpActionResult ObtenerTodasLasVentas()
+        {
+            var ventas = MetodosVenta.ObtenerVentasAgrupadas();
+
+            if (ventas == null || !ventas.Any())
+                return NotFound();
+
+            return Ok(ventas);
+        }
+
     }
 
 }

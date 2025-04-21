@@ -7,6 +7,8 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity; // Para EF6
+
 
 namespace BLL
 {
@@ -292,7 +294,7 @@ namespace BLL
             }
         }
 
-        public List<Venta_FacturaDTO> ObtenerVentasConSucursal() // Se supone que esto de aqui me devuelve la lista de todos los productos
+        public List<Venta_FacturaDTO> ObtenerVentasPro() // Se supone que esto de aqui me devuelve la lista de todos los productos antes era obtenerVentasPorSucursal
         {
             var ventas = (from venta in db.Venta_Factura
                           join detalle in db.Venta_Detalles on venta.ID_Venta equals detalle.ID_Venta
@@ -317,6 +319,40 @@ namespace BLL
 
             return ventas;
         }
+
+        public List<Venta_FacturaDTO> ObtenerVentasAgrupadas()
+        {
+            var ventas = db.Venta_Factura
+                .Include(v => v.Cliente)
+                .Include(v => v.Vendedor)
+                .Include(v => v.Sucursal)
+                .Include(v => v.Venta_Detalles.Select(d => d.Producto))
+                .ToList() // ← Materializa la consulta antes de proyectar
+                .Select(venta => new Venta_FacturaDTO
+                {
+                    ID_Venta = venta.ID_Venta,
+                    Fecha_Venta = venta.Fecha_Venta,
+                    NombreCliente = venta.Cliente?.Nombre ?? "Desconocido",
+                    NombreVendedor = venta.Vendedor?.Nombre ?? "Desconocido",
+                    NombreSucursal = venta.Sucursal?.Nombre ?? "No especificada",
+                    Total = venta.Total,
+                    pagacon = venta.Paga,
+                    cambio = venta.Cambio,
+                    VentaHechaEN = venta.ID_Sucursal == 1 ? "Tienda Primaria" : "Tienda Secundaria",
+                    Detalles = venta.Venta_Detalles.Select(detalle => new Venta_DetallesDTO
+                    {
+                        ID_Producto = detalle.ID_Producto,
+                        Cantidad = detalle.Cantidad,
+                        PrecioProducto = detalle.PrecioProducto,
+                        NombreProducto = detalle.Producto?.Nombre ?? "Producto desconocido"
+                    }).ToList()
+                })
+                .ToList();
+
+            return ventas;
+        }
+
+
 
         public List<Venta_FacturaDTO> ObtenerVentasPorFechas(DateTime fechaInicio, DateTime fechaFin)
         {

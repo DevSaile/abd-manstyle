@@ -1,119 +1,86 @@
+import { useEffect, useState } from "react";
 import { CheckCircle, Clock, DollarSign, ShoppingBag } from "lucide-react";
 import { motion } from "framer-motion";
 
 import Header from "../../components/common/Header";
 import StatCard from "../../components/common/StatCard";
-import DailyOrders from "../../components/registrosventa/DailyOrders";
-import OrderDistribution from "../../components/registrosventa/OrderDistribution";
 import SaleCard from "../../components/registrosventa/SalesCard";
 
-const orderStats = {
-  totalOrders: "1,234",
-  pendingOrders: "56",
-  completedOrders: "1,178",
-  totalRevenue: "$98,765",
-};
+import { obtenerTodasLasVentas } from "../../services/VentasService";
 
 const RegistrosVenta = () => {
-  return (
-    <div className="flex-1 relative z-10 overflow-auto">
-      <Header title={"Orders"} />
+    const [ventas, setVentas] = useState([]);
+    const [stats, setStats] = useState({
+        totalOrders: 0,
+        completedOrders: 0,
+        pendingOrders: 0,
+        totalRevenue: 0,
+    });
 
-      <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
-        <motion.div
-          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          <StatCard
-            name="Total Orders"
-            icon={ShoppingBag}
-            value={orderStats.totalOrders}
-            color="#6366F1"
-          />
-          <StatCard
-            name="Pending Orders"
-            icon={Clock}
-            value={orderStats.pendingOrders}
-            color="#F59E0B"
-          />
-          <StatCard
-            name="Completed Orders"
-            icon={CheckCircle}
-            value={orderStats.completedOrders}
-            color="#10B981"
-          />
-          <StatCard
-            name="Total Revenue"
-            icon={DollarSign}
-            value={orderStats.totalRevenue}
-            color="#EF4444"
-          />
-        </motion.div>
+    useEffect(() => {
+        obtenerTodasLasVentas().then((data) => {
+            setVentas(data);
 
-        <div className="flex flex-wrap gap-8 mb-8">
-        <div className="w-full lg:w-[calc(50%-1rem)]">
+            const totalOrders = data.length;
+            const totalRevenue = data.reduce((acc, v) => acc + (v.Total || 0), 0);
+            const completedOrders = totalOrders;
 
-          <SaleCard
-          key={1}
-            employee="Jane Doe"
-            client="John Smith"
-            date="2025-04-20"
-            total={120.5}
-            amountGiven={150}
-            exchange={29.5}
-            products={[
-              { name: "Product A", unitPrice: 25, quantity: 2 },
-              { name: "Product B", unitPrice: 35.5, quantity: 2 },
-            ]}
-          /></div>
+            setStats({
+                totalOrders,
+                completedOrders,
+                pendingOrders: 0,
+                totalRevenue,
+            });
+        });
+    }, []);
 
-<div className="w-full lg:w-[calc(50%-1rem)]">
-<SaleCard
-          key={2}
-            employee="Jane Doe"
-            client="John Smith"
-            date="2025-04-20"
-            total={120.5}
-            amountGiven={150}
-            exchange={29.5}
-            products={[
-              { name: "Product A", unitPrice: 25, quantity: 2 },
-              { name: "Product B", unitPrice: 35.5, quantity: 2 },
-            ]}
-          /></div>
-          <div className="w-full lg:w-[calc(50%-1rem)]">
-<SaleCard
-          key={2}
-            employee="Jane Doe"
-            client="John Smith"
-            date="2025-04-20"
-            total={120.5}
-            amountGiven={150}
-            exchange={29.5}
-            products={[
-              { name: "Product A", unitPrice: 25, quantity: 2 },
-              { name: "Product B", unitPrice: 35.5, quantity: 2 },
-            ]}
-          /></div>
-          <div className="w-full lg:w-[calc(50%-1rem)]">
-<SaleCard
-          key={2}
-            employee="Jane Doe"
-            client="John Smith"
-            date="2025-04-20"
-            total={120.5}
-            amountGiven={150}
-            exchange={29.5}
-            products={[
-              { name: "Product A", unitPrice: 25, quantity: 2 },
-              { name: "Product B", unitPrice: 35.5, quantity: 2 },
-            ]}
-          /></div>
+    return (
+        <div className='flex-1 relative z-10 overflow-auto'>
+            <Header title={"Historial de Ventas"} />
+
+            <main className='max-w-7xl mx-auto py-6 px-4 lg:px-8'>
+                <motion.div
+                    className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8'
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1 }}
+                >
+                    <StatCard name='Total Ventas' icon={ShoppingBag} value={stats.totalOrders} color='#6366F1' />
+                    <StatCard name='Pendientes' icon={Clock} value={stats.pendingOrders} color='#F59E0B' />
+                    <StatCard
+                        name='Completadas'
+                        icon={CheckCircle}
+                        value={stats.completedOrders}
+                        color='#10B981'
+                    />
+                    <StatCard name='Ingresos Totales' icon={DollarSign} value={`$${stats.totalRevenue.toFixed(2)}`} color='#EF4444' />
+                </motion.div>
+
+                <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8'>
+                    {ventas.length > 0 ? (
+                        ventas.map((venta, index) => (
+                            <SaleCard
+                                key={index}
+                                employee={venta.NombreVendedor || "Sin asignar"}
+                                client={venta.NombreCliente || "Cliente desconocido"}
+                                date={new Date(venta.Fecha_Venta).toLocaleDateString()}
+                                total={venta.Total || 0}
+                                amountGiven={venta.pagacon || 0}
+                                exchange={venta.cambio || 0}
+                                products={(venta.Detalles || []).map((d) => ({
+                                    name: d.NombreProducto || "Producto",
+                                    unitPrice: d.PrecioProducto || 0,
+                                    quantity: d.Cantidad || 0
+                                }))}
+                            />
+                        ))
+                    ) : (
+                        <p className="text-gray-400">No hay ventas registradas aún.</p>
+                    )}
+                </div>
+            </main>
         </div>
-      </main>
-    </div>
-  );
+    );
 };
+
 export default RegistrosVenta;
