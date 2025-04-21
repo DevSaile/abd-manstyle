@@ -32,7 +32,6 @@ const ManageUser = ({ open, onClose, userData }) => {
                     ? formatDateForInput(userData.FechaNacimiento)
                     : "",
                 NombreDeUsuario: userData.Usuario || "",
-                Contraseña: userData.contrasena || "",
                 Sucursal: userData.ID_Sucursal || "",
                 Email: userData.correo || "",
                 Rol: userData.ID_Rol || "",
