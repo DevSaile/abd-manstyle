@@ -3,42 +3,6 @@ import Header from "../../components/common/Header";
 import UsersTable from "../../components/usuarios/TablaUsuarios";
 import ManageUser from "../../components/usuarios/EditarUsuarios";
 import DeleteModal from "../../components/usuarios/EliminarUsuario";
-
-const userStats = {
-    totalUsers: 152845,
-    newUsersToday: 243,
-    activeUsers: 98520,
-    churnRate: "2.4%",
-};
-
-const userData = [
-    {
-        id: 1,
-        name: "John Doe",
-        email: "john@example.com",
-        role: "Customer",
-        status: "Active",
-        cedula: "123456789",
-        edad: 30,
-        fechaDeNacimiento: "1993-05-15",
-        nombreDeUsuario: "johndoe",
-        contraseña: "password123",
-        sucursal: "Sucursal 1",
-    },
-    {
-        id: 2,
-        name: "Jane Smith",
-        email: "jane@example.com",
-        role: "Admin",
-        status: "Active",
-        cedula: "987654321",
-        edad: 28,
-        fechaDeNacimiento: "1995-02-20",
-        nombreDeUsuario: "janesmith",
-        contraseña: "securepass",
-        sucursal: "Sucursal 2",
-    },
-];
 import { obtenerEmpleadosActivos, eliminarEmpleado } from "../../services/UsuariosService";
 
 const UsersPage = () => {
@@ -59,6 +23,8 @@ const UsersPage = () => {
 
         const empleadosActivos = await obtenerEmpleadosActivos();
 
+        console.log(empleadosActivos); // Verifica la respuesta de la API
+
         const usuariosTransformados = empleadosActivos.map((empleado) => ({
             id: empleado.ID_Empleado, // Asegúrate de que el ID esté incluido
             idSucursal: empleado.ID_Sucursal,
@@ -67,8 +33,8 @@ const UsersPage = () => {
             email: empleado.correo, // Ajusta según tu modelo
             nombreDeUsuario: empleado.usuario || "Sin usuario",
             contraseña: empleado.contrasena || "Sin contraseña",
-            fechaDeNacimiento: empleado.Edad || "Sin fecha",
-            edad: empleado.Edad ? new Date().getFullYear() - new Date(empleado.Edad).getFullYear() : "N/A",
+            fechaDeNacimiento: empleado.FechaNacimiento ? new Date(empleado.FechaNacimiento).toISOString().split("T")[0] : "No fecha",
+            edad: empleado.FechaNacimiento ? new Date().getFullYear() - new Date(empleado.FechaNacimiento).getFullYear() : "N/A",
             role: empleado.NombreRol,
             sucursal: empleado.NombreSucursal,
             cedula: empleado.Cedula,

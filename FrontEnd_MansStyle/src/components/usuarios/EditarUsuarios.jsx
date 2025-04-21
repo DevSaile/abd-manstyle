@@ -26,8 +26,7 @@ const ManageUser = ({ open, onClose, userData}) => {
                 Cedula: userData.cedula || "",
                 Edad: userData.edad || "",
                 FechaDeNacimiento: userData.fechaDeNacimiento
-                ? new Date(userData.fechaDeNacimiento).toISOString().split("T")[0] // Convierte la fecha al formato YYYY-MM-DD
-                : "",                
+                ? new Date(userData.fechaDeNacimiento).toISOString().split("T")[0]    : "",   // Convierte la fecha al formato YYYY-MM-DD           
                 NombreDeUsuario: userData.nombreDeUsuario || "",
                 Contraseña: userData.contraseña || "",
                 Sucursal: userData.sucursal || "",
