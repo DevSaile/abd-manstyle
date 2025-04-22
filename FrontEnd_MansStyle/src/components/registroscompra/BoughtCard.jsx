@@ -43,7 +43,7 @@ const BoughtCard = ({
           </div>
           <div className="flex items-center justify-end text-sm text-gray-400">
             <DollarSign className=" text-purple-400" size={18} />
-            <span>Total: ${total.toFixed(2)}</span>
+            <span>Total: ${(total ?? 0).toFixed(2)}</span>
           </div>
         </div>
 
@@ -83,10 +83,11 @@ const BoughtCard = ({
                 {products.map((p, i) => (
                   <tr key={i} className="border-b border-gray-700">
                     <td className="py-2">{p.name}</td>
-                    <td>${p.unitPrice.toFixed(2)}</td>
+                    <td>${(p.unitPrice ?? 0).toFixed(2)}</td>
                     <td>{p.quantity}</td>
-                    <td>${(p.unitPrice * p.quantity).toFixed(2)}</td>
-                    <td>${(p.unitPrice * p.quantity).toFixed(2)}</td>
+                    <td>${((p.unitPrice ?? 0) * (p.quantity ?? 0)).toFixed(2)}</td>
+                    <td>${((p.unitPrice ?? 0) * (p.quantity ?? 0)).toFixed(2)}</td>     
+
 
                   </tr>
                 ))}
@@ -96,11 +97,11 @@ const BoughtCard = ({
             <div className="mt-4 text-sm text-gray-300">
               <p>
                 Total Invertido:{" "}
-                <span className="text-gray-100">${amountGiven.toFixed(2)}</span>
+                <span className="text-gray-100">${(amountGiven ?? 0).toFixed(2)}</span>
               </p>
               <p>
                 Ganancia Esperada:{" "}
-                <span className="text-gray-100">${exchange.toFixed(2)}</span>
+                <span className="text-gray-100">${(exchange ?? 0).toFixed(2)}</span>
               </p>
             </div>
           </motion.div>
