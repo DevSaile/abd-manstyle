@@ -14,7 +14,7 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="text-white font-sans overflow-x-hidden relative" style={{ background: '#0f0f0f' }}>
+    <div className="text-white font-sans overflow-y-hidden relative">
 
       {/* Header/Nav */}
       <header className="w-full px-6 py-4 bg-[#0f0f0f] flex items-center justify-between shadow-md fixed top-0 left-0 z-50">

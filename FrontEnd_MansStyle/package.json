@@ -36,6 +36,6 @@
     "react-tsparticles": "^2.12.2",
     "recharts": "^2.15.1",
     "scrollreveal": "^4.0.9",
-    "tsparticles": "^3.8.1"
+    "tsparticles": "^2.11.1"
   }
 }
