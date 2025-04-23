@@ -1,3 +1,4 @@
+
 import { Route, Routes } from "react-router-dom";
 
 import AdminLayout from "./layouts/AdminLayout";
@@ -18,7 +19,7 @@ function App() {
         <Routes>
             {/* Public Routes */}
             <Route element={<PublicLayout />}>
-                <Route path='/landing' element={<LandingPage />} />
+                <Route path='/' element={<LandingPage />} />
             </Route>
 
             {/* Admin Routes */}
