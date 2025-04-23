@@ -18,7 +18,7 @@ function App() {
         <Routes>
             {/* Public Routes */}
             <Route element={<PublicLayout />}>
-                <Route path='/landing' element={<LandingPage />} />
+                <Route path='/' element={<LandingPage />} />
             </Route>
 
             {/* Admin Routes */}

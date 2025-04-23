@@ -1,16 +1,18 @@
-import { Outlet } from "react-router-dom";
-import ParticlesBackground from "../components/public/landing/ParticlesBackground";
+// PublicLayout.jsx
 
+import { Outlet } from "react-router-dom";
+
+import ParticlesBackground from "../components/public/landing/ParticlesBackground";
 function PublicLayout() {
-    return (
-        <div className='relative flex h-screen  bg-[#0f0f0f] text-gray-100'>
-            <ParticlesBackground/>
-            {/* Content */}
-            <div className='relative z-10 flex-1'>
-                <Outlet />
-            </div>
-        </div>
-    );
+  return (
+    <div className="relative min-h-screen text-gray-100 bg-black">
+<ParticlesBackground/>
+      {/* Content layer */}
+      <div className="relative z-10">
+        <Outlet />
+      </div>
+    </div>
+  );
 }
 
 export default PublicLayout;
