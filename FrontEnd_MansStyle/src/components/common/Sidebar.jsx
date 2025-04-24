@@ -8,7 +8,7 @@ const SIDEBAR_ITEMS = [
 		name: "Panel Inicial",
 		icon: BarChart2,
 		color: "#6366f1",
-		href: "/",
+		href: "/inicio",
 	},
 	{ name: "Productos", icon: ShoppingBag, color: "#8B5CF6", href: "/productos" },
 	{ name: "Compras", icon: ShoppingCart, color: "#EC4899", href: "/compra" },
