@@ -3,10 +3,9 @@ import ComboBoxID from "../common/ComboxID";
 import { Modal } from "@rewind-ui/core";
 import { obtenerCategoriasActivas } from "../../services/CategoriasService";
 import { obtenerSucursales } from "../../services/SucursalService";
-import {
-  actualizarProducto,
-  obtenerMarcas,
-} from "../../services/ProductosService";
+import { actualizarProducto } from "../../services/ProductosService";
+
+import { obtenerMarcas } from "../../services/MarcasService"; // Asegúrate de importar el método correcto
 
 const ModalEditar = ({
   openEdit,

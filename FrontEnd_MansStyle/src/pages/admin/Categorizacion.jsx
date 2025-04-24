@@ -5,6 +5,9 @@ import CategoryTable from "../../components/categorias/TablaCategorias";
 import ManageUser from "../../components/usuarios/EditarUsuarios";
 import DeleteModal from "../../components/common/DeleteModal";
 import BrandTable from "../../components/categorias/TablaMarcas";
+
+import {obtenerCategoriasActivas} from "../../services/CategoriasService";
+import {obtenerMarcas} from "../../services/MarcasService";
   
 const userStats = {
     totalUsers: 152845,
