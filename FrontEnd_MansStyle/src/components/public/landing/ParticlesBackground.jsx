@@ -53,7 +53,15 @@ const ParticlesBackground = () => {
             direction: "none",
             outModes: {
               default: "bounce",
+              
             },
+          },
+          links: { // Add this block for connecting lines
+            enable: true,
+            distance: 130, // Maximum distance for particles to connect
+            color: "#ffffff", // Line color
+            opacity: 0.4, // Line opacity
+            width: 1, // Line width
           },
         },
         interactivity: {

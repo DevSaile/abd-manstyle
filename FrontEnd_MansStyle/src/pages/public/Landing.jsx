@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import ScrollReveal from 'scrollreveal';
 import 'animate.css';
+import {ReactComponent as Ilustracion} from "../../assest/ilustracion.svg"
 
 const LandingPage = () => {
   useEffect(() => {
@@ -14,33 +15,13 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="text-white font-sans overflow-y-hidden relative">
-
+    <>
       {/* Header/Nav */}
-      <header className="w-full px-6 py-4 bg-[#0f0f0f] flex items-center justify-between shadow-md fixed top-0 left-0 z-50">
-        <div className="flex items-center gap-4">
-          <img src="img/logo.png" alt="Logo" className="h-10" />
-          <a href="/" className="text-gray-300 hover:text-white transition">Inicio</a>
-          <a href="/productos" className="text-gray-300 hover:text-white transition">Productos</a>
-        </div>
-        <div className="flex items-center gap-4">
-          <a href="https://www.facebook.com/profile.php?id=100090369100184" target="_blank" rel="noreferrer">
-            <img src="img/facebook-icon.png" alt="Facebook" className="h-6" />
-          </a>
-          <a href="https://wa.me/50576574229" target="_blank" rel="noreferrer">
-            <img src="img/whatsapp-icon.png" alt="WhatsApp" className="h-6" />
-          </a>
-          <a href="#" className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-full text-sm font-medium shadow-lg transition">
-            Iniciar sesión
-          </a>
-        </div>
-      </header>
-
       {/* Main */}
       <main className="min-h-screen flex flex-col justify-center items-center px-6 md:px-20 lg:px-32 pt-20">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10 w-full max-w-7xl">
           <div className="animate__animated animate__fadeInLeft" data-sr>
-            <img src="img/tienda-ilustracion.png" alt="Tienda Variedades" className="w-full h-auto rounded-lg shadow-xl" />
+            <Ilustracion className="w-full h-auto" />
           </div>
           <div className="animate__animated animate__fadeInRight text-center md:text-left" data-sr>
             <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
@@ -129,7 +110,7 @@ const LandingPage = () => {
       <footer className="bg-[#0f0f0f] text-gray-500 text-center py-6 text-sm">
         &copy; 2025 Variedades Man's Style. Todos los derechos reservados.
       </footer>
-    </div>
+      </>
   );
 };
 
