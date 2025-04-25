@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search, Plus } from "lucide-react";
-import { ToastContainer,useToast } from "@rewind-ui/core";
-
+import { ToastContainer, useToast } from "@rewind-ui/core";
+import { actualizarCategoria, eliminarCategoria, agregarCategoria } from "../../services/CategoriasService";
 
 const CategoryTable = ({
     categoryData,
@@ -11,9 +11,10 @@ const CategoryTable = ({
     openCreate, // This can be removed if not needed
     selectedCategory,
     setSelectedCategory,
+    refreshCategories // Función para refrescar las categorías después de una operación CRUD
 }) => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [filteredCategory, setFilteredCategory] = useState(categoryData);
+    const [filteredCategory, setFilteredCategory] = useState([]);
     const [editingId, setEditingId] = useState(null);
     const [editedName, setEditedName] = useState("");
     const [isCreating, setIsCreating] = useState(false);
@@ -31,26 +32,38 @@ const CategoryTable = ({
         }
     }, [editingId, isCreating]);
 
+    useEffect(() => {
+        setFilteredCategory(categoryData);
+    }, [categoryData]);
+
     const handleSearch = (e) => {
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
         const filtered = categoryData.filter((category) =>
-            category.name.toLowerCase().includes(term)
+            category.Nombre.toLowerCase().includes(term)
         );
         setFilteredCategory(filtered);
     };
 
     const handleEditClick = (category) => {
-        setEditingId(category.id);
-        setEditedName(category.name);
+        setEditingId(category.ID_Categoria);
+        setEditedName(category.Nombre);
     };
 
-    const handleSaveClick = (category) => {
-        const updated = filteredCategory.map((c) =>
-            c.id === category.id ? { ...c, name: editedName } : c
-        );
-        setFilteredCategory(updated);
-        setEditingId(null);
+    const handleSaveClick = async (category) => {
+        const updatedCategory = {
+            ID_Categoria: category.ID_Categoria,
+            Nombre: editedName,
+            Estado: 1 // Asumiendo que 1 es el estado activo
+        };
+
+        const result = await actualizarCategoria(updatedCategory);
+        if (result) {
+            refreshCategories(); // Refrescar las categorías después de la actualización
+            setEditingId(null);
+        } else {
+            alert("Error al actualizar la categoría");
+        }
     };
 
     const handleCancelClick = () => {
@@ -63,22 +76,29 @@ const CategoryTable = ({
         setNewCategoryName("");
     };
 
-    const handleCreateSave = () => {
+    const handleCreateSave = async () => {
         if (!newCategoryName.trim()) return;
 
         const newCategory = {
-            id: Date.now(), // Temp ID — replace with API response ID
-            name: newCategoryName,
+            Nombre: newCategoryName,
+            Estado: 1 // Asumiendo que 1 es el estado activo
         };
-        setFilteredCategory([newCategory, ...filteredCategory]);
-        setIsCreating(false);
-        setNewCategoryName("");
+
+        const result = await agregarCategoria(newCategory);
+        if (result) {
+            refreshCategories(); // Refrescar las categorías después de la creación
+            setIsCreating(false);
+            setNewCategoryName("");
+        } else {
+            alert("Error al agregar la categoría");
+        }
     };
 
     const handleCreateCancel = () => {
         setIsCreating(false);
         setNewCategoryName("");
     };
+
 
     const toast = useToast();
 
@@ -157,10 +177,10 @@ const CategoryTable = ({
                             </tr>
                         )}
                         {filteredCategory.map((category) => {
-                            const isEditing = editingId === category.id;
+                            const isEditing = editingId === category.ID_Categoria;
                             return (
                                 <motion.tr
-                                    key={category.id}
+                                    key={category.ID_Categoria}
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ duration: 0.3 }}
@@ -169,7 +189,7 @@ const CategoryTable = ({
                                         <input
                                             ref={isEditing ? inputRef : null}
                                             type="text"
-                                            value={isEditing ? editedName : category.name}
+                                            value={isEditing ? editedName : category.Nombre}
                                             onChange={(e) => setEditedName(e.target.value)}
                                             disabled={!isEditing}
                                             className={`w-full bg-transparent border rounded-md px-2 py-1 text-white ${
