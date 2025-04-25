@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import ScrollReveal from 'scrollreveal';
 import 'animate.css';
 import {ReactComponent as Ilustracion} from "../../assest/ilustracion.svg"
+import ParticlesBackground from '../../components/public/common/ParticlesBackground';
 
 const LandingPage = () => {
   useEffect(() => {
@@ -16,9 +17,10 @@ const LandingPage = () => {
 
   return (
     <>
-      {/* Header/Nav */}
       {/* Main */}
       <main className="min-h-screen flex flex-col justify-center items-center px-6 md:px-20 lg:px-32 pt-20">
+      <ParticlesBackground color={"0f0f0f"}/>
+
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10 w-full max-w-7xl">
           <div className="animate__animated animate__fadeInLeft" data-sr>
             <Ilustracion className="w-full h-auto" />

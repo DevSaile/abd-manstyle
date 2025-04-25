@@ -13,6 +13,7 @@ import UsersPage from "./pages/admin/Usuarios";
 import CategoryPage from "./pages/admin/Categorizacion";
 import RegistrosVenta from "./pages/admin/RegistrosVentas";
 import RegistroCompra from "./pages/admin/RegistrosCompra";
+import Login from "./pages/public/Login";
 
 function App() {
     return (
@@ -20,7 +21,9 @@ function App() {
             {/* Public Routes */}
             <Route element={<PublicLayout />}>
                 <Route path='/' element={<LandingPage />} />
+                <Route path="/login" element={<Login/>}/>
             </Route>
+                
 
             {/* Admin Routes */}
             <Route element={<AdminLayout />}>
