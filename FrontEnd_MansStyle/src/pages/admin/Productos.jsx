@@ -30,7 +30,8 @@ const ProductsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedPrice, setSelectedPrice] = useState("All");
+  const [selectedSucursal, setSelectedSucursal] = useState("All");
+
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [openExistente, setOpenExistente] = useState(false);
 
@@ -70,27 +71,22 @@ const ProductsPage = () => {
       );
 
       const matchesCategory =
-        selectedCategory === "All" ||
-        product.Descripcion_Categoria === selectedCategory;
+        selectedCategory === "All" || product.Descripcion_Categoria === selectedCategory;
 
-      const matchesPrice =
-        selectedPrice === "All" ||
-        (selectedPrice === "Under $50" && product.Precio_Producto < 50) ||
-        (selectedPrice === "$50 - $100" &&
-          product.Precio_Producto >= 50 &&
-          product.Precio_Producto <= 100) ||
-        (selectedPrice === "Above $100" && product.Precio_Producto > 100);
+      const matchesSucursal =
+        selectedSucursal === "All" || product.versucu === selectedSucursal;
 
       const matchesBrand =
         selectedBrand === "All" || product.Marca === selectedBrand;
 
       return (
-        matchesSearchTerm && matchesCategory && matchesPrice && matchesBrand
+        matchesSearchTerm && matchesCategory && matchesSucursal && matchesBrand
       );
     });
 
     setFilteredProducts(filtered);
-  }, [searchTerm, selectedCategory, selectedPrice, selectedBrand, productos]);
+
+  }, [searchTerm, selectedCategory, selectedSucursal, selectedBrand, productos]);
 
   
   const deletefuncion = async () => {
@@ -149,9 +145,9 @@ const ProductsPage = () => {
             onSelect={setSelectedCategory}
           />
           <ComboBox
-            name={"Precio"}
-            options={["All", "Under $50", "$50 - $100", "Above $100"]}
-            onSelect={setSelectedPrice}
+            name={"Sucursales"}
+            options={Sucursales}
+            onSelect={setSelectedSucursal}
           />
           <ComboBox
             name={"Marca"}
