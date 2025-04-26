@@ -113,6 +113,22 @@ namespace WebManStyle_ABD.Controllers
                 return InternalServerError(new Exception("Error al eliminar el empleado."));
             return Ok("Empleado eliminado correctamente.");
         }
+
+        [HttpPost]
+        [Route("login")]
+        public IHttpActionResult Login([FromBody] LoginDTO datos)
+        {
+            if (string.IsNullOrWhiteSpace(datos.Usuario) || string.IsNullOrWhiteSpace(datos.Contra))
+                return BadRequest("Usuario o contraseña vacíos.");
+
+            var empleado = MetodosEmpleado.ValidarLogin(datos.Usuario, datos.Contra);
+
+            if (empleado == null)
+                return Unauthorized(); // 401 si no coincide usuario o contraseña
+
+            return Ok(empleado); // Puedes devolver EmpleadoDTO o algo como token + info básica
+        }
+
     }
 
 }

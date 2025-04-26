@@ -24,7 +24,7 @@ namespace BLL
                 .Where(v => v.Estado == 1)
                 .Select(v => new EmpleadoDTO
                 {
-                    ID_Empleado = v.ID_Vendedor,
+                    ID_Vendedor = v.ID_Vendedor,
                     ID_Rol = v.ID_Rol,
                     ID_Sucursal = v.ID_Sucursal,
                     NombreEstado = "Activo",
@@ -46,7 +46,7 @@ namespace BLL
                 .Where(v => v.Estado == 0)
                 .Select(v => new EmpleadoDTO
                 {
-                    ID_Empleado = v.ID_Vendedor,
+                    ID_Vendedor = v.ID_Vendedor,
                     NombreEstado = "Inactivo",
                     Nombre = v.Nombre,
                     Cedula = v.Cedula,
@@ -63,7 +63,7 @@ namespace BLL
                 .Where(v => v.Nombre.ToLower().Contains(namecate.ToLower()))
                 .Select(v => new EmpleadoDTO
                 {
-                    ID_Empleado = v.ID_Vendedor,
+                    ID_Vendedor = v.ID_Vendedor,
                     NombreEstado = "Activo",
                     Nombre = v.Nombre,
                     Cedula = v.Cedula,
@@ -121,7 +121,7 @@ namespace BLL
         {
             try
             {
-                Vendedor ripvendedor = db.Vendedor.Find(ripempleado.ID_Empleado);
+                Vendedor ripvendedor = db.Vendedor.Find(ripempleado.ID_Vendedor);
 
                 if (ripvendedor is null)
                 {
@@ -145,14 +145,14 @@ namespace BLL
         {
             try
             {
-                Vendedor actempleado = db.Vendedor.Find(actualEmpleado.ID_Empleado);
+                Vendedor actempleado = db.Vendedor.Find(actualEmpleado.ID_Vendedor);
 
                 if (actempleado is null)
                 {
                     return false;
                 }
 
-                actempleado.ID_Vendedor = actualEmpleado.ID_Empleado;
+                actempleado.ID_Vendedor = actualEmpleado.ID_Vendedor;
                 actempleado.Nombre = actualEmpleado.Nombre;
                 actempleado.Cedula = actualEmpleado.Cedula;
                 actempleado.Edad = actualEmpleado.FechaNacimiento;
@@ -171,6 +171,31 @@ namespace BLL
                 return false;
             }
         }
+
+        public EmpleadoDTO ValidarLogin(string usuario, string contra)
+        {
+            var empleado = db.Vendedor.FirstOrDefault(e =>
+                e.Usuario == usuario &&
+                e.contra == contra &&
+                e.Estado == 1 // solo empleados activos
+            );
+
+            if (empleado == null) return null;
+
+            return new EmpleadoDTO
+            {
+                ID_Vendedor = empleado.ID_Vendedor,
+                Nombre = empleado.Nombre,
+                usuario = empleado.Usuario,
+                contrasena = null, // por seguridad, puedes omitirla
+                correo = empleado.Email,
+                ID_Rol = empleado.ID_Rol,
+                NombreRol = empleado.Rol?.Puesto,
+                ID_Sucursal = empleado.ID_Sucursal,
+                NombreSucursal = empleado.Sucursal?.Nombre
+            };
+        }
+
 
     }
 

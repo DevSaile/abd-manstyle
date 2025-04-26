@@ -11,6 +11,7 @@ export const obtenerEmpleadosActivos = async () => {
     }
 };
 
+
 // Obtener ROLESSSSSSSSSS
 export const obtenerRoles = async () => {
     try {

@@ -198,7 +198,7 @@ namespace BLL
                 .Where(v => v.Estado == 1 && v.Nombre.ToLower().Contains(valor.ToLower()))
                 .Select(v => new EmpleadoDTO
                 {
-                    ID_Empleado = v.ID_Vendedor,
+                    ID_Vendedor = v.ID_Vendedor,
                     Nombre = v.Nombre,
                     NombreRol = v.ID_Rol == 1 ? "Administrador" : "Empleado",
                     NombreSucursal = v.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Primaria"
