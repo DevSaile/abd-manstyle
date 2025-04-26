@@ -9,7 +9,7 @@ namespace Models
     public class EmpleadoDTO
     {
 
-        public int ID_Empleado { get; set; }
+        public int ID_Vendedor { get; set; }
 
         public string Nombre { get; set; }
 

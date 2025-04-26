@@ -46,6 +46,7 @@
     <Compile Include="ClienteDTO.cs" />
     <Compile Include="Compra_EntradaDTO.cs" />
     <Compile Include="EmpleadoDTO.cs" />
+    <Compile Include="LoginDTO.cs" />
     <Compile Include="ProductoDTO.cs" />
     <Compile Include="ProductoPorCategoriaDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
