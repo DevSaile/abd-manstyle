@@ -1,5 +1,6 @@
 import React from 'react';
 import ParticlesBackground from '../../components/public/common/ParticlesBackground';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   return (
@@ -36,9 +37,11 @@ const Login = () => {
               👁️
             </button>
           </div>
+          <Link to='/inicio'>
           <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded w-full transition duration-300">
             Iniciar sesión
           </button>
+          </Link>
           <div className="mt-4 text-sm">
             <a href="#" className="text-blue-400 hover:underline">
               Recuperar cuenta
