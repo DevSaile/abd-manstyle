@@ -18,7 +18,13 @@ const Login = () => {
       console.log('Respuesta del servidor:', response);
 
       if (response && response.ID_Vendedor) { 
+     
+        const userRole = response.Usuario.NombreRol
+
         localStorage.setItem('usuario', JSON.stringify(response)); 
+        localStorage.setItem('rol', userRole); // Assuming the role is returned as "rol"
+
+        console.log('Usuario guardado en localStorage:', response);
         navigate('/inicio'); 
       } else {
         setError('Credenciales incorrectas');

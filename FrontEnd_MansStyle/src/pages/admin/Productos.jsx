@@ -41,7 +41,9 @@ const ProductsPage = () => {
   const [selectedProducto, setSelectedProduct] = useState(null);
   const [openAdd, setOpenAdd] = useState(false);
 
+  const userRole = localStorage.getItem("rol");
   // Fetch products from the API
+
   useEffect(() => {
     obtenerProductos().then((data) => {
       setProductos(data);
@@ -163,6 +165,7 @@ const ProductsPage = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+          {userRole === "Empleado" && (
           <button
               className=" bg-gray-700 text-white placeholder-gray-400 rounded-lg py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               onClick={() => {
@@ -171,6 +174,7 @@ const ProductsPage = () => {
        >
           Detalles
         </button>
+        )}
 
           {/* Product Cards */}
           <div
@@ -219,6 +223,7 @@ const ProductsPage = () => {
           <Plus/>Existente
         </button>
         </div>
+        {
         <button
           className="bg-transparent text-blue-600 border border-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
           onClick={() => {
@@ -226,7 +231,7 @@ const ProductsPage = () => {
         > 
           Editar
         </button>
-    
+}
         <button
           className="bg-transparent text-red-600 border border-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
           onClick={() => {

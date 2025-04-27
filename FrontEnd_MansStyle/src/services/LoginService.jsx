@@ -5,7 +5,8 @@ export const loginUsuario = async (usuario, contrasena) => {
     try {
       const response = await api.post('/empleados/login', {
         Usuario: usuario,
-        Contra: contrasena
+        Contra: contrasena,
+      
       });
       return response.data;
     } catch (error) {
