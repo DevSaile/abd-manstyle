@@ -51,6 +51,8 @@
     <Compile Include="ProductoPorCategoriaDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProveedorDTO.cs" />
+    <Compile Include="RecoverRequestDTO.cs" />
+    <Compile Include="ResetPasswordDTO.cs" />
     <Compile Include="RolDTO.cs" />
     <Compile Include="SucursalDTO.cs" />
     <Compile Include="Venta_DetallesDTO.cs" />

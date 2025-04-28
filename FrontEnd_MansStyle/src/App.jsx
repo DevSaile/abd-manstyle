@@ -14,6 +14,8 @@ import CategoryPage from "./pages/admin/Categorizacion";
 import RegistrosVenta from "./pages/admin/RegistrosVentas";
 import RegistroCompra from "./pages/admin/RegistrosCompra";
 import Login from "./pages/public/Login";
+import RecoverPassword from "./pages/public/RecoverPassword";
+import ResetPassword from "./pages/public/ResetPassword";
 
 function App() {
     return (
@@ -22,6 +24,8 @@ function App() {
             <Route element={<PublicLayout />}>
                 <Route path='/' element={<LandingPage />} />
                 <Route path="/login" element={<Login/>}/>
+                <Route path="/recuperar-contrasena" element={<RecoverPassword />} />
+                <Route path="/resetear-contrasena/:token" element={<ResetPassword />} />
             </Route>
                 
 

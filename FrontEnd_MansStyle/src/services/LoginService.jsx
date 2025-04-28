@@ -13,5 +13,32 @@ export const loginUsuario = async (usuario, contrasena) => {
       console.error("Error al iniciar sesión:", error);
       return null;
     }
-  };
+};
+
+// Solicitar recuperación de contraseña
+export const solicitarRecuperacion = async (email) => {
+  try {
+    const response = await api.post("/empleados/solicitar-recuperacion", { email });
+    return response.data;
+  } catch (error) {
+    console.error("Error solicitando recuperación:", error);
+    return null;
+  }
+};
+
+// Resetear contraseña usando token
+export const ResetPasswordService = async (token, nuevaContrasena) => {
+  try {
+    const response = await api.post("/empleados/resetear-contrasena", {
+      token,
+      nuevaContrasena,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error en el servicio de reset password:", error);
+    return { success: false };
+  }
+};
+
+
   

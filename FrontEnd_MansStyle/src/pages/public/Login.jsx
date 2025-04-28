@@ -36,6 +36,12 @@ const Login = () => {
     }
   };
 
+  const handleForgotPassword = () => {
+    // Lógica adicional, por ejemplo: validación
+    navigate("/recuperar-contrasena");
+  };
+
+
   return (
     <div className="relative min-h-screen flex items-center justify-center">
       {/* Fondo de partículas */}
@@ -85,9 +91,13 @@ const Login = () => {
             Recuperar cuenta
           </a>{' '}
           |{' '}
-          <a href="#" className="text-blue-400 hover:underline">
+          <button
+            type="button"
+            onClick={handleForgotPassword}
+            className="text-blue-400 hover:underline focus:outline-none"
+          >
             Olvidé mi contraseña
-          </a>
+          </button>
         </div>
       </div>
     </div>

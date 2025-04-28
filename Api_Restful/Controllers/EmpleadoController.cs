@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Net;
+using System.Net.Mail;
 
 namespace WebManStyle_ABD.Controllers
 {
@@ -128,6 +130,67 @@ namespace WebManStyle_ABD.Controllers
 
             return Ok(empleado); // Puedes devolver EmpleadoDTO o algo como token + info básica
         }
+
+        [HttpPost]
+        [Route("solicitar-recuperacion")]
+        public IHttpActionResult SolicitarRecuperacion(RecoverRequestDTO request)
+        {
+            if (string.IsNullOrEmpty(request.Email))
+                return BadRequest("El email es obligatorio.");
+
+            var empleado = MetodosEmpleado.BuscarEmpleadoPorEmail(request.Email);
+
+            if (empleado == null)
+                return NotFound();
+
+            var token = Guid.NewGuid().ToString(); // 🔥 Generar token seguro
+
+            var guardado = MetodosEmpleado.GuardarTokenRecuperacion(empleado.correo, token);
+
+            if (!guardado)
+                return InternalServerError(new Exception("No se pudo guardar el token de recuperación."));
+
+            // Enviar correo
+            bool enviado = Services.EmailService.EnviarCorreoRecuperacion(empleado.correo, token);
+
+            if (!enviado)
+                return InternalServerError(new Exception("No se pudo enviar el correo."));
+
+            return Ok(new { success = true, message = "Correo enviado correctamente." });
+        }
+
+
+        [HttpPost]
+        [Route("email")]
+        public IHttpActionResult SolicitarEmail(RecoverRequestDTO request)
+        {
+            var empleado = MetodosEmpleado.BuscarEmpleadoPorEmail(request.Email);
+            if (empleado == null)
+                return NotFound(); // 404 si no se encuentra el empleado
+            return Ok(empleado);
+        }
+
+        // RESETEAR CONTRASEÑA
+        [HttpPost]
+        [Route("resetear-contrasena")]
+        public IHttpActionResult ResetearContrasena(ResetPasswordDTO resetPasswordDTO)
+        {
+            if (resetPasswordDTO == null || string.IsNullOrEmpty(resetPasswordDTO.Token) || string.IsNullOrEmpty(resetPasswordDTO.NuevaContrasena))
+            {
+                return BadRequest("Datos incompletos");
+            }
+
+            var resultado = MetodosEmpleado.ResetearContrasena(resetPasswordDTO.Token, resetPasswordDTO.NuevaContrasena);
+
+            if (!resultado)
+            {
+                return BadRequest("Token inválido o expirado.");
+            }
+
+            return Ok(new { success = true, message = "Contraseña actualizada correctamente." });
+        }
+
+
 
     }
 

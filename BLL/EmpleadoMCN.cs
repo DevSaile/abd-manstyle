@@ -117,6 +117,26 @@ namespace BLL
             }
         }
 
+        public EmpleadoDTO BuscarEmpleadoPorEmail(string email)
+        {
+            var empleado = db.Vendedor
+                .Where(u => u.Email == email && u.Estado == 1) // Condición para email y estado activo
+                .Select(v => new EmpleadoDTO
+                {
+                    ID_Vendedor = v.ID_Vendedor,
+                    NombreEstado = "Activo", // Asumiendo que Estado == 1 siempre es "Activo"
+                    Nombre = v.Nombre,
+                    Cedula = v.Cedula,
+                    FechaNacimiento = v.Edad,
+                    NombreRol = v.ID_Rol == 1 ? "Administrador" : "Empleado",
+                    NombreSucursal = v.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Primaria",
+                    correo = v.Email,
+                })
+                .FirstOrDefault(); // Retorna solo un empleado o null si no encuentra coincidencias
+
+            return empleado;
+        }
+
         public bool EliminarEmpleado(EmpleadoDTO ripempleado)
         {
             try
@@ -195,6 +215,62 @@ namespace BLL
                 NombreSucursal = empleado.Sucursal?.Nombre
             };
         }
+
+        public bool GuardarTokenRecuperacion(string email, string token)
+        {
+            try
+            {
+
+                    var empleado = db.Vendedor.FirstOrDefault(e => e.Email == email);
+
+                    if (empleado == null)
+                        return false;
+
+                    empleado.ResetToken = token;
+                    empleado.ResetTokenExpiracion = DateTime.Now.AddHours(1); // Token válido 1 hora
+
+                    db.Entry(empleado).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+
+                    return true;
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error guardando token: " + ex.Message);
+                return false;
+            }
+        }
+
+
+        public bool ResetearContrasena(string token, string nuevaContrasena)
+        {
+            try
+            {
+                // Buscar usuario con ese token
+                var empleado = db.Vendedor.FirstOrDefault(e => e.ResetToken == token && e.ResetTokenExpiracion > DateTime.Now);
+
+                if (empleado == null)
+                    return false;
+
+                // Actualizar la contraseña
+                empleado.contra = nuevaContrasena; // 🔥 (IMPORTANTE: En futuro deberías hacer hashing aquí)
+
+                // Limpiar el token para que no lo usen otra vez
+                empleado.ResetToken = null;
+                empleado.ResetTokenExpiracion = null;
+
+                db.Entry(empleado).State = System.Data.Entity.EntityState.Modified;
+
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
 
 
     }
