@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BDmanstyleModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BDmanstyleModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Categoria">
           <Key>
             <PropertyRef Name="ID_Categoria" />
@@ -89,6 +89,8 @@
           <Property Name="Email" Type="nvarchar" MaxLength="100" />
           <Property Name="ID_Sucursal" Type="int" />
           <Property Name="Estado" Type="int" />
+          <Property Name="ResetToken" Type="nvarchar" MaxLength="200" />
+          <Property Name="ResetTokenExpiracion" Type="datetime" />
         </EntityType>
         <EntityType Name="Venta_Detalles">
           <Key>
@@ -322,8 +324,7 @@
             <End Role="Venta_Factura" EntitySet="Venta_Factura" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BDmanstyleModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -428,6 +429,8 @@
           <NavigationProperty Name="Rol" Relationship="Self.FK__Vendedor__ID_Rol__5EBF139D" FromRole="Vendedor" ToRole="Rol" />
           <NavigationProperty Name="Sucursal" Relationship="Self.FK__Vendedor__ID_Suc__5FB337D6" FromRole="Vendedor" ToRole="Sucursal" />
           <NavigationProperty Name="Venta_Factura" Relationship="Self.FK__Venta_Fac__ID_Ve__6EF57B66" FromRole="Vendedor" ToRole="Venta_Factura" />
+          <Property Name="ResetToken" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ResetTokenExpiracion" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Venta_Detalles">
           <Key>
@@ -754,6 +757,8 @@
           <EntitySetMapping Name="Vendedor">
             <EntityTypeMapping TypeName="BDmanstyleModel.Vendedor">
               <MappingFragment StoreEntitySet="Vendedor">
+                <ScalarProperty Name="ResetTokenExpiracion" ColumnName="ResetTokenExpiracion" />
+                <ScalarProperty Name="ResetToken" ColumnName="ResetToken" />
                 <ScalarProperty Name="ID_Vendedor" ColumnName="ID_Vendedor" />
                 <ScalarProperty Name="ID_Rol" ColumnName="ID_Rol" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
