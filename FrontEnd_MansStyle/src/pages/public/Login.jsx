@@ -19,10 +19,11 @@ const Login = () => {
 
       if (response && response.ID_Vendedor) { 
      
-        const userRole = response.Usuario.NombreRol
+        const userRole = response.NombreRol
 
         localStorage.setItem('usuario', JSON.stringify(response)); 
         localStorage.setItem('rol', userRole); // Assuming the role is returned as "rol"
+        console.log('Rol guardado en localStorage:', userRole);
 
         console.log('Usuario guardado en localStorage:', response);
         navigate('/inicio'); 
