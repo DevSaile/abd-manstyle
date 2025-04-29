@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search, Plus } from "lucide-react";
@@ -22,6 +23,8 @@ const UsersTable = ({
             user.Cedula.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setFilteredUsers(filtered);
+
+        console.log("Usuarios filtrados:", filteredUsers);
     }, [userData, searchTerm]);
 
     const handleSearch = (e) => {

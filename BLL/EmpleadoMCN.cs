@@ -24,7 +24,7 @@ namespace BLL
                 .Where(v => v.Estado == 1)
                 .Select(v => new EmpleadoDTO
                 {
-                    ID_Vendedor = v.ID_Vendedor,
+                    ID_Empleado = v.ID_Vendedor,
                     ID_Rol = v.ID_Rol,
                     ID_Sucursal = v.ID_Sucursal,
                     NombreEstado = "Activo",
@@ -46,7 +46,7 @@ namespace BLL
                 .Where(v => v.Estado == 0)
                 .Select(v => new EmpleadoDTO
                 {
-                    ID_Vendedor = v.ID_Vendedor,
+                    ID_Empleado = v.ID_Vendedor,
                     NombreEstado = "Inactivo",
                     Nombre = v.Nombre,
                     Cedula = v.Cedula,
@@ -63,7 +63,7 @@ namespace BLL
                 .Where(v => v.Nombre.ToLower().Contains(namecate.ToLower()))
                 .Select(v => new EmpleadoDTO
                 {
-                    ID_Vendedor = v.ID_Vendedor,
+                    ID_Empleado = v.ID_Vendedor,
                     NombreEstado = "Activo",
                     Nombre = v.Nombre,
                     Cedula = v.Cedula,
@@ -123,7 +123,7 @@ namespace BLL
                 .Where(u => u.Email == email && u.Estado == 1) // Condición para email y estado activo
                 .Select(v => new EmpleadoDTO
                 {
-                    ID_Vendedor = v.ID_Vendedor,
+                    ID_Empleado = v.ID_Vendedor,
                     NombreEstado = "Activo", // Asumiendo que Estado == 1 siempre es "Activo"
                     Nombre = v.Nombre,
                     Cedula = v.Cedula,
@@ -141,14 +141,14 @@ namespace BLL
         {
             try
             {
-                Vendedor ripvendedor = db.Vendedor.Find(ripempleado.ID_Vendedor);
+                Vendedor ripvendedor = db.Vendedor.Find(ripempleado.ID_Empleado);
 
                 if (ripvendedor is null)
                 {
                     return false;
                 }
 
-                ripvendedor.Estado = ripempleado.Estado;
+                ripvendedor.Estado = 0;
 
                 db.Entry(ripvendedor).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
@@ -165,14 +165,14 @@ namespace BLL
         {
             try
             {
-                Vendedor actempleado = db.Vendedor.Find(actualEmpleado.ID_Vendedor);
+                Vendedor actempleado = db.Vendedor.Find(actualEmpleado.ID_Empleado);
 
                 if (actempleado is null)
                 {
                     return false;
                 }
 
-                actempleado.ID_Vendedor = actualEmpleado.ID_Vendedor;
+                actempleado.ID_Vendedor = actualEmpleado.ID_Empleado;
                 actempleado.Nombre = actualEmpleado.Nombre;
                 actempleado.Cedula = actualEmpleado.Cedula;
                 actempleado.Edad = actualEmpleado.FechaNacimiento;
@@ -180,6 +180,7 @@ namespace BLL
                 actempleado.ID_Rol = actualEmpleado.ID_Rol;
                 actempleado.Usuario = actualEmpleado.usuario;
                 actempleado.contra = actualEmpleado.contrasena;
+                actempleado.Email = actualEmpleado.correo;
 
                 db.Entry(actempleado).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
@@ -204,7 +205,7 @@ namespace BLL
 
             return new EmpleadoDTO
             {
-                ID_Vendedor = empleado.ID_Vendedor,
+                ID_Empleado = empleado.ID_Vendedor,
                 Nombre = empleado.Nombre,
                 usuario = empleado.Usuario,
                 contrasena = null, // por seguridad, puedes omitirla

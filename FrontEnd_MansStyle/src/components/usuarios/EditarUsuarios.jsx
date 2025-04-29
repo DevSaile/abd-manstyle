@@ -53,6 +53,8 @@ const ManageUser = ({ open, onClose, userData }) => {
                 ID_Empleado: null
             });
         }
+
+        console.log("Datos del formulario:", formData);
     }, [userData]);
 
     // Formatear fecha para input type="date"

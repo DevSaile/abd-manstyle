@@ -1,3 +1,4 @@
+
 import api from "../Api"; // Configuración baseURL para tu API
 
 // Obtener empleados activos
@@ -10,7 +11,6 @@ export const obtenerEmpleadosActivos = async () => {
         return [];
     }
 };
-
 
 // Obtener ROLESSSSSSSSSS
 export const obtenerRoles = async () => {
