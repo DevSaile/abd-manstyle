@@ -23,6 +23,8 @@ const Login = () => {
 
         localStorage.setItem('usuario', JSON.stringify(response)); 
         localStorage.setItem('rol', userRole); // Assuming the role is returned as "rol"
+        localStorage.setItem('isAuthenticated', 'true'); // Mark the user as authenticated
+
         console.log('Rol guardado en localStorage:', userRole);
 
         console.log('Usuario guardado en localStorage:', response);

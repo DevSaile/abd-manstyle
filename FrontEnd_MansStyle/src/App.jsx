@@ -1,5 +1,4 @@
-
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import AdminLayout from "./layouts/AdminLayout";
 import PublicLayout from "./layouts/PublicLayout";
@@ -16,33 +15,75 @@ import RegistroCompra from "./pages/admin/RegistrosCompra";
 import Login from "./pages/public/Login";
 import RecoverPassword from "./pages/public/RecoverPassword";
 import ResetPassword from "./pages/public/ResetPassword";
+import ProtectedRoute from "./components/public/auth/ProtectedRoute";
+import Error404 from "./pages/public/Error404";
 
 function App() {
-    return (
-        <Routes>
-            {/* Public Routes */}
-            <Route element={<PublicLayout />}>
-                <Route path='/' element={<LandingPage />} />
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/recuperar-contrasena" element={<RecoverPassword />} />
-                <Route path="/resetear-contrasena/:token" element={<ResetPassword />} />
-            </Route>
-                
+  return (
+    <Routes>
+      {/* Public Routes */}
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/recuperar-contrasena" element={<RecoverPassword />} />
+        <Route path="/resetear-contrasena/:token" element={<ResetPassword />} />
+      </Route>
 
-            {/* Admin Routes */}
-            <Route element={<AdminLayout />}>
-                <Route path='/inicio' element={<OverviewPage />} />
+      {/* Admin Routes */}
+      <Route element={<AdminLayout />}>
+        <Route path="/inicio" element={<OverviewPage />} />
 
-                <Route path='/productos' element={<ProductsPage />} />
-                <Route path='/clientes' element={<ClientsPage />} />
-                <Route path='/venta' element={<CashierPage />} />
-                <Route path='/registrosventas' element={<RegistrosVenta />} />
-                <Route path='/registroscompras' element={<RegistroCompra />} />
-                <Route path='/usuarios' element={<UsersPage />} />
-                <Route path='/categorias' element={<CategoryPage />} />
-            </Route>
-        </Routes>
-    );
+        <Route path="/productos" element={
+            <ProtectedRoute>
+            <ProductsPage />
+            </ProtectedRoute>} />
+        <Route
+          path="/clientes"
+          element={
+            <ProtectedRoute requiredRole="administrador">
+              <ClientsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/venta"
+          element={
+            <ProtectedRoute requiredRole="administrador">
+              <CashierPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/registrosventas"
+          element={
+             <ProtectedRoute requiredRole="administrador">
+              <RegistrosVenta />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/registroscompras"
+          element={
+             <ProtectedRoute requiredRole="administrador">
+              <RegistroCompra />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/categorias"
+          element={
+            <ProtectedRoute requiredRole="administrador">
+              <CategoryPage />
+            </ProtectedRoute>
+          }
+        />
+      </Route>
+
+      <Route path="/404" element={<Error404 />} />
+      <Route path="*" element={<Navigate to="/404" replace/>} />
+
+    </Routes>
+  );
 }
 
 export default App;

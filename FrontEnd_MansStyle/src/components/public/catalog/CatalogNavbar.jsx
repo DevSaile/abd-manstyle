@@ -4,13 +4,13 @@ import { ReactComponent as WhatsApp } from "../../../assest/whatsapp.svg";
 import { ReactComponent as Logo } from "../../../assest/logo.svg";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
-const Navbar = () => {
+const CatalogNavbar = () => {
   return (
     <header className="w-full px-6 py-4 bg-[#0f0f0f] flex items-center justify-between shadow-md fixed top-5 left-5 right-[40px] z-50 rounded-3xl bg-opacity-90">
       <div className="flex items-center gap-8">
         <Logo className="h-6" />
         <a href="/" className="text-gray-300 hover:text-white transition">Inicio</a>
-        <a className="text-gray-300 hover:text-white transition">Productos</a>
+        <a href="/productos" className="text-gray-300 hover:text-white transition">Productos</a>
       </div>
       <div className="flex items-center gap-8">
         <a href="https://www.facebook.com/profile.php?id=100090369100184" target="_blank" rel="noreferrer">
@@ -27,4 +27,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default CatalogNavbar;
