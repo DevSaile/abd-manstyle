@@ -12,9 +12,12 @@ const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
     setIsOpen(!isOpen);
   };
 
-  const filteredItems = options.filter((item) =>
-    item.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredItems = options.filter(
+    (item) =>
+      typeof item === "string" &&
+      item.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
 
   // Close the dropdown when clicking outside
   useEffect(() => {
