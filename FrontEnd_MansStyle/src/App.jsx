@@ -17,6 +17,7 @@ import RecoverPassword from "./pages/public/RecoverPassword";
 import ResetPassword from "./pages/public/ResetPassword";
 import ProtectedRoute from "./components/public/auth/ProtectedRoute";
 import Error404 from "./pages/public/Error404";
+import Catalog from "./pages/public/Catalog";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/recuperar-contrasena" element={<RecoverPassword />} />
         <Route path="/resetear-contrasena/:token" element={<ResetPassword />} />
+        <Route path="/catalogo" element={<Catalog />} /> 
       </Route>
 
       {/* Admin Routes */}

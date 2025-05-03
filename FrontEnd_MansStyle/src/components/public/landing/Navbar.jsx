@@ -10,7 +10,7 @@ const Navbar = () => {
       <div className="flex items-center gap-8">
         <Logo className="h-6" />
         <a href="/" className="text-gray-300 hover:text-white transition">Inicio</a>
-        <a className="text-gray-300 hover:text-white transition">Productos</a>
+        <a href="/catalogo" className="text-gray-300 hover:text-white transition">Productos</a>
       </div>
       <div className="flex items-center gap-8">
         <a href="https://www.facebook.com/profile.php?id=100090369100184" target="_blank" rel="noreferrer">

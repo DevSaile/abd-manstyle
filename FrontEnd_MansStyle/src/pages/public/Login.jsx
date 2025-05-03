@@ -17,7 +17,7 @@ const Login = () => {
       const response = await loginUsuario(usuario, contrasena);
       console.log('Respuesta del servidor:', response);
 
-      if (response && response.ID_Vendedor) { 
+      if (response && response.ID_Empleado) { 
      
         const userRole = response.NombreRol
 
