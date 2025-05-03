@@ -42,7 +42,7 @@ function App() {
         <Route
           path="/clientes"
           element={
-            <ProtectedRoute requiredRole="administrador">
+            <ProtectedRoute requiredRole="Administrador">
               <ClientsPage />
             </ProtectedRoute>
           }
@@ -50,7 +50,7 @@ function App() {
         <Route
           path="/venta"
           element={
-            <ProtectedRoute requiredRole="administrador">
+            <ProtectedRoute requiredRole="Administrador">
               <CashierPage />
             </ProtectedRoute>
           }
@@ -58,7 +58,7 @@ function App() {
         <Route
           path="/registrosventas"
           element={
-             <ProtectedRoute requiredRole="administrador">
+             <ProtectedRoute requiredRole="Administrador">
               <RegistrosVenta />
             </ProtectedRoute>
           }
@@ -66,7 +66,7 @@ function App() {
         <Route
           path="/registroscompras"
           element={
-             <ProtectedRoute requiredRole="administrador">
+             <ProtectedRoute requiredRole="Administrador">
               <RegistroCompra />
             </ProtectedRoute>
           }
@@ -74,7 +74,7 @@ function App() {
         <Route
           path="/categorias"
           element={
-            <ProtectedRoute requiredRole="administrador">
+            <ProtectedRoute requiredRole="Administrador">
               <CategoryPage />
             </ProtectedRoute>
           }
