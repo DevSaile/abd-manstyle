@@ -20,12 +20,14 @@ const Login = () => {
       if (response && response.ID_Empleado) { 
      
         const userRole = response.NombreRol
+        const idSucursal = response.ID_Sucursal; // Assuming the ID_Sucursal is returned in the response
 
         localStorage.setItem('usuario', JSON.stringify(response)); 
         localStorage.setItem('rol', userRole); // Assuming the role is returned as "rol"
+        localStorage.setItem('idSucursal', idSucursal); // Store the employee ID
         localStorage.setItem('isAuthenticated', 'true'); // Mark the user as authenticated
 
-        console.log('Rol guardado en localStorage:', userRole);
+        console.log('Rol guardado en localStorage:', idSucursal);
 
         console.log('Usuario guardado en localStorage:', response);
         navigate('/inicio'); 

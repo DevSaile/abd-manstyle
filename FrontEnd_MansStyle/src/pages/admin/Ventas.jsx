@@ -13,34 +13,28 @@ import { obtenerSucursales } from "../../services/SucursalService";
 import { obtenerClientesActivos } from "../../services/ClientesService";
 import { agregarVenta } from "../../services/VentasService";
 
-
 const CashierPage = () => {
     const [cartItems, setCartItems] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedSucursal, setSelectedSucursal] = useState(null);
     const [selectedClient, setSelectedClient] = useState(null);
-    const [sucursales, setSucursales] = useState([]);
     const [clients, setClients] = useState([]);
     const [products, setProducts] = useState([]);
     const [amountGiven, setAmountGiven] = useState(""); // Nuevo estado
 
     useEffect(() => {
-        obtenerSucursales().then((sucursalesData) => {
-            setSucursales(sucursalesData.map((s) => ({ label: s.Nombre, value: s.ID_Sucursal })));
-        });
-
+        // Fetch clients
         obtenerClientesActivos().then((clientesData) => {
             setClients(clientesData.map((c) => ({ label: c.Nombre, value: c.ID_Cliente })));
         });
-    }, []);
 
-    useEffect(() => {
-        if (selectedSucursal) {
-            obtenerProductosPorSucursal(selectedSucursal.value).then((productosData) => {
+        // Fetch products based on Sucursal ID from localStorage
+        const storedSucursalId = localStorage.getItem("idSucursal");
+        if (storedSucursalId) {
+            obtenerProductosPorSucursal(storedSucursalId).then((productosData) => {
                 setProducts(productosData);
             });
         }
-    }, [selectedSucursal]);
+    }, []);
 
     const addToCart = (product) => {
         setCartItems((prevCart) => {
@@ -67,54 +61,52 @@ const CashierPage = () => {
 
     const getTotalItems = () => {
         return cartItems.reduce((acc, item) => acc + item.quantity, 0);
-      };
+    };
 
     const handleSale = async () => {
         if (!selectedClient || cartItems.length === 0) {
             alert("Selecciona un cliente y agrega productos al carrito.");
             return;
         }
-    
+
         const total = cartItems.reduce(
             (acc, item) => acc + item.Precio_Producto * item.quantity,
             0
         );
-    
+
         const pago = parseFloat(amountGiven);
         if (isNaN(pago) || pago < total) {
-          alert("El monto pagado no es válido o es insuficiente.");
-          return;
+            alert("El monto pagado no es válido o es insuficiente.");
+            return;
         }
-    
+
         const venta = {
             Estado: 1,
             ID_Cliente: selectedClient.value,
-            ID_Sucursal: selectedSucursal?.value || 1, // Requiere selección de sucursal
+            ID_Sucursal: localStorage.getItem("idSucursal"), // Use Sucursal ID from localStorage
             Fecha_Venta: new Date(),
-            Subtotal: total, // o calcula subtotal si aplicas impuestos después
+            Subtotal: total,
             Total: total,
             pagacon: pago,
             cambio: pago - total,
-            Cantidad: getTotalItems(), // Total de productos en el carrito
+            Cantidad: getTotalItems(),
             Detalles: cartItems.map((item) => ({
                 ID_Producto: item.ID_Producto,
                 Cantidad: item.quantity,
                 PrecioProducto: item.Precio_Producto,
             })),
         };
-    
-        const resultado = await agregarVenta(venta);
-        
-        if (resultado) {
-          alert("Venta registrada correctamente.");
-          setCartItems([]);
-          setAmountGiven(""); 
-        } else {
-          alert("Error al registrar la venta.");
-        }
 
+        const resultado = await agregarVenta(venta);
+
+        if (resultado) {
+            alert("Venta registrada correctamente.");
+            setCartItems([]);
+            setAmountGiven("");
+        } else {
+            alert("Error al registrar la venta.");
+        }
     };
-    
 
     const filteredProducts = products.filter((product) =>
         product.Nombre.toLowerCase().includes(searchTerm.toLowerCase())
@@ -123,23 +115,17 @@ const CashierPage = () => {
     return (
         <div className="flex-1 overflow-auto relative z-10">
             <Header title="Cashier" />
-    
+
             <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
-                {/* ComboBoxes for Sucursal and Cliente */}
+                {/* ComboBoxes for Cliente */}
                 <div className="mb-4 flex gap-4">
-                      {/* Search Input */}
-                <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Buscar productos..."
-                    className="w-8/12 bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
-                />
-                    <ComboBoxID
-                        name="Sucursal"
-                        options={sucursales}
-                        selected={selectedSucursal}
-                        onSelect={(sucursal) => setSelectedSucursal(sucursal)}
+                    {/* Search Input */}
+                    <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        placeholder="Buscar productos..."
+                        className="w-8/12 bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
                     />
                     <ComboBoxID
                         name="Cliente"
@@ -148,9 +134,7 @@ const CashierPage = () => {
                         onSelect={(client) => setSelectedClient(client)}
                     />
                 </div>
-    
-              
-    
+
                 {/* Flex Container for Products and Cart Summary */}
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* Product List */}
@@ -165,7 +149,7 @@ const CashierPage = () => {
                             />
                         ))}
                     </div>
-    
+
                     {/* Cart Summary */}
                     <div className="w-full lg:w-1/3 bg-gray-800 p-6 rounded-lg shadow-lg">
                         <h2 className="text-xl font-semibold text-gray-100 mb-4">Carrito</h2>
@@ -188,5 +172,6 @@ const CashierPage = () => {
             </main>
         </div>
     );
-}
+};
+
 export default CashierPage;

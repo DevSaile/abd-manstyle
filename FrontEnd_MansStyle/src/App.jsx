@@ -28,17 +28,21 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/recuperar-contrasena" element={<RecoverPassword />} />
         <Route path="/resetear-contrasena/:token" element={<ResetPassword />} />
-        <Route path="/catalogo" element={<Catalog />} /> 
+        <Route path="/catalogo" element={<Catalog />} />
       </Route>
 
       {/* Admin Routes */}
       <Route element={<AdminLayout />}>
         <Route path="/inicio" element={<OverviewPage />} />
 
-        <Route path="/productos" element={
+        <Route
+          path="/productos"
+          element={
             <ProtectedRoute>
-            <ProductsPage />
-            </ProtectedRoute>} />
+              <ProductsPage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/clientes"
           element={
@@ -50,7 +54,7 @@ function App() {
         <Route
           path="/venta"
           element={
-            <ProtectedRoute requiredRole="Administrador">
+            <ProtectedRoute>
               <CashierPage />
             </ProtectedRoute>
           }
@@ -58,7 +62,7 @@ function App() {
         <Route
           path="/registrosventas"
           element={
-             <ProtectedRoute requiredRole="Administrador">
+            <ProtectedRoute requiredRole="Administrador">
               <RegistrosVenta />
             </ProtectedRoute>
           }
@@ -66,7 +70,7 @@ function App() {
         <Route
           path="/registroscompras"
           element={
-             <ProtectedRoute requiredRole="Administrador">
+            <ProtectedRoute requiredRole="Administrador">
               <RegistroCompra />
             </ProtectedRoute>
           }
@@ -79,11 +83,19 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/usuarios"
+          element={
+            <ProtectedRoute requiredRole="Administrador">
+              <UsersPage />
+            </ProtectedRoute>
+          }
+        />
       </Route>
 
       <Route path="/404" element={<Error404 />} />
-      <Route path="*" element={<Navigate to="/404" replace/>} />
-
+      <Route path="*" element={<Navigate to="/404" replace />} />
     </Routes>
   );
 }
