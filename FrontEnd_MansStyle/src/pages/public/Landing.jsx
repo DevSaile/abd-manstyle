@@ -1,16 +1,22 @@
-import React, { useEffect } from 'react';
-import ScrollReveal from 'scrollreveal';
-import 'animate.css';
-import {ReactComponent as Ilustracion} from "../../assest/ilustracion.svg"
-import ParticlesBackground from '../../components/public/common/ParticlesBackground';
+import React, { useEffect } from "react";
+import ScrollReveal from "scrollreveal";
+import "animate.css";
+import { ReactComponent as Ilustracion } from "../../assest/ilustracion.svg";
+import ParticlesBackground from "../../components/public/common/ParticlesBackground";
+import { ReactComponent as Airpods } from "../../assest/airpods.svg";
+import {ReactComponent as Perfume} from "../../assest/perfume.svg";
+import {ReactComponent as Shirt} from "../../assest/mens.svg"; 
+import ExampleCard from "../../components/public/landing/ExampleCard";
 
 const LandingPage = () => {
+  const Examples = [{ img: Airpods, titulo: "Accesorios para celulares" }];
+
   useEffect(() => {
-    ScrollReveal().reveal('[data-sr]', {
-      distance: '60px',
+    ScrollReveal().reveal("[data-sr]", {
+      distance: "60px",
       duration: 1000,
-      easing: 'ease-in-out',
-      origin: 'bottom',
+      easing: "ease-in-out",
+      origin: "bottom",
       interval: 200,
     });
   }, []);
@@ -19,13 +25,16 @@ const LandingPage = () => {
     <>
       {/* Main */}
       <main className="min-h-screen flex flex-col justify-center items-center px-6 md:px-20 lg:px-32 pt-20">
-      <ParticlesBackground color={"0f0f0f"}/>
+        <ParticlesBackground color={"0f0f0f"} />
 
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10 w-full max-w-7xl">
           <div className="animate__animated animate__fadeInLeft" data-sr>
             <Ilustracion className="w-full h-auto" />
           </div>
-          <div className="animate__animated animate__fadeInRight text-center md:text-left" data-sr>
+          <div
+            className="animate__animated animate__fadeInRight text-center md:text-left"
+            data-sr
+          >
             <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
               Sistema de Gestión para <br />
               <span className="text-indigo-500">Variedades Man's Style</span>
@@ -33,7 +42,10 @@ const LandingPage = () => {
             <p className="text-gray-300 text-lg mb-6">
               Controlá tu inventario, ventas y facturación de manera eficiente.
             </p>
-            <a href="#" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full text-base font-semibold transition">
+            <a
+              href="#"
+              className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full text-base font-semibold transition"
+            >
               Conocer más
             </a>
           </div>
@@ -43,33 +55,60 @@ const LandingPage = () => {
       {/* Secciones */}
       <section className="py-20 px-6 bg-[#141414]" data-sr>
         <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">¿Por qué usar nuestro sistema?</h2>
-          <p className="text-gray-400 text-lg">
-            Mejora el control, reduce errores y te permite enfocarte en hacer crecer tu negocio.
-          </p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8">
+            Tenemos lo que usted busca
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8 relative mt-20">
+          <ExampleCard
+              image={
+                <Airpods className="h-full w-full object-contain text-white" />
+              }
+              Description="Accesorios para celulares"
+            />
+            <ExampleCard
+              className="absolute top-0 left-0 w-full h-full"
+              image={
+                <Perfume className="h-full w-full object-contain text-white" />
+
+              }
+              Description="Cosmeticos"
+            />
+            <ExampleCard
+              className="absolute top-0 left-0 w-full h-full"
+              image={
+                <Shirt className="h-full w-full object-contain text-white" />
+              }
+              Description="Vestimenta"
+            />
+        
+          </div>
         </div>
       </section>
 
       <section className="py-20 px-6 bg-[#1c1c1c]">
         <div className="max-w-6xl mx-auto" data-sr>
-          <h2 className="text-center text-3xl md:text-4xl font-bold mb-12">Beneficios del sistema</h2>
+          <h2 className="text-center text-3xl md:text-4xl font-bold mb-12">
+            Beneficios del sistema
+          </h2>
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                title: 'Inventario organizado',
-                text: 'Visualizá tu stock en tiempo real y recibí alertas.',
+                title: "Inventario organizado",
+                text: "Visualizá tu stock en tiempo real y recibí alertas.",
               },
               {
-                title: 'Facturación rápida',
-                text: 'Generá facturas automáticamente.',
+                title: "Facturación rápida",
+                text: "Generá facturas automáticamente.",
               },
               {
-                title: 'Multisucursal',
-                text: 'Control total de múltiples tiendas.',
+                title: "Multisucursal",
+                text: "Control total de múltiples tiendas.",
               },
             ].map((item, idx) => (
               <div key={idx} className="bg-[#2a2a2a] p-6 rounded-lg shadow-lg">
-                <h3 className="text-xl font-semibold text-indigo-400 mb-2">{item.title}</h3>
+                <h3 className="text-xl font-semibold text-indigo-400 mb-2">
+                  {item.title}
+                </h3>
                 <p className="text-gray-300">{item.text}</p>
               </div>
             ))}
@@ -98,11 +137,15 @@ const LandingPage = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-10">Testimonios</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-[#222] p-6 rounded-lg shadow-md text-left">
-              <p className="text-gray-300 mb-3">“Todo más ordenado y profesional.”</p>
+              <p className="text-gray-300 mb-3">
+                “Todo más ordenado y profesional.”
+              </p>
               <span className="text-sm text-gray-400">- Karen, encargada</span>
             </div>
             <div className="bg-[#222] p-6 rounded-lg shadow-md text-left">
-              <p className="text-gray-300 mb-3">“Control total desde cualquier lugar.”</p>
+              <p className="text-gray-300 mb-3">
+                “Control total desde cualquier lugar.”
+              </p>
               <span className="text-sm text-gray-400">- Juan, propietario</span>
             </div>
           </div>
@@ -112,7 +155,7 @@ const LandingPage = () => {
       <footer className="bg-[#0f0f0f] text-gray-500 text-center py-6 text-sm">
         &copy; 2025 Variedades Man's Style. Todos los derechos reservados.
       </footer>
-      </>
+    </>
   );
 };
 
