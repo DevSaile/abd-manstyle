@@ -13,11 +13,24 @@ const Header = ({ title }) => {
     localStorage.removeItem("usuario");
     localStorage.removeItem("rol");
     localStorage.removeItem("isAuthenticated");
-
-    // Redirect to login page
-    navigate("/login", { replace: true });
+  
+    // Redirect to login page and replace the history stack
+    navigate("/", { replace: true });
+  
+    // Clear the browser's history stack and block back navigation
+    setTimeout(() => {
+      window.history.pushState(null, null, window.location.href);
+      const handlePopState = () => {
+        window.history.pushState(null, null, window.location.href);
+      };
+      window.addEventListener("popstate", handlePopState);
+  
+      // Cleanup the event listener when the user navigates away
+      return () => {
+        window.removeEventListener("popstate", handlePopState);
+      };
+    }, 0);
   };
-
   return (
     <header className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg border-b border-gray-700 flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4">
       <h1 className="text-2xl font-semibold text-gray-100">{title}</h1>
