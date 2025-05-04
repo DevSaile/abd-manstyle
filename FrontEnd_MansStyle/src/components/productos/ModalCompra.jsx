@@ -6,6 +6,7 @@ import { obtenerCategoriasActivas } from "../../services/CategoriasService";
 import { obtenerSucursales } from "../../services/SucursalService";
 import { agregarCompraProducto } from "../../services/CompraHitorialService";
 import { agregarProducto } from "../../services/ProductosService";
+import { subirImagen } from "../../services/UploadService"; 
 
 const ModalCompra = ({ openAdd, AddModalClose, refrescarProductos }) => {
   const [newProduct, setNewProduct] = useState({
@@ -17,7 +18,8 @@ const ModalCompra = ({ openAdd, AddModalClose, refrescarProductos }) => {
     ID_Sucursal: "",
     ID_Categoria: "",
     url_image: "",
-    Cantidad: ""
+    Cantidad: "",
+    archivoImagen: null, 
   });
 
   const [categorias, setCategorias] = useState([]);
@@ -26,65 +28,84 @@ const ModalCompra = ({ openAdd, AddModalClose, refrescarProductos }) => {
   useEffect(() => {
     Promise.all([obtenerCategoriasActivas(), obtenerSucursales()]).then(
       ([categoriasData, sucursalesData]) => {
-        setCategorias(
-          categoriasData.map((categoria) => ({
-            label: categoria.Nombre,
-            value: categoria.ID_Categoria,
-          }))
-        );
-        setSucursales(
-          sucursalesData.map((sucursal) => ({
-            label: sucursal.Nombre,
-            value: sucursal.ID_Sucursal,
-          }))
-        );
+        setCategorias(categoriasData.map(c => ({ label: c.Nombre, value: c.ID_Categoria })));
+        setSucursales(sucursalesData.map(s => ({ label: s.Nombre, value: s.ID_Sucursal })));
       }
     );
   }, []);
 
-  const esURLValida = (url) => {
-    return typeof url === "string" && url.startsWith("http");
-  };
+  const esURLValida = (url) => typeof url === "string" && url.startsWith("http");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const productoDTO = {
-      Nombre: newProduct.Nombre,
-      Marca: newProduct.Marca,
-      ID_Sucursal: newProduct.ID_Sucursal,
-      ID_Categoria: newProduct.ID_Categoria,
-      Cantidad: parseInt(newProduct.Cantidad),
-      Precio_Producto: parseFloat(newProduct.Precio_Venta),
-      Precio_Compra: parseFloat(newProduct.Precio_Compra),
-      Detalles: newProduct.Descripcion,
-      Estado: 1,
-      url_image: esURLValida(newProduct.url_image) ? newProduct.url_image : null,
-    };
-
-    const response = await agregarProducto(productoDTO);
-    if (!response || !response.ID_Producto) {
-      alert("Error al agregar el producto");
-      return;
+  
+    let urlFinal = "";
+  
+    try {
+      if (newProduct.archivoImagen) {
+        const resultado = await subirImagen(newProduct.archivoImagen);
+        if (typeof resultado === "string") {
+          urlFinal = resultado;
+        } else if (resultado && typeof resultado === "object" && resultado.url) {
+          urlFinal = resultado.url;
+        } else {
+          throw new Error("La imagen subida no devolvió una URL válida");
+        }
+  
+        console.log("URL de imagen subida:", urlFinal);
+      } else if (esURLValida(newProduct.url_image)) {
+        urlFinal = newProduct.url_image;
+        console.log("URL de imagen válida:", urlFinal);
+      } else {
+        throw new Error("No se proporcionó una imagen válida");
+      }
+  
+      console.log("URL de imagen final:", urlFinal);
+  
+      const productoDTO = {
+        Nombre: newProduct.Nombre,
+        Marca: newProduct.Marca,
+        ID_Sucursal: newProduct.ID_Sucursal,
+        ID_Categoria: newProduct.ID_Categoria,
+        Cantidad: parseInt(newProduct.Cantidad),
+        Precio_Producto: parseFloat(newProduct.Precio_Venta),
+        Precio_Compra: parseFloat(newProduct.Precio_Compra),
+        Detalles: newProduct.Detalles,
+        Estado: 1,
+        url_image: urlFinal,
+      };
+  
+      console.log("Producto a agregar:", productoDTO);
+  
+      const response = await agregarProducto(productoDTO);
+      if (!response?.ID_Producto) {
+        alert("Error al agregar el producto");
+        return;
+      }
+  
+      const compraDTO = {
+        Estado: 1,
+        ID_Producto: response.ID_Producto,
+        Fecha_Compra: new Date().toISOString().split("T")[0],
+        Precio_Compra: parseFloat(newProduct.Precio_Compra),
+        CantidadCompra: parseInt(newProduct.Cantidad),
+      };
+  
+      const compraResult = await agregarCompraProducto(compraDTO);
+      if (!compraResult) {
+        alert("Error al registrar la compra");
+        return;
+      }
+  
+      refrescarProductos();
+      AddModalClose();
+  
+    } catch (error) {
+      console.error("Error en handleSubmit:", error);
+      alert("Ocurrió un error: " + error.message);
     }
-
-    const compraDTO = {
-      Estado: 1,
-      ID_Producto: response.ID_Producto,
-      Fecha_Compra: new Date().toISOString().split("T")[0],
-      Precio_Compra: parseFloat(newProduct.Precio_Compra),
-      CantidadCompra: parseInt(newProduct.Cantidad),
-    };
-
-    const compraResult = await agregarCompraProducto(compraDTO);
-    if (!compraResult) {
-      alert("Error al registrar la compra");
-      return;
-    }
-
-    refrescarProductos();
-    AddModalClose();
   };
+  
 
   return (
     <Modal
@@ -97,56 +118,64 @@ const ModalCompra = ({ openAdd, AddModalClose, refrescarProductos }) => {
   overlayCloseOnClick={false}
 >
   <form className="space-y-6" onSubmit={handleSubmit}>
-    {/* Imagen + Inputs URL/File */}
+ {/* Vista previa */}
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-      <div className="flex flex-col items-center space-y-2">
-        <label className="text-sm font-medium text-gray-300">Vista Previa</label>
-        <div className="w-40 h-40 rounded-xl overflow-hidden border border-gray-600">
-          <img
-            src={newProduct.url_image ? newProduct.url_image : "https://via.placeholder.com/150"}
-            alt="Vista previa"
-            className="w-full h-full object-cover"
-          />
-        </div>
-      </div>
+          <div className="flex flex-col items-center space-y-2">
+            <label className="text-sm font-medium text-gray-300">Vista Previa</label>
+            <div className="w-40 h-40 rounded-xl overflow-hidden border border-gray-600">
+              <img
+                src={
+                  newProduct.archivoImagen
+                    ? URL.createObjectURL(newProduct.archivoImagen)
+                    : newProduct.url_image || "https://via.placeholder.com/150"
+                }
+                alt="Vista previa"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
 
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">
-            Subir Imagen (opcional)
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (file) {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                  setNewProduct({ ...newProduct, url_image: reader.result });
-                };
-                reader.readAsDataURL(file);
-              }
-            }}
-            className="text-gray-300"
-          />
-        </div>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1">
+                Subir Imagen (opcional)
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const archivo = e.target.files[0];
+                  if (archivo) {
+                    setNewProduct({
+                      ...newProduct,
+                      archivoImagen: archivo,
+                      url_image: "", // limpiar URL manual si sube archivo
+                    });
+                  }
+                }}
+                className="text-gray-300"
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">
-            O ingresa una URL de imagen
-          </label>
-          <input
-            type="text"
-            value={newProduct.url_image || ""}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, url_image: e.target.value })
-            }
-            className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="https://..."
-          />
-        </div>
-      </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1">
+                O ingresa una URL de imagen
+              </label>
+              <input
+                type="text"
+                value={newProduct.url_image}
+                onChange={(e) =>
+                  setNewProduct({
+                    ...newProduct,
+                    url_image: e.target.value,
+                    archivoImagen: null, // limpiar archivo si mete URL
+                  })
+                }
+                className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="https://..."
+              />
+            </div>
+          </div>
     </div>
 
     {/* Datos básicos */}
