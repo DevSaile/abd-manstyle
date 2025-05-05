@@ -59,6 +59,7 @@ namespace WebManStyle_ABD.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
             }
         }
+
     }
 }
 
