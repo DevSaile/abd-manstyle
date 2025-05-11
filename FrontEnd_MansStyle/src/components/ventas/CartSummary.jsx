@@ -41,20 +41,23 @@ const CartSummary = ({ cartItems, updateCartItemQuantity, removeFromCart, amount
                             -
                         </button>
                         <input
-                            type="number"
-                            value={item.quantity}
-                            onChange={(e) => {
-                                const newQuantity = parseInt(e.target.value, 10);
-                                if (!isNaN(newQuantity)) {
-                                    updateCartItemQuantity(
-                                        item.ID_Producto,
-                                        Math.min(Math.max(newQuantity, 1), item.stock || 100)
-                                    );
-                                }
-                            }}
-                            className="w-12 text-center bg-gray-800 text-gray-100 border border-gray-600 focus:outline-none"
-                            min="1"
-                        />
+    type="number"
+    value={item.quantity || ""}
+    onChange={(e) => {
+        const newQuantity = e.target.value === "" ? "" : parseInt(e.target.value, 10);
+        if (newQuantity === "" || (!isNaN(newQuantity) && newQuantity >= 0)) {
+            updateCartItemQuantity(item.ID_Producto, newQuantity);
+        }
+    }}
+    onBlur={() => {
+        // Ensure the quantity is at least 1 when the input loses focus
+        if (!item.quantity || item.quantity < 1) {
+            updateCartItemQuantity(item.ID_Producto, 1);
+        }
+    }}
+    className="w-12 text-center bg-gray-800 text-gray-100 border border-gray-600 focus:outline-none"
+    min="1"
+/>
                         <button
                             className="bg-gray-600 text-gray-300 px-2 py-1 rounded-r-lg hover:bg-gray-500"
                             onClick={() =>

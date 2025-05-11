@@ -1,7 +1,8 @@
-import { BarChart2, CircleUser, DollarSign, Menu, NotebookPen, Settings, ShoppingBag, ShoppingCart, Users,TableProperties, Table, BaggageClaim } from "lucide-react";
+import { LogOut,BarChart2, CircleUser, DollarSign, Menu, NotebookPen, Settings, ShoppingBag, ShoppingCart, Users,TableProperties, Table, BaggageClaim } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
+
 
 const SIDEBAR_ITEMS = [
 	{
@@ -70,6 +71,7 @@ const Sidebar = () => {
 							</motion.div>
 						</Link>
 					))}
+					<LogOut className="flex border-blue"/>
 				</nav>
 			</div>
 		</motion.div>
