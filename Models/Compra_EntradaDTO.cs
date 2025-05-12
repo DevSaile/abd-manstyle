@@ -53,6 +53,22 @@ namespace Models
 
 
         /* FIN DE LAS VARIABLES DE CATEGORIA */
+
+
+        /*AQUI ESTARAN LAS NUEVAS VARIABLES PARA LAS NUEVAS TABLAS*/
+
+        public int ID_TipoPago { get; set; }
+        public int ID_TipoMoneda { get; set; }
+
+        public int ID_Proveedor { get; set; }
+
+
+        public string NombreProveedor { get; set; }
+        public string TipoPago { get; set; }
+        public string TipoMoneda { get; set; }
+
+        public List<CompraDetalleDTO> DetallesCompra { get; set; } = new List<CompraDetalleDTO>();
+
     }
 
 }

@@ -41,6 +41,19 @@ namespace Models
 
         public string VentaHechaEN { get; set; } // Nuevo campo para el nombre de la sucursal
 
+
+        /*AQUI VAN LAS NUEVAS VARIABLES DE LAS NUEVAS TABLAS*/
+
+        public decimal CostoAdicional { get; set; }
+        public int ID_TipoPago { get; set; }
+        public int ID_TipoMoneda { get; set; }
+        public int ID_TipoVenta { get; set; }
+
+
+        public string TipoPago { get; set; }
+        public string TipoVenta { get; set; }
+        public string TipoMoneda { get; set; }
+
     }
 
 }
