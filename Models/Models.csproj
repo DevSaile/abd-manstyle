@@ -44,9 +44,11 @@
     <Compile Include="CategoriaDTO.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="ClienteDTO.cs" />
+    <Compile Include="CompraDetalleDTO.cs" />
     <Compile Include="Compra_EntradaDTO.cs" />
     <Compile Include="EmpleadoDTO.cs" />
     <Compile Include="LoginDTO.cs" />
+    <Compile Include="MarcasDTO.cs" />
     <Compile Include="ProductoDTO.cs" />
     <Compile Include="ProductoPorCategoriaDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,6 +57,10 @@
     <Compile Include="ResetPasswordDTO.cs" />
     <Compile Include="RolDTO.cs" />
     <Compile Include="SucursalDTO.cs" />
+    <Compile Include="TipoMonedaDTO.cs" />
+    <Compile Include="TipoPagoDTO.cs" />
+    <Compile Include="TipoUnidadDTO.cs" />
+    <Compile Include="TipoVentaDTO.cs" />
     <Compile Include="Venta_DetallesDTO.cs" />
     <Compile Include="Venta_FacturaDTO.cs" />
   </ItemGroup>
