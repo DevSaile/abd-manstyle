@@ -6,11 +6,13 @@ import ProductCardSales from "../../components/ventas/ProductCardSales";
 import ComboBoxID from "../../components/common/ComboxID";
 import { Plus, CheckCircle } from "lucide-react";
 import CartSummaryBuying from "../../components/compras/BuyingCartSummary";
+import NewProduct from "../../components/compras/NewProductModal";
 
 const BuyingPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProvider, setSelectedProvider] = useState(null);
+  const [showAddProductModal, setShowAddProductModal] = useState(false);
 
   // Test data for providers
   const providers = [
@@ -89,7 +91,7 @@ const BuyingPage = () => {
             onSelect={(provider) => setSelectedProvider(provider)}
           />
           <button
-            onClick={handleAddNewProduct}
+            onClick={() => setShowAddProductModal(true)}
             className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center"
           >
             <Plus className="mr-2" size={18} />
@@ -130,6 +132,10 @@ const BuyingPage = () => {
             </button>
           </div>
         </div>
+        <NewProduct
+          openAdd={showAddProductModal}
+          AddModalClose={() => setShowAddProductModal(false)}
+          />
       </main>
     </div>
   );
