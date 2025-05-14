@@ -60,7 +60,8 @@ const CartSummary = ({
                   e.target.value === "" ? "" : parseInt(e.target.value, 10);
                 if (
                   newQuantity === "" ||
-                  (!isNaN(newQuantity) && newQuantity >= 0)
+                  (!isNaN(newQuantity) &&
+                    newQuantity >= 0 ) // Ensure quantity is within the stock limit
                 ) {
                   updateCartItemQuantity(item.ID_Producto, newQuantity);
                 }
@@ -70,9 +71,14 @@ const CartSummary = ({
                 if (!item.quantity || item.quantity < 1) {
                   updateCartItemQuantity(item.ID_Producto, 1);
                 }
+                if(item.quantity > item.Cantidad){
+                  updateCartItemQuantity(item.ID_Producto, item.Cantidad);
+                }
+
               }}
               className="w-12 text-center bg-gray-800 text-gray-100 border border-gray-600 focus:outline-none"
               min="1"
+              max={item.Cantidad}
             />
             <button
               className="bg-gray-600 text-gray-300 px-2 py-1 rounded-r-lg hover:bg-gray-500"
