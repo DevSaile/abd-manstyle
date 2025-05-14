@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import AdminLayout from "./layouts/AdminLayout";
 import PublicLayout from "./layouts/PublicLayout";
-
+import BuyingPage from "./pages/admin/Compras";
 import LandingPage from "./pages/public/Landing";
 import OverviewPage from "./pages/admin/PanelInicial";
 import ProductsPage from "./pages/admin/Productos";
@@ -72,6 +72,14 @@ function App() {
           element={
             <ProtectedRoute requiredRole="Administrador">
               <RegistroCompra />
+            </ProtectedRoute>
+          }
+        />
+             <Route
+          path="/compra"
+          element={
+            <ProtectedRoute requiredRole="Administrador">
+              <BuyingPage />
             </ProtectedRoute>
           }
         />

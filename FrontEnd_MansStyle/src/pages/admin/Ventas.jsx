@@ -109,7 +109,8 @@ const CashierPage = () => {
     };
 
     const filteredProducts = products.filter((product) =>
-        product.Nombre.toLowerCase().includes(searchTerm.toLowerCase())
+        product.Nombre.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        product.Cantidad > 0
     );
 
     return (
