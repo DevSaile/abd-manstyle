@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import Header from "../../components/common/Header";
@@ -8,11 +8,18 @@ import { Plus, CheckCircle } from "lucide-react";
 import CartSummaryBuying from "../../components/compras/BuyingCartSummary";
 import NewProduct from "../../components/compras/NewProductModal";
 
+import { obtenerProveedoresActivos } from "../../services/ProveedoresService";
+
+// TODAVIA NO FUNCIONA, TENGO QUE HACER UN POST PARA REGISTRAR LA COMPRA, ADEMAS TENGO QUE HACER UN GET PARA OBTENER LOS PRODUCTOS DE LA BASE DE DATOS
+// import { obtenerProductosPorSucursal } from "../../services/ProductosService";
+// APARTE DE ESO TENGO QUE HACER QUE EL FILTRADO FUNCIONE CON LOS PRODUCTOS QUE TENGO EN LA BASE DE DATOS
+
 const BuyingPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedProvider, setSelectedProvider] = useState(null);
+  const [selectedProveedor, setSelectedProveedor] = useState(null);
   const [showAddProductModal, setShowAddProductModal] = useState(false);
+  const [Proveedores, setProveedores] = useState([]);
 
   // Test data for providers
   const providers = [
@@ -28,6 +35,14 @@ const BuyingPage = () => {
     { ID_Producto: 3, Nombre: "Producto 3", Precio_Producto: 30, Proveedor: "A", url_image: "" },
     { ID_Producto: 4, Nombre: "Producto 4", Precio_Producto: 40, Proveedor: "C", url_image: "" },
   ];
+
+  useEffect(() => {
+    // Fetch clients
+    obtenerProveedoresActivos().then((ProveedoresData) => {
+      setProveedores(ProveedoresData.map((c) => ({ label: c.Nombre, value: c.ID_Proveedor })));
+    });
+
+  }, []);
 
   // Filter products based on the selected provider and search term
   const filteredProducts = products.filter(
@@ -86,9 +101,9 @@ const BuyingPage = () => {
           />
           <ComboBoxID
             name="Proveedor"
-            options={providers}
-            selected={selectedProvider}
-            onSelect={(provider) => setSelectedProvider(provider)}
+            options={Proveedores}
+            selected={selectedProveedor}
+            onSelect={(provider) => setSelectedProveedor(provider)}
           />
           <button
             onClick={() => setShowAddProductModal(true)}

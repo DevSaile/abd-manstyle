@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using Models;
 using DAL;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity;
 
 namespace BLL
 {
@@ -120,5 +122,106 @@ namespace BLL
 
         }
 
+        /*public int AgregarCompraPRO(Compra_EntradaDTO compra)
+        {
+            if (compra.DetallesCompra == null || !compra.DetallesCompra.Any())
+                return -1; // No hay detalles de compra
+
+            if (compra.ID_Proveedor == 0 || compra.ID_Sucursal == 0)
+                return -1; // Falta información esencial
+
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    Compra_Entrada nuevaCompra = new Compra_Entrada
+                    {
+                        Estado = compra.Estado ?? 1,
+                        //ID_Proveedor = compra.ID_Proveedor,
+                        Fecha_Compra = compra.Fecha_Compra ?? DateTime.Now,
+                        Precio_Compra = compra.Precio_Compra ?? 0m,
+                        CantidadCompra = compra.CantidadCompra ?? 0,
+                        //ID_Sucursal = compra.ID_Sucursal, esto de aqui se elimina
+                        //ID_TipoPago = compra.ID_TipoPago, esto de aqui se queda
+                        //ID_TipoMoneda = compra.ID_TipoMoneda esto de aqui se queda
+                    };
+
+                    db.Compra_Entrada.Add(nuevaCompra);
+                    db.SaveChanges();
+
+                    foreach (var detalle in compra.DetallesCompra)
+                    {
+                        var producto = db.Producto.FirstOrDefault(p => p.ID_Producto == detalle.ID_Producto);
+                        if (producto == null)
+                        {
+                            Console.WriteLine($"Producto ID {detalle.ID_Producto} no encontrado.");
+                            transaction.Rollback();
+                            return -1;
+                        }
+
+                        producto.Cantidad += detalle.Cantidad; // Incrementar stock
+                        db.Entry(producto).State = EntityState.Modified;
+
+                        CompraDetalle nuevoDetalle = new CompraDetalle
+                        {
+                            ID_Entrada = nuevaCompra.ID_Entrada,
+                            ID_Producto = detalle.ID_Producto,
+                            Cantidad = detalle.Cantidad,
+                            Precio_Compra = detalle.Precio_Compra
+                        };
+
+                        db.CompraDetalle.Add(nuevoDetalle);
+                    }
+
+                    db.SaveChanges();
+                    transaction.Commit();
+                    return nuevaCompra.ID_Entrada;
+                }
+                catch (DbUpdateException ex)
+                {
+                    transaction.Rollback();
+                    Console.WriteLine($"Error en BD: {ex.InnerException?.Message}");
+                    return -1;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Console.WriteLine($"Error General: {ex.Message}");
+                    return -1;
+                }
+            }
+        }*/
+
+       /* public List<Compra_EntradaDTO> ObtenerComprasAgrupadas()
+        {
+            var compras = db.Compra_Entrada
+                .Include(c => c.Proveedor)
+                .Include(c => c.Sucursal)
+                .Include(c => c.CompraDetalle.Select(d => d.Producto))
+                .ToList() // ← Materializa la consulta antes de proyectar
+                .Select(compra => new Compra_EntradaDTO
+                {
+                    ID_Entrada = compra.ID_Entrada,
+                    Fecha_Compra = compra.Fecha_Compra,
+                    NombreProveedor = compra.Proveedor?.Nombre ?? "Desconocido",
+                    Nombre_Sucursal = compra.Sucursal?.Nombre ?? "No especificada",
+                    TipoPago = db.TipoPago.FirstOrDefault(tp => tp.ID_TipoPago == compra.ID_TipoPago)?.Descripcion ?? "No especificado",
+                    TipoMoneda = db.TipoMoneda.FirstOrDefault(tm => tm.ID_TipoMoneda == compra.ID_TipoMoneda)?.Descripcion ?? "No especificado",
+                    Precio_Compra = compra.Precio_Compra,
+                    CantidadCompra = compra.CantidadCompra,
+                    DetallesCompra = compra.CompraDetalle.Select(detalle => new CompraDetalleDTO
+                    {
+                        ID_Producto = detalle.ID_Producto,
+                        Cantidad = detalle.Cantidad,
+                        Precio_Compra = detalle.Precio_Compra,
+                        NombreProducto = detalle.Producto?.Nombre ?? "Producto desconocido"
+                    }).ToList()
+                })
+                .ToList();
+
+            return compras;
+        }*/
+
     }
+
 }

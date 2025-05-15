@@ -66,6 +66,30 @@ namespace BLL
             }
         }
 
+        // Obtener la lista de proveedores con Estado = 1
+        public List<ProveedorDTO> ObtenerProveedoresActivos()
+        {
+            try
+            {
+                return db.Proveedor
+                    .Where(p => p.Estado == 1) // Agregamos la cláusula Where para filtrar por Estado
+                    .Select(p => new ProveedorDTO
+                    {
+                        ID_Proveedor = p.ID_Proveedor,
+                        Nombre = p.Nombre,
+                        Numero = p.Numero,
+                        Direccion = p.Direccion,
+                        Estado = p.Estado
+                    })
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener proveedores activos: {ex.Message}");
+                return new List<ProveedorDTO>();
+            }
+        }
+
         // Obtener un proveedor por su ID
         public ProveedorDTO ObtenerProveedorPorID(int id)
         {

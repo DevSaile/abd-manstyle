@@ -1,5 +1,8 @@
 import React from "react";
 
+import { obtenerProductos } from "../../services/ProductosService";
+
+
 const CartSummaryBuying = ({
   cartItems,
   updateCartItemQuantity,

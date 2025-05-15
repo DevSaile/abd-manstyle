@@ -1,6 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ComboBoxID from "../common/ComboxID";
 import { Drawer } from "@rewind-ui/core";
+
+
+import { obtenerCategoriasActivas } from "../../services/CategoriasService";
+import { obtenerSucursales } from "../../services/SucursalService";
+import { agregarProducto } from "../../services/ProductosService";
+import { subirImagen } from "../../services/UploadService"; 
+
+/*Me falta agregar lo de las marcas*/ 
 
 const NewProduct = ({ openAdd, AddModalClose }) => {
   const [newProduct, setNewProduct] = useState({
@@ -16,23 +24,77 @@ const NewProduct = ({ openAdd, AddModalClose }) => {
     archivoImagen: null,
   });
 
-  // Mock data for categories and branches
-  const categorias = [
-    { label: "Electrónica", value: "1" },
-    { label: "Ropa", value: "2" },
-    { label: "Hogar", value: "3" },
-  ];
+  const [categorias, setCategorias] = useState([]);
+  const [sucursales, setSucursales] = useState([]);
 
-  const sucursales = [
-    { label: "Sucursal A", value: "A" },
-    { label: "Sucursal B", value: "B" },
-    { label: "Sucursal C", value: "C" },
-  ];
+  useEffect(() => {
+    Promise.all([obtenerCategoriasActivas(), obtenerSucursales()]).then(
+      ([categoriasData, sucursalesData]) => {
+        setCategorias(categoriasData.map(c => ({ label: c.Nombre, value: c.ID_Categoria })));
+        setSucursales(sucursalesData.map(s => ({ label: s.Nombre, value: s.ID_Sucursal })));
+      }
+    );
+  }, []);
 
-  const handleSubmit = (e) => {
+  const esURLValida = (url) => typeof url === "string" && url.startsWith("http");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Producto agregado:", newProduct);
-    AddModalClose();
+  
+    let urlFinal = "";
+  
+    try {
+      if (newProduct.archivoImagen) {
+        const resultado = await subirImagen(newProduct.archivoImagen);
+        if (typeof resultado === "string") {
+          urlFinal = resultado;
+        } else if (resultado && typeof resultado === "object" && resultado.url) {
+          urlFinal = resultado.url;
+        } else {
+          throw new Error("La imagen subida no devolvió una URL válida");
+        }
+  
+        console.log("URL de imagen subida:", urlFinal);
+      } else if (esURLValida(newProduct.url_image)) {
+        urlFinal = newProduct.url_image;
+        console.log("URL de imagen válida:", urlFinal);
+      } else {
+        throw new Error("No se proporcionó una imagen válida");
+      }
+  
+      console.log("URL de imagen final:", urlFinal);
+  
+      const productoDTO = {
+        Nombre: newProduct.Nombre,
+        Marca: newProduct.Marca,
+        ID_Sucursal: newProduct.ID_Sucursal,
+        ID_Categoria: newProduct.ID_Categoria,
+        Cantidad: parseInt(newProduct.Cantidad),
+        Precio_Producto: parseFloat(newProduct.Precio_Venta),
+        Precio_Compra: parseFloat(newProduct.Precio_Compra),
+        Detalles: newProduct.Detalles,
+        Estado: 1,
+        url_image: urlFinal,
+      };
+  
+      console.log("Producto a agregar:", productoDTO);
+  
+      const response = await agregarProducto(productoDTO);
+      if (!response?.ID_Producto) {
+        alert("Error al agregar el producto");
+        return;
+      }
+      else {
+        console.log("Producto agregado con éxito:", response);
+      }
+  
+      refrescarProductos();
+      AddModalClose();
+  
+    } catch (error) {
+      console.error("Error en handleSubmit:", error);
+      alert("Ocurrió un error: " + error.message);
+    }
   };
 
   return (

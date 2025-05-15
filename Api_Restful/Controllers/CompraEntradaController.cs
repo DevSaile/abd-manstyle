@@ -14,7 +14,7 @@ namespace WebManStyle_ABD.Controllers
 
     public class CompraEntradaController : ApiController
     {
-
+        //IMPORTANTE AQUI VOY A CAMBIAR PARA UTILIZAR LOS NUEVOS METODOS DE AGREGAR COMPRA Y AGRUPAR LAS COMPRAS PARA MOSTRARLAS
         private readonly Compra_EntradaMCN MetodosCompraEntrada = new Compra_EntradaMCN();
 
         // Agregar una nueva compra de producto
