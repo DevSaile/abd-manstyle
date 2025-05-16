@@ -55,15 +55,12 @@ const NewProduct = ({ openAdd, AddModalClose }) => {
           throw new Error("La imagen subida no devolvió una URL válida");
         }
   
-        console.log("URL de imagen subida:", urlFinal);
       } else if (esURLValida(newProduct.url_image)) {
         urlFinal = newProduct.url_image;
-        console.log("URL de imagen válida:", urlFinal);
       } else {
         throw new Error("No se proporcionó una imagen válida");
       }
   
-      console.log("URL de imagen final:", urlFinal);
   
       const productoDTO = {
         Nombre: newProduct.Nombre,
@@ -78,7 +75,6 @@ const NewProduct = ({ openAdd, AddModalClose }) => {
         url_image: urlFinal,
       };
   
-      console.log("Producto a agregar:", productoDTO);
   
       const response = await agregarProducto(productoDTO);
       if (!response?.ID_Producto) {
@@ -86,14 +82,12 @@ const NewProduct = ({ openAdd, AddModalClose }) => {
         return;
       }
       else {
-        console.log("Producto agregado con éxito:", response);
       }
   
       refrescarProductos();
       AddModalClose();
   
     } catch (error) {
-      console.error("Error en handleSubmit:", error);
       alert("Ocurrió un error: " + error.message);
     }
   };

@@ -3,6 +3,7 @@ import { Modal } from "@rewind-ui/core";
 import ComboBoxID from "../common/ComboxID";
 import { obtenerSucursales } from "../../services/SucursalService";
 import { obtenerRoles, agregarEmpleado, actualizarEmpleado } from "../../services/UsuariosService";
+import { label } from "framer-motion/client";
 
 const ManageUser = ({ open, onClose, userData }) => {
     const [formData, setFormData] = useState({

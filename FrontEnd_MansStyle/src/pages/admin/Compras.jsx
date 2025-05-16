@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 
 import Header from "../../components/common/Header";
 import ProductCardSales from "../../components/ventas/ProductCardSales";
-import ComboBoxID from "../../components/common/ComboxID";
 import { Plus, CheckCircle } from "lucide-react";
 import CartSummaryBuying from "../../components/compras/BuyingCartSummary";
 import NewProduct from "../../components/compras/NewProductModal";
@@ -77,7 +76,7 @@ const BuyingPage = () => {
   };
 
   return (
-    <div className="flex-1 overflow-auto relative z-10">
+    <motion.div className="flex-1 overflow-auto relative z-10">
       <Header title="Buying" />
 
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
@@ -139,7 +138,7 @@ const BuyingPage = () => {
           AddModalClose={() => setShowAddProductModal(false)}
           />
       </main>
-    </div>
+    </motion.div>
   );
 };
 

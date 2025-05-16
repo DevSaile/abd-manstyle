@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CheckCircle, Clock, DollarSign, ShoppingBag, TrendingUp } from "lucide-react";
+import { Clock, DollarSign, ShoppingBag, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 import Header from "../../components/common/Header";
 import StatCard from "../../components/common/StatCard";
@@ -58,7 +58,6 @@ const RegistroCompra = () => {
           transition={{ duration: 1 }}
         >
           <StatCard name="Total Compras" icon={ShoppingBag} value={stats.totalCompras} color="#6366F1" />
-          <StatCard name="Compras Activas" icon={CheckCircle} value={stats.comprasActivas} color="#10B981" />
           <StatCard name="Compras Canceladas" icon={Clock} value={stats.comprasCanceladas} color="#F59E0B" />
           <StatCard
             name="Inversión Total"

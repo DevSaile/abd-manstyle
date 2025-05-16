@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search, Plus } from "lucide-react";
-import { ToastContainer, useToast } from "@rewind-ui/core";
+import { useToast } from "@rewind-ui/core";
 import { actualizarCategoria, eliminarCategoria, agregarCategoria } from "../../services/CategoriasService";
 
 const CategoryTable = ({

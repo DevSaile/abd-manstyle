@@ -5,7 +5,6 @@ import { Search, Plus } from "lucide-react";
 const BrandTable = ({
     brandData,
     openDelete,
-    selectedBrand,
     setSelectedbrand,
 }) => {
     const [searchTerm, setSearchTerm] = useState("");

@@ -5,12 +5,10 @@ import {
   DollarSign,
   Menu,
   NotebookPen,
-  Settings,
   ShoppingBag,
   ShoppingCart,
   Users,
   TableProperties,
-  Table,
   BaggageClaim,
 } from "lucide-react";
 import { useState } from "react";
@@ -132,12 +130,28 @@ const Sidebar = () => {
               </motion.div>
             </Link>
           ))}
-          <div className="flex justify-center mt-9">
-            <LogOut
-              onClick={handleLogout}
-              className="text-red-500 cursor-pointer hover:text-red-300"
-            />
-          </div>{" "}
+              <button onClick={handleLogout}>
+              <motion.div className="flex items-center p-4 text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors mb-2 mt-16">
+                <LogOut
+                  size={20}
+                  style={{ color: "red", minWidth: "20px" }}
+                />
+                <AnimatePresence>
+                  {isSidebarOpen && (
+                    <motion.span
+                      className="ml-4 whitespace-nowrap"
+                      initial={{ opacity: 0, width: 0 }}
+                      animate={{ opacity: 1, width: "auto" }}
+                      exit={{ opacity: 0, width: 0 }}
+                      transition={{ duration: 0.2, delay: 0.3 }}
+                    >
+                      Cerrar Sesion
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            </button>
+          
         </nav>
       </div>
     </motion.div>

@@ -12,13 +12,9 @@ import { Plus } from "lucide-react";
 import Header from "../../components/common/Header";
 import ComboBox from "../../components/common/ComboBox";
 import ProductCard from "../../components/productos/ProductCard";
-import SalesTrendChart from "../../components/productos/SalesTrendChart";
-import SellsPerCategory from "../../components/panelinicial/VentasPorCategoria";
 import ModalEditar from "../../components/productos/ModalEditar";
 import { Modal } from "@rewind-ui/core";
-import ModalCompra from "../../components/productos/ModalCompra";
 import ModalDetalles from "../../components/productos/ModalDetalles";
-import ModalCompraExistente from "../../components/productos/ModalCompraExistente";
 
 const ProductsPage = () => {
   const [openDetails, setOpenDetails] = useState(false);
@@ -123,7 +119,6 @@ const ProductsPage = () => {
       ("Error al eliminar el producto");
         
     } catch (error) {
-      console.error("Error:", error);
       alert(error.response?.data?.message || "Error al eliminar el producto");
     }
 
@@ -165,7 +160,7 @@ const ProductsPage = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          {userRole === "Empleado" && (
+          
           <button
               className=" bg-gray-700 text-white placeholder-gray-400 rounded-lg py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               onClick={() => {
@@ -174,7 +169,7 @@ const ProductsPage = () => {
        >
           Detalles
         </button>
-        )}
+        
 
           {/* Product Cards */}
           <div
@@ -197,7 +192,6 @@ const ProductsPage = () => {
                 }
                 onClick={() => {
                   setSelectedProduct(product);
-                  console.log(selectedProducto);
                 }}
               />
             ))}
@@ -206,22 +200,8 @@ const ProductsPage = () => {
 
           <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4">
-        <button
-          className="bg-transparent text-green-600 border border-green-600 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
-        onClick={() => {
-          setOpenAdd(true);
-        }}
-        >
-          <Plus/>Nuevo
-        </button>
-        <button
-          className="bg-transparent text-green-600 border border-green-600 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
-        onClick={() => {
-          setOpenExistente(true);
-        }}
-        >
-          <Plus/>Existente
-        </button>
+    
+   
         </div>
         {
         <button
@@ -277,32 +257,6 @@ const ProductsPage = () => {
             
           </div>
         </Modal>
-
-        
-        <ModalCompra
-        openAdd={openAdd}
-        AddModalClose={() => setOpenAdd(false)}
-        refrescarProductos={() => {
-          obtenerProductos().then((data) => {
-            setProductos(data);
-            setFilteredProducts(data); // Refrescar la lista después de editar
-          });
-        }}
-        />
-
-      <ModalCompraExistente
-        openExistente={openExistente}
-        ExistenteModalClose={() => setOpenExistente(false)}
-        refrescarProductos={() => {
-          obtenerProductos().then((data) => {
-            setProductos(data);
-            setFilteredProducts(data); // Refresh the product list after adding
-          });
-        }}
-        fetchProductoByID={obtenerProductoPorID} // Nueva prop para cargar producto por ID
-        productoID={selectedProducto?.ID_Producto || null} // Pasar ID del producto seleccionado
-
-      />;
 
         <ModalEditar
           openEdit={openEdit}
