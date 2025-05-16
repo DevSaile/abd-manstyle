@@ -8,7 +8,6 @@ import { Plus, CheckCircle } from "lucide-react";
 import CartSummaryBuying from "../../components/compras/BuyingCartSummary";
 import NewProduct from "../../components/compras/NewProductModal";
 
-import { obtenerProveedoresActivos } from "../../services/ProveedoresService";
 
 // TODAVIA NO FUNCIONA, TENGO QUE HACER UN POST PARA REGISTRAR LA COMPRA, ADEMAS TENGO QUE HACER UN GET PARA OBTENER LOS PRODUCTOS DE LA BASE DE DATOS
 // import { obtenerProductosPorSucursal } from "../../services/ProductosService";
@@ -19,7 +18,6 @@ const BuyingPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProveedor, setSelectedProveedor] = useState(null);
   const [showAddProductModal, setShowAddProductModal] = useState(false);
-  const [Proveedores, setProveedores] = useState([]);
 
   // Test data for providers
   const providers = [
@@ -36,18 +34,12 @@ const BuyingPage = () => {
     { ID_Producto: 4, Nombre: "Producto 4", Precio_Producto: 40, Proveedor: "C", url_image: "" },
   ];
 
-  useEffect(() => {
-    // Fetch clients
-    obtenerProveedoresActivos().then((ProveedoresData) => {
-      setProveedores(ProveedoresData.map((c) => ({ label: c.Nombre, value: c.ID_Proveedor })));
-    });
-
-  }, []);
+  
 
   // Filter products based on the selected provider and search term
   const filteredProducts = products.filter(
     (product) =>
-      (!selectedProvider || product.Proveedor === selectedProvider.value) &&
+      
       product.Nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -99,12 +91,7 @@ const BuyingPage = () => {
             placeholder="Buscar productos..."
             className="w-8/12 bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
           />
-          <ComboBoxID
-            name="Proveedor"
-            options={Proveedores}
-            selected={selectedProveedor}
-            onSelect={(provider) => setSelectedProveedor(provider)}
-          />
+        
           <button
             onClick={() => setShowAddProductModal(true)}
             className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center"

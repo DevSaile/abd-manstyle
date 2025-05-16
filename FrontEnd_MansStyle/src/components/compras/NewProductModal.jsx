@@ -199,12 +199,25 @@ const NewProduct = ({ openAdd, AddModalClose }) => {
 
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">Marca</label>
-            <input
-              type="text"
-              value={newProduct.Marca}
-              onChange={(e) => setNewProduct({ ...newProduct, Marca: e.target.value })}
-              className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
+           <ComboBoxID
+              name="Seleccionar Marca"
+              options={[
+                { label: "Samsung", value: "Samsung" },
+                { label: "Apple", value: "Apple" },
+                { label: "Sony", value: "Sony" },
+                { label: "LG", value: "LG" },
+                { label: "Otra", value: "Otra" },
+              ]}
+              selected={{
+                label: newProduct.Marca || "",
+                value: newProduct.Marca || "",
+              }}
+              onSelect={(selectedOption) =>
+                setNewProduct({
+                  ...newProduct,
+                  Marca: selectedOption.value,
+                })
+              }
             />
           </div>
         </div>
