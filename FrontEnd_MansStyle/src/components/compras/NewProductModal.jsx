@@ -9,6 +9,7 @@ import { agregarProducto } from "../../services/ProductosService";
 import { subirImagen } from "../../services/UploadService"; 
 
 /*Me falta agregar lo de las marcas*/ 
+/* IGUAL AAQUI ME FALTA AGREGAR LO DE PROVEEDORES*/ 
 
 const NewProduct = ({ openAdd, AddModalClose }) => {
   const [newProduct, setNewProduct] = useState({

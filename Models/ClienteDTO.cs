@@ -12,6 +12,8 @@ namespace Models
         public string Nombre { get; set; }
         public int? Estado { get; set; }
 
+        public string Telefono { get; set; }
+
         public string NombreEstado { get; set; }
     }
 }
