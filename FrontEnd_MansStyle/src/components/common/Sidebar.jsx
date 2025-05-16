@@ -16,6 +16,7 @@ import {
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SIDEBAR_ITEMS = [
   {
@@ -56,7 +57,7 @@ const SIDEBAR_ITEMS = [
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
+  const navigate = useNavigate();
   const userRole = localStorage.getItem("rol");
 
   const filteredSidebarItems =
@@ -65,6 +66,30 @@ const Sidebar = () => {
       : SIDEBAR_ITEMS.filter(
           (item) => ["Productos", "Ventas"].includes(item.name) // Other roles see only "Productos" and "Ventas"
         );
+
+  const handleLogout = () => {
+    // Clear user session
+    localStorage.removeItem("usuario");
+    localStorage.removeItem("rol");
+    localStorage.removeItem("isAuthenticated");
+
+    // Redirect to login page and replace the history stack
+    navigate("/", { replace: true });
+
+    // Clear the browser's history stack and block back navigation
+    setTimeout(() => {
+      window.history.pushState(null, null, window.location.href);
+      const handlePopState = () => {
+        window.history.pushState(null, null, window.location.href);
+      };
+      window.addEventListener("popstate", handlePopState);
+
+      // Cleanup the event listener when the user navigates away
+      return () => {
+        window.removeEventListener("popstate", handlePopState);
+      };
+    }, 0);
+  };
 
   return (
     <motion.div
@@ -107,7 +132,12 @@ const Sidebar = () => {
               </motion.div>
             </Link>
           ))}
-          <LogOut className="flex border-blue" />
+          <div className="flex justify-center mt-9">
+            <LogOut
+              onClick={handleLogout}
+              className="text-red-500 cursor-pointer hover:text-red-300"
+            />
+          </div>{" "}
         </nav>
       </div>
     </motion.div>
