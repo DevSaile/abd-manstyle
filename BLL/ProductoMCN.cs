@@ -31,11 +31,11 @@ namespace BLL
                                  ID_Producto = p.ID_Producto,
                                  Descripcion_Categoria = p.Categoria != null ? p.Categoria.Nombre : "Sin categoría",
                                  Nombre = p.Nombre,
-                                 Marca = p.Marca,
+                                 Marca = p.Marcas.Nombre,
                                  Cantidad = p.Cantidad,
                                  Precio_Producto = p.Precio_Producto,
                                  Precio_Compra = p.Precio_Compra,
-                                 Detalles = p.Detalles,
+                                 Detalles = p.DetalleS,
                                  url_image = p.Image_URL
 
                              }).ToList();
@@ -57,11 +57,11 @@ namespace BLL
                         Descripcion_Categoria = p.Categoria.Nombre, // Accede al nombre de la categoría
 
                         Nombre = p.Nombre,
-                        Marca = p.Marca,
+                        Marca = p.Marcas.Nombre,
                         Cantidad = p.Cantidad,
                         //Precio_Compra = p.Precio_Compra,
                         Precio_Producto = p.Precio_Producto,
-                        Detalles = p.Detalles // Asegúrate de incluir la propiedad si es relevante
+                        Detalles = p.DetalleS // Asegúrate de incluir la propiedad si es relevante
 
 
                     }).ToList();
@@ -85,13 +85,13 @@ namespace BLL
                         Descripcion_Categoria = p.Categoria.Nombre, // Accede al nombre de la categoría
 
                         Nombre = p.Nombre,
-                        Marca = p.Marca,
+                        Marca = p.Marcas.Nombre,
                         Cantidad = p.Cantidad,
                         //Precio_Compra = p.Precio_Compra,
                         Precio_Producto = p.Precio_Producto,
                         Precio_Compra = p.Precio_Compra,
                         url_image = p.Image_URL,
-                        Detalles = p.Detalles // Asegúrate de incluir la propiedad si es relevante
+                        Detalles = p.DetalleS // Asegúrate de incluir la propiedad si es relevante
 
 
                     }).FirstOrDefault();
@@ -115,11 +115,11 @@ namespace BLL
                         Descripcion_Categoria = p.Categoria.Nombre, // Accede al nombre de la categoría
 
                         Nombre = p.Nombre,
-                        Marca = p.Marca,
+                        Marca = p.Marcas.Nombre,
                         Cantidad = p.Cantidad,
                         //Precio_Compra = p.Precio_Compra,
                         Precio_Producto = p.Precio_Producto,
-                        Detalles = p.Detalles // Asegúrate de incluir la propiedad si es relevante
+                        Detalles = p.DetalleS // Asegúrate de incluir la propiedad si es relevante
 
 
                     }).ToList();
@@ -140,60 +140,18 @@ namespace BLL
                         Descripcion_Categoria = p.Categoria.Nombre, // Accede al nombre de la categoría
 
                         Nombre = p.Nombre,
-                        Marca = p.Marca,
+                        Marca = p.Marcas.Nombre,
                         Cantidad = p.Cantidad,
                         //Precio_Compra = p.Precio_Compra,
                         Precio_Producto = p.Precio_Producto,
-                        Detalles = p.Detalles // Asegúrate de incluir la propiedad si es relevante
+                        Detalles = p.DetalleS // Asegúrate de incluir la propiedad si es relevante
 
 
                     }).ToList();
 
         }
 
-        public List<ProductoDTO> BuscarProductosHEAVY(string nombre = null, string marca = null, int? categoriaId = null, int? sucursalId = null, bool soloActivos = true)
-        {
-            var query = db.Producto.AsQueryable();
-
-            if (!string.IsNullOrEmpty(nombre))
-            {
-                query = query.Where(p => p.Nombre.ToLower().Contains(nombre.ToLower()));
-            }
-
-            if (!string.IsNullOrEmpty(marca))
-            {
-                query = query.Where(p => p.Marca.ToLower().Contains(marca.ToLower()));
-            }
-
-            if (categoriaId.HasValue)
-            {
-                query = query.Where(p => p.ID_Categoria == categoriaId);
-            }
-
-            if (sucursalId.HasValue)
-            {
-                query = query.Where(p => p.ID_Sucursal == sucursalId);
-            }
-
-            if (soloActivos)
-            {
-                query = query.Where(p => p.Estado == 1);
-            }
-
-            return query.Select(p => new ProductoDTO
-            {
-                ID_Producto = p.ID_Producto,
-                EstadoProducto = "Activo",
-                versucu = p.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Primaria",
-                Descripcion_Categoria = p.Categoria.Nombre,
-                Nombre = p.Nombre,
-                Marca = p.Marca,
-                Cantidad = p.Cantidad,
-                Precio_Producto = p.Precio_Producto,
-                Detalles = p.Detalles
-
-            }).ToList();
-        }
+ 
 
         public List<ProductoDTO> verproductos()
         {
@@ -206,7 +164,7 @@ namespace BLL
                 {
                     ID_Producto = p.ID_Producto,
                     Nombre = p.Nombre,
-                    Marca = p.Marca,
+                    Marca = p.Marcas.Nombre,
                     Descripcion_Categoria = p.Categoria.Nombre, // Accede al nombre de la categoría
                     versucu = p.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Primaria",
                     Descripcion_Sucursal = p.Sucursal.Nombre,   // Accede al nombre de la sucursal
@@ -215,13 +173,18 @@ namespace BLL
                     //Precio_Compra = p.Precio_Compra,
                     Precio_Producto = p.Precio_Producto,
                     Descripcion_Proveedor = p.Proveedor.Nombre, // Accede al nombre del proveedor
-                    Detalles = p.Detalles // Asegúrate de incluir la propiedad si es relevante
+                    Detalles = p.DetalleS // Asegúrate de incluir la propiedad si es relevante
+
+                    // ID_Marca = produ.ID_Marca,
+                    // ID_TipoMoneda = produ.ID_TipoMoneda, NECESITO ACCDER A ESTAS NUEVAS VARIABLES, SUS SIMBOLOS Y NOMBRES
+                    // ID_Unidad = produ.ID_Unidad
+
                 }).ToList();
 
             return resultado; // Esto ahora devuelve List<ProductoDTO>
         }
 
-        public List<string> ObtenerMarcas()
+        /*public List<string> ObtenerMarcas()
         {
             var marcasUnicas = db.Producto
                 .Where(p => p.Estado == 1) // Filtra productos activos
@@ -230,7 +193,7 @@ namespace BLL
                 .ToList();
 
             return marcasUnicas;
-        }
+        }*/
 
         public int AgregarProducto(ProductoDTO produ)
         {
@@ -245,14 +208,15 @@ namespace BLL
                     Cantidad = produ.Cantidad,
                     Precio_Compra = produ.Precio_Compra,
                     Precio_Producto = produ.Precio_Producto,
-                    Marca = produ.Marca,
-                    Detalles = produ.Detalles,
+                    ID_Marca = produ.ID_Marca,
+                    DetalleS = produ.Detalles,
                     Image_URL = produ.url_image,
                     ID_Categoria = produ.ID_Categoria,
                     ID_Sucursal = produ.ID_Sucursal,
                     Estado = 1
-
-
+                    // ID_Marca = produ.ID_Marca,
+                    // ID_TipoMoneda = produ.ID_TipoMoneda,
+                    // ID_Unidad = produ.ID_Unidad
                 };
 
                 db.Producto.Add(nuevoprodu);
@@ -313,8 +277,8 @@ namespace BLL
                 productoExistente.ID_Sucursal = produ.ID_Sucursal;
                 productoExistente.ID_Categoria = produ.ID_Categoria;
                 productoExistente.Nombre = produ.Nombre.Trim();
-                productoExistente.Marca = produ.Marca?.Trim();
-                productoExistente.Detalles = produ.Detalles?.Trim();
+                productoExistente.ID_Marca = produ.ID_Marca;
+                productoExistente.DetalleS = produ.Detalles?.Trim();
                 productoExistente.Precio_Producto = produ.Precio_Producto;
                 //productoExistente.Precio_Compra = produ.Precio_Compra;
                 productoExistente.Image_URL = string.IsNullOrEmpty(produ.url_image) ? null : produ.url_image.Trim();

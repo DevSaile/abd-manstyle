@@ -18,7 +18,7 @@ namespace WebManStyle_ABD.Controllers
         private readonly Compra_EntradaMCN MetodosCompraEntrada = new Compra_EntradaMCN();
 
         // Agregar una nueva compra de producto
-        [HttpPost]
+        /*[HttpPost]
         [Route("agregar")]
         public IHttpActionResult AgregarCompraProducto([FromBody] Compra_EntradaDTO nuevaCompra)
         {
@@ -30,10 +30,24 @@ namespace WebManStyle_ABD.Controllers
                 return InternalServerError(new Exception("Error al registrar la compra."));
 
             return Ok("Compra registrada correctamente.");
+        }*/
+
+        [HttpPost]
+        [Route("agregar")]
+        public IHttpActionResult AgregarCompraProducto([FromBody] Compra_EntradaDTO nuevaCompra)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var resultado = MetodosCompraEntrada.AgregarCompraPRO(nuevaCompra);
+            if (resultado == -1)
+                return InternalServerError(new Exception("Error al registrar la compra."));
+
+            return Ok("Compra registrada correctamente.");
         }
 
         // Obtener el registro completo de compras
-        [HttpGet]
+        /*[HttpGet]
         [Route("")]
         public IHttpActionResult ObtenerRegistroCompras()
         {
@@ -42,10 +56,21 @@ namespace WebManStyle_ABD.Controllers
                 return NotFound();
 
             return Ok(registros);
+        }*/
+
+        [HttpGet]
+        [Route("")]
+        public IHttpActionResult ObtenerRegistroCompras()
+        {
+            var registros = MetodosCompraEntrada.ObtenerComprasAgrupadas();
+            if (registros == null || registros.Count == 0)
+                return NotFound();
+
+            return Ok(registros);
         }
 
         // Obtener compras dentro de un rango de fechas
-        [HttpGet]
+        /*[HttpGet]
         [Route("rango")]
         public IHttpActionResult ObtenerRegistroComprasPorFechas([FromUri] DateTime fechaInicio, [FromUri] DateTime fechaFin)
         {
@@ -54,7 +79,7 @@ namespace WebManStyle_ABD.Controllers
                 return NotFound();
 
             return Ok(registros);
-        }
+        }*/
 
 
     }

@@ -21,7 +21,7 @@ namespace BLL
 
         }
 
-        public bool AgregarProducto(Compra_EntradaDTO compraentra)
+        /*public bool AgregarProducto(Compra_EntradaDTO compraentra)
         {
 
             try
@@ -51,9 +51,9 @@ namespace BLL
 
             }
 
-        }
+        }*/
 
-        public List<Compra_EntradaDTO> VerRegistroCompraEntradaFechas(DateTime fechaInicio, DateTime fechaFin)
+        /*public List<Compra_EntradaDTO> VerRegistroCompraEntradaFechas(DateTime fechaInicio, DateTime fechaFin)
         {
 
             var resultado =
@@ -80,11 +80,11 @@ namespace BLL
 
             return resultado.ToList();
 
-        }
+        }*/
 
 
 
-        public List<Compra_EntradaDTO> VerRegistroCompraEntrada()
+        /*public List<Compra_EntradaDTO> VerRegistroCompraEntrada()
         {
 
 
@@ -106,7 +106,7 @@ namespace BLL
                     Marca = p.Marca,
                     CantidadCompra = ce.CantidadCompra,
                     Precio_Compra = ce.Precio_Compra, // aqui modifique esto
-                    /*Precio_Producto = p.Precio_Producto,*/  //segun mi logica no hay que usar info del producto en la compra entrada
+                    //Precio_Producto = p.Precio_Producto, segun mi logica no hay que usar info del producto en la compra entrada
                     Detalles = p.Detalles,
                     Descripcion_Sucursal = su.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Primaria",
                     Nombre_Sucursal = su.Nombre,
@@ -117,12 +117,12 @@ namespace BLL
             return resultado.ToList();
 
 
-            /*   HAY OTRA MANERA MAS FACIL DE HACER ESTA WEA PERO ME COMPLIQUE LA VIDA */
+             HAY OTRA MANERA MAS FACIL DE HACER ESTA WEA PERO ME COMPLIQUE LA VIDA 
 
 
-        }
+        }*/
 
-        /*public int AgregarCompraPRO(Compra_EntradaDTO compra)
+        public int AgregarCompraPRO(Compra_EntradaDTO compra)
         {
             if (compra.DetallesCompra == null || !compra.DetallesCompra.Any())
                 return -1; // No hay detalles de compra
@@ -140,7 +140,7 @@ namespace BLL
                         //ID_Proveedor = compra.ID_Proveedor,
                         Fecha_Compra = compra.Fecha_Compra ?? DateTime.Now,
                         Precio_Compra = compra.Precio_Compra ?? 0m,
-                        CantidadCompra = compra.CantidadCompra ?? 0,
+                        Cantidad = compra.CantidadCompra ?? 0,
                         //ID_Sucursal = compra.ID_Sucursal, esto de aqui se elimina
                         //ID_TipoPago = compra.ID_TipoPago, esto de aqui se queda
                         //ID_TipoMoneda = compra.ID_TipoMoneda esto de aqui se queda
@@ -162,7 +162,7 @@ namespace BLL
                         producto.Cantidad += detalle.Cantidad; // Incrementar stock
                         db.Entry(producto).State = EntityState.Modified;
 
-                        CompraDetalle nuevoDetalle = new CompraDetalle
+                        Compra_Detalles nuevoDetalle = new Compra_Detalles
                         {
                             ID_Entrada = nuevaCompra.ID_Entrada,
                             ID_Producto = detalle.ID_Producto,
@@ -170,7 +170,7 @@ namespace BLL
                             Precio_Compra = detalle.Precio_Compra
                         };
 
-                        db.CompraDetalle.Add(nuevoDetalle);
+                        db.Compra_Detalles.Add(nuevoDetalle);
                     }
 
                     db.SaveChanges();
@@ -190,14 +190,14 @@ namespace BLL
                     return -1;
                 }
             }
-        }*/
+        }
 
-       /* public List<Compra_EntradaDTO> ObtenerComprasAgrupadas()
+       public List<Compra_EntradaDTO> ObtenerComprasAgrupadas()
         {
             var compras = db.Compra_Entrada
                 .Include(c => c.Proveedor)
                 .Include(c => c.Sucursal)
-                .Include(c => c.CompraDetalle.Select(d => d.Producto))
+                .Include(c => c.Compra_Detalles.Select(d => d.Producto))
                 .ToList() // ← Materializa la consulta antes de proyectar
                 .Select(compra => new Compra_EntradaDTO
                 {
@@ -205,11 +205,11 @@ namespace BLL
                     Fecha_Compra = compra.Fecha_Compra,
                     NombreProveedor = compra.Proveedor?.Nombre ?? "Desconocido",
                     Nombre_Sucursal = compra.Sucursal?.Nombre ?? "No especificada",
-                    TipoPago = db.TipoPago.FirstOrDefault(tp => tp.ID_TipoPago == compra.ID_TipoPago)?.Descripcion ?? "No especificado",
-                    TipoMoneda = db.TipoMoneda.FirstOrDefault(tm => tm.ID_TipoMoneda == compra.ID_TipoMoneda)?.Descripcion ?? "No especificado",
+                    //TipoPago = db.TipoPago.FirstOrDefault(tp => tp.ID_TipoPago == compra.ID_TipoPago)?.Descripcion ?? "No especificado",
+                    //TipoMoneda = db.TipoMoneda.FirstOrDefault(tm => tm.ID_TipoMoneda == compra.ID_TipoMoneda)?.Descripcion ?? "No especificado",
                     Precio_Compra = compra.Precio_Compra,
-                    CantidadCompra = compra.CantidadCompra,
-                    DetallesCompra = compra.CompraDetalle.Select(detalle => new CompraDetalleDTO
+                    CantidadCompra = compra.Cantidad,
+                    DetallesCompra = compra.Compra_Detalles.Select(detalle => new CompraDetalleDTO
                     {
                         ID_Producto = detalle.ID_Producto,
                         Cantidad = detalle.Cantidad,
@@ -220,7 +220,7 @@ namespace BLL
                 .ToList();
 
             return compras;
-        }*/
+        }
 
     }
 

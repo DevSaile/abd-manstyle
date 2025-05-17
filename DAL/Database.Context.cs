@@ -27,11 +27,17 @@ namespace DAL
     
         public virtual DbSet<Categoria> Categoria { get; set; }
         public virtual DbSet<Cliente> Cliente { get; set; }
+        public virtual DbSet<Compra_Detalles> Compra_Detalles { get; set; }
         public virtual DbSet<Compra_Entrada> Compra_Entrada { get; set; }
+        public virtual DbSet<Marcas> Marcas { get; set; }
         public virtual DbSet<Producto> Producto { get; set; }
         public virtual DbSet<Proveedor> Proveedor { get; set; }
         public virtual DbSet<Rol> Rol { get; set; }
         public virtual DbSet<Sucursal> Sucursal { get; set; }
+        public virtual DbSet<TipoMoneda> TipoMoneda { get; set; }
+        public virtual DbSet<TipoPago> TipoPago { get; set; }
+        public virtual DbSet<TipoUnidad> TipoUnidad { get; set; }
+        public virtual DbSet<TipoVenta> TipoVenta { get; set; }
         public virtual DbSet<Vendedor> Vendedor { get; set; }
         public virtual DbSet<Venta_Detalles> Venta_Detalles { get; set; }
         public virtual DbSet<Venta_Factura> Venta_Factura { get; set; }

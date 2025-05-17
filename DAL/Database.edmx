@@ -1,0 +1,1363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BDMansModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="ID_Categoria" />
+          </Key>
+          <Property Name="ID_Categoria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="Estado" Type="int" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="ID_Cliente" />
+          </Key>
+          <Property Name="ID_Cliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" />
+          <Property Name="Telefono" Type="nvarchar" MaxLength="10" />
+          <Property Name="Estado" Type="int" />
+        </EntityType>
+        <EntityType Name="Compra_Detalles">
+          <Key>
+            <PropertyRef Name="ID_Detalles" />
+          </Key>
+          <Property Name="ID_Detalles" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Entrada" Type="int" />
+          <Property Name="ID_Producto" Type="int" />
+          <Property Name="Cantidad" Type="int" />
+          <Property Name="Precio_Compra" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="Compra_Entrada">
+          <Key>
+            <PropertyRef Name="ID_Entrada" />
+          </Key>
+          <Property Name="ID_Entrada" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Estado" Type="int" />
+          <Property Name="Fecha_Compra" Type="date" />
+          <Property Name="Precio_Compra" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Cantidad" Type="int" />
+          <Property Name="ID_Proveedor" Type="int" />
+          <Property Name="ID_TipoPago" Type="int" />
+          <Property Name="ID_TipoMoneda" Type="int" />
+          <Property Name="ID_Sucursal" Type="int" />
+        </EntityType>
+        <EntityType Name="Marcas">
+          <Key>
+            <PropertyRef Name="ID_Marca" />
+          </Key>
+          <Property Name="ID_Marca" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="40" />
+          <Property Name="Estado" Type="int" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="ID_Producto" />
+          </Key>
+          <Property Name="ID_Producto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Categoria" Type="int" />
+          <Property Name="ID_Proveedor" Type="int" />
+          <Property Name="ID_Marca" Type="int" />
+          <Property Name="ID_Sucursal" Type="int" />
+          <Property Name="ID_Unidad" Type="int" />
+          <Property Name="ID_TipoMoneda" Type="int" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" />
+          <Property Name="Cantidad" Type="int" />
+          <Property Name="Precio_Compra" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Precio_Producto" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="DetalleS" Type="nvarchar" MaxLength="200" />
+          <Property Name="Image_URL" Type="nvarchar" MaxLength="500" />
+          <Property Name="Estado" Type="int" />
+        </EntityType>
+        <EntityType Name="Proveedor">
+          <Key>
+            <PropertyRef Name="ID_Proveedor" />
+          </Key>
+          <Property Name="ID_Proveedor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" />
+          <Property Name="Numero" Type="nvarchar" MaxLength="20" />
+          <Property Name="Direccion" Type="nvarchar" MaxLength="150" />
+          <Property Name="Estado" Type="int" />
+        </EntityType>
+        <EntityType Name="Rol">
+          <Key>
+            <PropertyRef Name="ID_Rol" />
+          </Key>
+          <Property Name="ID_Rol" Type="int" Nullable="false" />
+          <Property Name="Puesto" Type="varchar" MaxLength="40" />
+        </EntityType>
+        <EntityType Name="Sucursal">
+          <Key>
+            <PropertyRef Name="ID_Sucursal" />
+          </Key>
+          <Property Name="ID_Sucursal" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" />
+          <Property Name="Direccion" Type="nvarchar" MaxLength="150" />
+          <Property Name="Estado" Type="int" />
+        </EntityType>
+        <EntityType Name="TipoMoneda">
+          <Key>
+            <PropertyRef Name="ID_TipoMoneda" />
+          </Key>
+          <Property Name="ID_TipoMoneda" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="Simbolo" Type="nvarchar" MaxLength="10" />
+          <Property Name="Estado" Type="int" />
+        </EntityType>
+        <EntityType Name="TipoPago">
+          <Key>
+            <PropertyRef Name="ID_TipoPago" />
+          </Key>
+          <Property Name="ID_TipoPago" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" />
+          <Property Name="Estado" Type="int" />
+        </EntityType>
+        <EntityType Name="TipoUnidad">
+          <Key>
+            <PropertyRef Name="ID_Unidad" />
+          </Key>
+          <Property Name="ID_Unidad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="Estado" Type="int" />
+        </EntityType>
+        <EntityType Name="TipoVenta">
+          <Key>
+            <PropertyRef Name="ID_TipoVenta" />
+          </Key>
+          <Property Name="ID_TipoVenta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="Estado" Type="int" />
+        </EntityType>
+        <EntityType Name="Vendedor">
+          <Key>
+            <PropertyRef Name="ID_Vendedor" />
+          </Key>
+          <Property Name="ID_Vendedor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Rol" Type="int" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" />
+          <Property Name="Cedula" Type="nvarchar" MaxLength="20" />
+          <Property Name="Edad" Type="date" />
+          <Property Name="Usuario" Type="nvarchar" MaxLength="50" />
+          <Property Name="Contra" Type="nvarchar" MaxLength="20" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="ID_Sucursal" Type="int" />
+          <Property Name="Estado" Type="int" />
+          <Property Name="ResetToken" Type="nvarchar" MaxLength="200" />
+          <Property Name="ResetTokenExpiracion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Venta_Detalles">
+          <Key>
+            <PropertyRef Name="ID_Detalles" />
+          </Key>
+          <Property Name="ID_Detalles" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Venta" Type="int" />
+          <Property Name="ID_Producto" Type="int" />
+          <Property Name="Cantidad" Type="int" />
+          <Property Name="PrecioProducto" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="Venta_Factura">
+          <Key>
+            <PropertyRef Name="ID_Venta" />
+          </Key>
+          <Property Name="ID_Venta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Estado" Type="int" />
+          <Property Name="ID_Cliente" Type="int" />
+          <Property Name="ID_Vendedor" Type="int" />
+          <Property Name="ID_Sucursal" Type="int" />
+          <Property Name="Fecha_Venta" Type="date" />
+          <Property Name="Subtotal" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Total" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Paga" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Cambio" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="CostoAdicional" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Cantidad" Type="int" />
+          <Property Name="ID_TipoPago" Type="int" />
+          <Property Name="ID_TipoMoneda" Type="int" />
+          <Property Name="ID_TipoVenta" Type="int" />
+        </EntityType>
+        <Association Name="FK__Compra_De__ID_En__07C12930">
+          <End Role="Compra_Entrada" Type="Self.Compra_Entrada" Multiplicity="0..1" />
+          <End Role="Compra_Detalles" Type="Self.Compra_Detalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Compra_Entrada">
+              <PropertyRef Name="ID_Entrada" />
+            </Principal>
+            <Dependent Role="Compra_Detalles">
+              <PropertyRef Name="ID_Entrada" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Compra_De__ID_Pr__08B54D69">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="0..1" />
+          <End Role="Compra_Detalles" Type="Self.Compra_Detalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ID_Producto" />
+            </Principal>
+            <Dependent Role="Compra_Detalles">
+              <PropertyRef Name="ID_Producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Compra_En__ID_Pr__02FC7413">
+          <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="0..1" />
+          <End Role="Compra_Entrada" Type="Self.Compra_Entrada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proveedor">
+              <PropertyRef Name="ID_Proveedor" />
+            </Principal>
+            <Dependent Role="Compra_Entrada">
+              <PropertyRef Name="ID_Proveedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Compra_En__ID_Ti__03F0984C">
+          <End Role="TipoPago" Type="Self.TipoPago" Multiplicity="0..1" />
+          <End Role="Compra_Entrada" Type="Self.Compra_Entrada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoPago">
+              <PropertyRef Name="ID_TipoPago" />
+            </Principal>
+            <Dependent Role="Compra_Entrada">
+              <PropertyRef Name="ID_TipoPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Compra_En__ID_Ti__04E4BC85">
+          <End Role="TipoMoneda" Type="Self.TipoMoneda" Multiplicity="0..1" />
+          <End Role="Compra_Entrada" Type="Self.Compra_Entrada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoMoneda">
+              <PropertyRef Name="ID_TipoMoneda" />
+            </Principal>
+            <Dependent Role="Compra_Entrada">
+              <PropertyRef Name="ID_TipoMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__ID_Cat__7B5B524B">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="ID_Categoria" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="ID_Categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__ID_Mar__7D439ABD">
+          <End Role="Marcas" Type="Self.Marcas" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Marcas">
+              <PropertyRef Name="ID_Marca" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="ID_Marca" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__ID_Pro__7C4F7684">
+          <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proveedor">
+              <PropertyRef Name="ID_Proveedor" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="ID_Proveedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__ID_Suc__7E37BEF6">
+          <End Role="Sucursal" Type="Self.Sucursal" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sucursal">
+              <PropertyRef Name="ID_Sucursal" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="ID_Sucursal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__ID_Tip__00200768">
+          <End Role="TipoMoneda" Type="Self.TipoMoneda" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoMoneda">
+              <PropertyRef Name="ID_TipoMoneda" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="ID_TipoMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__ID_Uni__7F2BE32F">
+          <End Role="TipoUnidad" Type="Self.TipoUnidad" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoUnidad">
+              <PropertyRef Name="ID_Unidad" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="ID_Unidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Vendedor__ID_Rol__5DCAEF64">
+          <End Role="Rol" Type="Self.Rol" Multiplicity="0..1" />
+          <End Role="Vendedor" Type="Self.Vendedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="ID_Rol" />
+            </Principal>
+            <Dependent Role="Vendedor">
+              <PropertyRef Name="ID_Rol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Vendedor__ID_Suc__5EBF139D">
+          <End Role="Sucursal" Type="Self.Sucursal" Multiplicity="0..1" />
+          <End Role="Vendedor" Type="Self.Vendedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sucursal">
+              <PropertyRef Name="ID_Sucursal" />
+            </Principal>
+            <Dependent Role="Vendedor">
+              <PropertyRef Name="ID_Sucursal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Det__ID_Pr__14270015">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="0..1" />
+          <End Role="Venta_Detalles" Type="Self.Venta_Detalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ID_Producto" />
+            </Principal>
+            <Dependent Role="Venta_Detalles">
+              <PropertyRef Name="ID_Producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Det__ID_Ve__1332DBDC">
+          <End Role="Venta_Factura" Type="Self.Venta_Factura" Multiplicity="0..1" />
+          <End Role="Venta_Detalles" Type="Self.Venta_Detalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venta_Factura">
+              <PropertyRef Name="ID_Venta" />
+            </Principal>
+            <Dependent Role="Venta_Detalles">
+              <PropertyRef Name="ID_Venta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Fac__ID_Cl__0B91BA14">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="0..1" />
+          <End Role="Venta_Factura" Type="Self.Venta_Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="ID_Cliente" />
+            </Principal>
+            <Dependent Role="Venta_Factura">
+              <PropertyRef Name="ID_Cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Fac__ID_Su__0D7A0286">
+          <End Role="Sucursal" Type="Self.Sucursal" Multiplicity="0..1" />
+          <End Role="Venta_Factura" Type="Self.Venta_Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sucursal">
+              <PropertyRef Name="ID_Sucursal" />
+            </Principal>
+            <Dependent Role="Venta_Factura">
+              <PropertyRef Name="ID_Sucursal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Fac__ID_Ti__0E6E26BF">
+          <End Role="TipoPago" Type="Self.TipoPago" Multiplicity="0..1" />
+          <End Role="Venta_Factura" Type="Self.Venta_Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoPago">
+              <PropertyRef Name="ID_TipoPago" />
+            </Principal>
+            <Dependent Role="Venta_Factura">
+              <PropertyRef Name="ID_TipoPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Fac__ID_Ti__0F624AF8">
+          <End Role="TipoMoneda" Type="Self.TipoMoneda" Multiplicity="0..1" />
+          <End Role="Venta_Factura" Type="Self.Venta_Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoMoneda">
+              <PropertyRef Name="ID_TipoMoneda" />
+            </Principal>
+            <Dependent Role="Venta_Factura">
+              <PropertyRef Name="ID_TipoMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Fac__ID_Ti__10566F31">
+          <End Role="TipoVenta" Type="Self.TipoVenta" Multiplicity="0..1" />
+          <End Role="Venta_Factura" Type="Self.Venta_Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoVenta">
+              <PropertyRef Name="ID_TipoVenta" />
+            </Principal>
+            <Dependent Role="Venta_Factura">
+              <PropertyRef Name="ID_TipoVenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Fac__ID_Ve__0C85DE4D">
+          <End Role="Vendedor" Type="Self.Vendedor" Multiplicity="0..1" />
+          <End Role="Venta_Factura" Type="Self.Venta_Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendedor">
+              <PropertyRef Name="ID_Vendedor" />
+            </Principal>
+            <Dependent Role="Venta_Factura">
+              <PropertyRef Name="ID_Vendedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Compra_Sucursal">
+          <End Role="Sucursal" Type="Self.Sucursal" Multiplicity="0..1" />
+          <End Role="Compra_Entrada" Type="Self.Compra_Entrada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sucursal">
+              <PropertyRef Name="ID_Sucursal" />
+            </Principal>
+            <Dependent Role="Compra_Entrada">
+              <PropertyRef Name="ID_Sucursal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BDMansModelStoreContainer">
+          <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Compra_Detalles" EntityType="Self.Compra_Detalles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Compra_Entrada" EntityType="Self.Compra_Entrada" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Marcas" EntityType="Self.Marcas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Producto" EntityType="Self.Producto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Proveedor" EntityType="Self.Proveedor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rol" EntityType="Self.Rol" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sucursal" EntityType="Self.Sucursal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoMoneda" EntityType="Self.TipoMoneda" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoPago" EntityType="Self.TipoPago" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoUnidad" EntityType="Self.TipoUnidad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoVenta" EntityType="Self.TipoVenta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vendedor" EntityType="Self.Vendedor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Venta_Detalles" EntityType="Self.Venta_Detalles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Venta_Factura" EntityType="Self.Venta_Factura" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Compra_De__ID_En__07C12930" Association="Self.FK__Compra_De__ID_En__07C12930">
+            <End Role="Compra_Entrada" EntitySet="Compra_Entrada" />
+            <End Role="Compra_Detalles" EntitySet="Compra_Detalles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Compra_De__ID_Pr__08B54D69" Association="Self.FK__Compra_De__ID_Pr__08B54D69">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="Compra_Detalles" EntitySet="Compra_Detalles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Compra_En__ID_Pr__02FC7413" Association="Self.FK__Compra_En__ID_Pr__02FC7413">
+            <End Role="Proveedor" EntitySet="Proveedor" />
+            <End Role="Compra_Entrada" EntitySet="Compra_Entrada" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Compra_En__ID_Ti__03F0984C" Association="Self.FK__Compra_En__ID_Ti__03F0984C">
+            <End Role="TipoPago" EntitySet="TipoPago" />
+            <End Role="Compra_Entrada" EntitySet="Compra_Entrada" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Compra_En__ID_Ti__04E4BC85" Association="Self.FK__Compra_En__ID_Ti__04E4BC85">
+            <End Role="TipoMoneda" EntitySet="TipoMoneda" />
+            <End Role="Compra_Entrada" EntitySet="Compra_Entrada" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__ID_Cat__7B5B524B" Association="Self.FK__Producto__ID_Cat__7B5B524B">
+            <End Role="Categoria" EntitySet="Categoria" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__ID_Mar__7D439ABD" Association="Self.FK__Producto__ID_Mar__7D439ABD">
+            <End Role="Marcas" EntitySet="Marcas" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__ID_Pro__7C4F7684" Association="Self.FK__Producto__ID_Pro__7C4F7684">
+            <End Role="Proveedor" EntitySet="Proveedor" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__ID_Suc__7E37BEF6" Association="Self.FK__Producto__ID_Suc__7E37BEF6">
+            <End Role="Sucursal" EntitySet="Sucursal" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__ID_Tip__00200768" Association="Self.FK__Producto__ID_Tip__00200768">
+            <End Role="TipoMoneda" EntitySet="TipoMoneda" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__ID_Uni__7F2BE32F" Association="Self.FK__Producto__ID_Uni__7F2BE32F">
+            <End Role="TipoUnidad" EntitySet="TipoUnidad" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Vendedor__ID_Rol__5DCAEF64" Association="Self.FK__Vendedor__ID_Rol__5DCAEF64">
+            <End Role="Rol" EntitySet="Rol" />
+            <End Role="Vendedor" EntitySet="Vendedor" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Vendedor__ID_Suc__5EBF139D" Association="Self.FK__Vendedor__ID_Suc__5EBF139D">
+            <End Role="Sucursal" EntitySet="Sucursal" />
+            <End Role="Vendedor" EntitySet="Vendedor" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Det__ID_Pr__14270015" Association="Self.FK__Venta_Det__ID_Pr__14270015">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="Venta_Detalles" EntitySet="Venta_Detalles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Det__ID_Ve__1332DBDC" Association="Self.FK__Venta_Det__ID_Ve__1332DBDC">
+            <End Role="Venta_Factura" EntitySet="Venta_Factura" />
+            <End Role="Venta_Detalles" EntitySet="Venta_Detalles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Fac__ID_Cl__0B91BA14" Association="Self.FK__Venta_Fac__ID_Cl__0B91BA14">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Venta_Factura" EntitySet="Venta_Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Fac__ID_Su__0D7A0286" Association="Self.FK__Venta_Fac__ID_Su__0D7A0286">
+            <End Role="Sucursal" EntitySet="Sucursal" />
+            <End Role="Venta_Factura" EntitySet="Venta_Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Fac__ID_Ti__0E6E26BF" Association="Self.FK__Venta_Fac__ID_Ti__0E6E26BF">
+            <End Role="TipoPago" EntitySet="TipoPago" />
+            <End Role="Venta_Factura" EntitySet="Venta_Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Fac__ID_Ti__0F624AF8" Association="Self.FK__Venta_Fac__ID_Ti__0F624AF8">
+            <End Role="TipoMoneda" EntitySet="TipoMoneda" />
+            <End Role="Venta_Factura" EntitySet="Venta_Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Fac__ID_Ti__10566F31" Association="Self.FK__Venta_Fac__ID_Ti__10566F31">
+            <End Role="TipoVenta" EntitySet="TipoVenta" />
+            <End Role="Venta_Factura" EntitySet="Venta_Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Fac__ID_Ve__0C85DE4D" Association="Self.FK__Venta_Fac__ID_Ve__0C85DE4D">
+            <End Role="Vendedor" EntitySet="Vendedor" />
+            <End Role="Venta_Factura" EntitySet="Venta_Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Compra_Sucursal" Association="Self.FK_Compra_Sucursal">
+            <End Role="Sucursal" EntitySet="Sucursal" />
+            <End Role="Compra_Entrada" EntitySet="Compra_Entrada" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BDMansModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="ID_Categoria" />
+          </Key>
+          <Property Name="ID_Categoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="Int32" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__Producto__ID_Cat__7B5B524B" FromRole="Categoria" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="ID_Cliente" />
+          </Key>
+          <Property Name="ID_Cliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Telefono" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="Int32" />
+          <NavigationProperty Name="Venta_Factura" Relationship="Self.FK__Venta_Fac__ID_Cl__0B91BA14" FromRole="Cliente" ToRole="Venta_Factura" />
+        </EntityType>
+        <EntityType Name="Compra_Detalles">
+          <Key>
+            <PropertyRef Name="ID_Detalles" />
+          </Key>
+          <Property Name="ID_Detalles" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Entrada" Type="Int32" />
+          <Property Name="ID_Producto" Type="Int32" />
+          <Property Name="Cantidad" Type="Int32" />
+          <Property Name="Precio_Compra" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="Compra_Entrada" Relationship="Self.FK__Compra_De__ID_En__07C12930" FromRole="Compra_Detalles" ToRole="Compra_Entrada" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__Compra_De__ID_Pr__08B54D69" FromRole="Compra_Detalles" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Compra_Entrada">
+          <Key>
+            <PropertyRef Name="ID_Entrada" />
+          </Key>
+          <Property Name="ID_Entrada" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Estado" Type="Int32" />
+          <Property Name="Fecha_Compra" Type="DateTime" Precision="0" />
+          <Property Name="Precio_Compra" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Cantidad" Type="Int32" />
+          <Property Name="ID_Proveedor" Type="Int32" />
+          <Property Name="ID_TipoPago" Type="Int32" />
+          <Property Name="ID_TipoMoneda" Type="Int32" />
+          <NavigationProperty Name="Compra_Detalles" Relationship="Self.FK__Compra_De__ID_En__07C12930" FromRole="Compra_Entrada" ToRole="Compra_Detalles" />
+          <NavigationProperty Name="Proveedor" Relationship="Self.FK__Compra_En__ID_Pr__02FC7413" FromRole="Compra_Entrada" ToRole="Proveedor" />
+          <NavigationProperty Name="TipoPago" Relationship="Self.FK__Compra_En__ID_Ti__03F0984C" FromRole="Compra_Entrada" ToRole="TipoPago" />
+          <NavigationProperty Name="TipoMoneda" Relationship="Self.FK__Compra_En__ID_Ti__04E4BC85" FromRole="Compra_Entrada" ToRole="TipoMoneda" />
+          <Property Name="ID_Sucursal" Type="Int32" />
+          <NavigationProperty Name="Sucursal" Relationship="BDMansModel.FK_Compra_Sucursal" FromRole="Compra_Entrada" ToRole="Sucursal" />
+        </EntityType>
+        <EntityType Name="Marcas">
+          <Key>
+            <PropertyRef Name="ID_Marca" />
+          </Key>
+          <Property Name="ID_Marca" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="Int32" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__Producto__ID_Mar__7D439ABD" FromRole="Marcas" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="ID_Producto" />
+          </Key>
+          <Property Name="ID_Producto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Categoria" Type="Int32" />
+          <Property Name="ID_Proveedor" Type="Int32" />
+          <Property Name="ID_Marca" Type="Int32" />
+          <Property Name="ID_Sucursal" Type="Int32" />
+          <Property Name="ID_Unidad" Type="Int32" />
+          <Property Name="ID_TipoMoneda" Type="Int32" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Cantidad" Type="Int32" />
+          <Property Name="Precio_Compra" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Precio_Producto" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="DetalleS" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Image_URL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="Int32" />
+          <NavigationProperty Name="Categoria" Relationship="Self.FK__Producto__ID_Cat__7B5B524B" FromRole="Producto" ToRole="Categoria" />
+          <NavigationProperty Name="Compra_Detalles" Relationship="Self.FK__Compra_De__ID_Pr__08B54D69" FromRole="Producto" ToRole="Compra_Detalles" />
+          <NavigationProperty Name="Marcas" Relationship="Self.FK__Producto__ID_Mar__7D439ABD" FromRole="Producto" ToRole="Marcas" />
+          <NavigationProperty Name="Proveedor" Relationship="Self.FK__Producto__ID_Pro__7C4F7684" FromRole="Producto" ToRole="Proveedor" />
+          <NavigationProperty Name="Sucursal" Relationship="Self.FK__Producto__ID_Suc__7E37BEF6" FromRole="Producto" ToRole="Sucursal" />
+          <NavigationProperty Name="TipoMoneda" Relationship="Self.FK__Producto__ID_Tip__00200768" FromRole="Producto" ToRole="TipoMoneda" />
+          <NavigationProperty Name="TipoUnidad" Relationship="Self.FK__Producto__ID_Uni__7F2BE32F" FromRole="Producto" ToRole="TipoUnidad" />
+          <NavigationProperty Name="Venta_Detalles" Relationship="Self.FK__Venta_Det__ID_Pr__14270015" FromRole="Producto" ToRole="Venta_Detalles" />
+        </EntityType>
+        <EntityType Name="Proveedor">
+          <Key>
+            <PropertyRef Name="ID_Proveedor" />
+          </Key>
+          <Property Name="ID_Proveedor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Numero" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Direccion" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="Int32" />
+          <NavigationProperty Name="Compra_Entrada" Relationship="Self.FK__Compra_En__ID_Pr__02FC7413" FromRole="Proveedor" ToRole="Compra_Entrada" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__Producto__ID_Pro__7C4F7684" FromRole="Proveedor" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Rol">
+          <Key>
+            <PropertyRef Name="ID_Rol" />
+          </Key>
+          <Property Name="ID_Rol" Type="Int32" Nullable="false" />
+          <Property Name="Puesto" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Vendedor" Relationship="Self.FK__Vendedor__ID_Rol__5DCAEF64" FromRole="Rol" ToRole="Vendedor" />
+        </EntityType>
+        <EntityType Name="Sucursal">
+          <Key>
+            <PropertyRef Name="ID_Sucursal" />
+          </Key>
+          <Property Name="ID_Sucursal" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Direccion" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="Int32" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__Producto__ID_Suc__7E37BEF6" FromRole="Sucursal" ToRole="Producto" />
+          <NavigationProperty Name="Vendedor" Relationship="Self.FK__Vendedor__ID_Suc__5EBF139D" FromRole="Sucursal" ToRole="Vendedor" />
+          <NavigationProperty Name="Venta_Factura" Relationship="Self.FK__Venta_Fac__ID_Su__0D7A0286" FromRole="Sucursal" ToRole="Venta_Factura" />
+          <NavigationProperty Name="Compra_Entrada" Relationship="BDMansModel.FK_Compra_Sucursal" FromRole="Sucursal" ToRole="Compra_Entrada" />
+        </EntityType>
+        <EntityType Name="TipoMoneda">
+          <Key>
+            <PropertyRef Name="ID_TipoMoneda" />
+          </Key>
+          <Property Name="ID_TipoMoneda" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Simbolo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="Int32" />
+          <NavigationProperty Name="Compra_Entrada" Relationship="Self.FK__Compra_En__ID_Ti__04E4BC85" FromRole="TipoMoneda" ToRole="Compra_Entrada" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__Producto__ID_Tip__00200768" FromRole="TipoMoneda" ToRole="Producto" />
+          <NavigationProperty Name="Venta_Factura" Relationship="Self.FK__Venta_Fac__ID_Ti__0F624AF8" FromRole="TipoMoneda" ToRole="Venta_Factura" />
+        </EntityType>
+        <EntityType Name="TipoPago">
+          <Key>
+            <PropertyRef Name="ID_TipoPago" />
+          </Key>
+          <Property Name="ID_TipoPago" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="Int32" />
+          <NavigationProperty Name="Compra_Entrada" Relationship="Self.FK__Compra_En__ID_Ti__03F0984C" FromRole="TipoPago" ToRole="Compra_Entrada" />
+          <NavigationProperty Name="Venta_Factura" Relationship="Self.FK__Venta_Fac__ID_Ti__0E6E26BF" FromRole="TipoPago" ToRole="Venta_Factura" />
+        </EntityType>
+        <EntityType Name="TipoUnidad">
+          <Key>
+            <PropertyRef Name="ID_Unidad" />
+          </Key>
+          <Property Name="ID_Unidad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="Int32" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__Producto__ID_Uni__7F2BE32F" FromRole="TipoUnidad" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="TipoVenta">
+          <Key>
+            <PropertyRef Name="ID_TipoVenta" />
+          </Key>
+          <Property Name="ID_TipoVenta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="Int32" />
+          <NavigationProperty Name="Venta_Factura" Relationship="Self.FK__Venta_Fac__ID_Ti__10566F31" FromRole="TipoVenta" ToRole="Venta_Factura" />
+        </EntityType>
+        <EntityType Name="Vendedor">
+          <Key>
+            <PropertyRef Name="ID_Vendedor" />
+          </Key>
+          <Property Name="ID_Vendedor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Rol" Type="Int32" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Cedula" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Edad" Type="DateTime" Precision="0" />
+          <Property Name="Usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Contra" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ID_Sucursal" Type="Int32" />
+          <Property Name="Estado" Type="Int32" />
+          <Property Name="ResetToken" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ResetTokenExpiracion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Rol" Relationship="Self.FK__Vendedor__ID_Rol__5DCAEF64" FromRole="Vendedor" ToRole="Rol" />
+          <NavigationProperty Name="Sucursal" Relationship="Self.FK__Vendedor__ID_Suc__5EBF139D" FromRole="Vendedor" ToRole="Sucursal" />
+          <NavigationProperty Name="Venta_Factura" Relationship="Self.FK__Venta_Fac__ID_Ve__0C85DE4D" FromRole="Vendedor" ToRole="Venta_Factura" />
+        </EntityType>
+        <EntityType Name="Venta_Detalles">
+          <Key>
+            <PropertyRef Name="ID_Detalles" />
+          </Key>
+          <Property Name="ID_Detalles" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Venta" Type="Int32" />
+          <Property Name="ID_Producto" Type="Int32" />
+          <Property Name="Cantidad" Type="Int32" />
+          <Property Name="PrecioProducto" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__Venta_Det__ID_Pr__14270015" FromRole="Venta_Detalles" ToRole="Producto" />
+          <NavigationProperty Name="Venta_Factura" Relationship="Self.FK__Venta_Det__ID_Ve__1332DBDC" FromRole="Venta_Detalles" ToRole="Venta_Factura" />
+        </EntityType>
+        <EntityType Name="Venta_Factura">
+          <Key>
+            <PropertyRef Name="ID_Venta" />
+          </Key>
+          <Property Name="ID_Venta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Estado" Type="Int32" />
+          <Property Name="ID_Cliente" Type="Int32" />
+          <Property Name="ID_Vendedor" Type="Int32" />
+          <Property Name="ID_Sucursal" Type="Int32" />
+          <Property Name="Fecha_Venta" Type="DateTime" Precision="0" />
+          <Property Name="Subtotal" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Total" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Paga" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Cambio" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="CostoAdicional" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Cantidad" Type="Int32" />
+          <Property Name="ID_TipoPago" Type="Int32" />
+          <Property Name="ID_TipoMoneda" Type="Int32" />
+          <Property Name="ID_TipoVenta" Type="Int32" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK__Venta_Fac__ID_Cl__0B91BA14" FromRole="Venta_Factura" ToRole="Cliente" />
+          <NavigationProperty Name="Sucursal" Relationship="Self.FK__Venta_Fac__ID_Su__0D7A0286" FromRole="Venta_Factura" ToRole="Sucursal" />
+          <NavigationProperty Name="TipoMoneda" Relationship="Self.FK__Venta_Fac__ID_Ti__0F624AF8" FromRole="Venta_Factura" ToRole="TipoMoneda" />
+          <NavigationProperty Name="TipoPago" Relationship="Self.FK__Venta_Fac__ID_Ti__0E6E26BF" FromRole="Venta_Factura" ToRole="TipoPago" />
+          <NavigationProperty Name="TipoVenta" Relationship="Self.FK__Venta_Fac__ID_Ti__10566F31" FromRole="Venta_Factura" ToRole="TipoVenta" />
+          <NavigationProperty Name="Vendedor" Relationship="Self.FK__Venta_Fac__ID_Ve__0C85DE4D" FromRole="Venta_Factura" ToRole="Vendedor" />
+          <NavigationProperty Name="Venta_Detalles" Relationship="Self.FK__Venta_Det__ID_Ve__1332DBDC" FromRole="Venta_Factura" ToRole="Venta_Detalles" />
+        </EntityType>
+        <Association Name="FK__Producto__ID_Cat__7B5B524B">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="ID_Categoria" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="ID_Categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Fac__ID_Cl__0B91BA14">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="0..1" />
+          <End Role="Venta_Factura" Type="Self.Venta_Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="ID_Cliente" />
+            </Principal>
+            <Dependent Role="Venta_Factura">
+              <PropertyRef Name="ID_Cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Compra_De__ID_En__07C12930">
+          <End Role="Compra_Entrada" Type="Self.Compra_Entrada" Multiplicity="0..1" />
+          <End Role="Compra_Detalles" Type="Self.Compra_Detalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Compra_Entrada">
+              <PropertyRef Name="ID_Entrada" />
+            </Principal>
+            <Dependent Role="Compra_Detalles">
+              <PropertyRef Name="ID_Entrada" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Compra_De__ID_Pr__08B54D69">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="0..1" />
+          <End Role="Compra_Detalles" Type="Self.Compra_Detalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ID_Producto" />
+            </Principal>
+            <Dependent Role="Compra_Detalles">
+              <PropertyRef Name="ID_Producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Compra_En__ID_Pr__02FC7413">
+          <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="0..1" />
+          <End Role="Compra_Entrada" Type="Self.Compra_Entrada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proveedor">
+              <PropertyRef Name="ID_Proveedor" />
+            </Principal>
+            <Dependent Role="Compra_Entrada">
+              <PropertyRef Name="ID_Proveedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Compra_En__ID_Ti__03F0984C">
+          <End Role="TipoPago" Type="Self.TipoPago" Multiplicity="0..1" />
+          <End Role="Compra_Entrada" Type="Self.Compra_Entrada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoPago">
+              <PropertyRef Name="ID_TipoPago" />
+            </Principal>
+            <Dependent Role="Compra_Entrada">
+              <PropertyRef Name="ID_TipoPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Compra_En__ID_Ti__04E4BC85">
+          <End Role="TipoMoneda" Type="Self.TipoMoneda" Multiplicity="0..1" />
+          <End Role="Compra_Entrada" Type="Self.Compra_Entrada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoMoneda">
+              <PropertyRef Name="ID_TipoMoneda" />
+            </Principal>
+            <Dependent Role="Compra_Entrada">
+              <PropertyRef Name="ID_TipoMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__ID_Mar__7D439ABD">
+          <End Role="Marcas" Type="Self.Marcas" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Marcas">
+              <PropertyRef Name="ID_Marca" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="ID_Marca" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__ID_Pro__7C4F7684">
+          <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proveedor">
+              <PropertyRef Name="ID_Proveedor" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="ID_Proveedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__ID_Suc__7E37BEF6">
+          <End Role="Sucursal" Type="Self.Sucursal" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sucursal">
+              <PropertyRef Name="ID_Sucursal" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="ID_Sucursal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__ID_Tip__00200768">
+          <End Role="TipoMoneda" Type="Self.TipoMoneda" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoMoneda">
+              <PropertyRef Name="ID_TipoMoneda" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="ID_TipoMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__ID_Uni__7F2BE32F">
+          <End Role="TipoUnidad" Type="Self.TipoUnidad" Multiplicity="0..1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoUnidad">
+              <PropertyRef Name="ID_Unidad" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="ID_Unidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Det__ID_Pr__14270015">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="0..1" />
+          <End Role="Venta_Detalles" Type="Self.Venta_Detalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="ID_Producto" />
+            </Principal>
+            <Dependent Role="Venta_Detalles">
+              <PropertyRef Name="ID_Producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Vendedor__ID_Rol__5DCAEF64">
+          <End Role="Rol" Type="Self.Rol" Multiplicity="0..1" />
+          <End Role="Vendedor" Type="Self.Vendedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="ID_Rol" />
+            </Principal>
+            <Dependent Role="Vendedor">
+              <PropertyRef Name="ID_Rol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Vendedor__ID_Suc__5EBF139D">
+          <End Role="Sucursal" Type="Self.Sucursal" Multiplicity="0..1" />
+          <End Role="Vendedor" Type="Self.Vendedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sucursal">
+              <PropertyRef Name="ID_Sucursal" />
+            </Principal>
+            <Dependent Role="Vendedor">
+              <PropertyRef Name="ID_Sucursal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Fac__ID_Su__0D7A0286">
+          <End Role="Sucursal" Type="Self.Sucursal" Multiplicity="0..1" />
+          <End Role="Venta_Factura" Type="Self.Venta_Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sucursal">
+              <PropertyRef Name="ID_Sucursal" />
+            </Principal>
+            <Dependent Role="Venta_Factura">
+              <PropertyRef Name="ID_Sucursal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Fac__ID_Ti__0F624AF8">
+          <End Role="TipoMoneda" Type="Self.TipoMoneda" Multiplicity="0..1" />
+          <End Role="Venta_Factura" Type="Self.Venta_Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoMoneda">
+              <PropertyRef Name="ID_TipoMoneda" />
+            </Principal>
+            <Dependent Role="Venta_Factura">
+              <PropertyRef Name="ID_TipoMoneda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Fac__ID_Ti__0E6E26BF">
+          <End Role="TipoPago" Type="Self.TipoPago" Multiplicity="0..1" />
+          <End Role="Venta_Factura" Type="Self.Venta_Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoPago">
+              <PropertyRef Name="ID_TipoPago" />
+            </Principal>
+            <Dependent Role="Venta_Factura">
+              <PropertyRef Name="ID_TipoPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Fac__ID_Ti__10566F31">
+          <End Role="TipoVenta" Type="Self.TipoVenta" Multiplicity="0..1" />
+          <End Role="Venta_Factura" Type="Self.Venta_Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoVenta">
+              <PropertyRef Name="ID_TipoVenta" />
+            </Principal>
+            <Dependent Role="Venta_Factura">
+              <PropertyRef Name="ID_TipoVenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Fac__ID_Ve__0C85DE4D">
+          <End Role="Vendedor" Type="Self.Vendedor" Multiplicity="0..1" />
+          <End Role="Venta_Factura" Type="Self.Venta_Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendedor">
+              <PropertyRef Name="ID_Vendedor" />
+            </Principal>
+            <Dependent Role="Venta_Factura">
+              <PropertyRef Name="ID_Vendedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Det__ID_Ve__1332DBDC">
+          <End Role="Venta_Factura" Type="Self.Venta_Factura" Multiplicity="0..1" />
+          <End Role="Venta_Detalles" Type="Self.Venta_Detalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venta_Factura">
+              <PropertyRef Name="ID_Venta" />
+            </Principal>
+            <Dependent Role="Venta_Detalles">
+              <PropertyRef Name="ID_Venta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="bddVariedadesMansStyleEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categoria" EntityType="Self.Categoria" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" />
+          <EntitySet Name="Compra_Detalles" EntityType="Self.Compra_Detalles" />
+          <EntitySet Name="Compra_Entrada" EntityType="Self.Compra_Entrada" />
+          <EntitySet Name="Marcas" EntityType="Self.Marcas" />
+          <EntitySet Name="Producto" EntityType="Self.Producto" />
+          <EntitySet Name="Proveedor" EntityType="Self.Proveedor" />
+          <EntitySet Name="Rol" EntityType="Self.Rol" />
+          <EntitySet Name="Sucursal" EntityType="Self.Sucursal" />
+          <EntitySet Name="TipoMoneda" EntityType="Self.TipoMoneda" />
+          <EntitySet Name="TipoPago" EntityType="Self.TipoPago" />
+          <EntitySet Name="TipoUnidad" EntityType="Self.TipoUnidad" />
+          <EntitySet Name="TipoVenta" EntityType="Self.TipoVenta" />
+          <EntitySet Name="Vendedor" EntityType="Self.Vendedor" />
+          <EntitySet Name="Venta_Detalles" EntityType="Self.Venta_Detalles" />
+          <EntitySet Name="Venta_Factura" EntityType="Self.Venta_Factura" />
+          <AssociationSet Name="FK__Producto__ID_Cat__7B5B524B" Association="Self.FK__Producto__ID_Cat__7B5B524B">
+            <End Role="Categoria" EntitySet="Categoria" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Fac__ID_Cl__0B91BA14" Association="Self.FK__Venta_Fac__ID_Cl__0B91BA14">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Venta_Factura" EntitySet="Venta_Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Compra_De__ID_En__07C12930" Association="Self.FK__Compra_De__ID_En__07C12930">
+            <End Role="Compra_Entrada" EntitySet="Compra_Entrada" />
+            <End Role="Compra_Detalles" EntitySet="Compra_Detalles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Compra_De__ID_Pr__08B54D69" Association="Self.FK__Compra_De__ID_Pr__08B54D69">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="Compra_Detalles" EntitySet="Compra_Detalles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Compra_En__ID_Pr__02FC7413" Association="Self.FK__Compra_En__ID_Pr__02FC7413">
+            <End Role="Proveedor" EntitySet="Proveedor" />
+            <End Role="Compra_Entrada" EntitySet="Compra_Entrada" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Compra_En__ID_Ti__03F0984C" Association="Self.FK__Compra_En__ID_Ti__03F0984C">
+            <End Role="TipoPago" EntitySet="TipoPago" />
+            <End Role="Compra_Entrada" EntitySet="Compra_Entrada" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Compra_En__ID_Ti__04E4BC85" Association="Self.FK__Compra_En__ID_Ti__04E4BC85">
+            <End Role="TipoMoneda" EntitySet="TipoMoneda" />
+            <End Role="Compra_Entrada" EntitySet="Compra_Entrada" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__ID_Mar__7D439ABD" Association="Self.FK__Producto__ID_Mar__7D439ABD">
+            <End Role="Marcas" EntitySet="Marcas" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__ID_Pro__7C4F7684" Association="Self.FK__Producto__ID_Pro__7C4F7684">
+            <End Role="Proveedor" EntitySet="Proveedor" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__ID_Suc__7E37BEF6" Association="Self.FK__Producto__ID_Suc__7E37BEF6">
+            <End Role="Sucursal" EntitySet="Sucursal" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__ID_Tip__00200768" Association="Self.FK__Producto__ID_Tip__00200768">
+            <End Role="TipoMoneda" EntitySet="TipoMoneda" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__ID_Uni__7F2BE32F" Association="Self.FK__Producto__ID_Uni__7F2BE32F">
+            <End Role="TipoUnidad" EntitySet="TipoUnidad" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Det__ID_Pr__14270015" Association="Self.FK__Venta_Det__ID_Pr__14270015">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="Venta_Detalles" EntitySet="Venta_Detalles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Vendedor__ID_Rol__5DCAEF64" Association="Self.FK__Vendedor__ID_Rol__5DCAEF64">
+            <End Role="Rol" EntitySet="Rol" />
+            <End Role="Vendedor" EntitySet="Vendedor" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Vendedor__ID_Suc__5EBF139D" Association="Self.FK__Vendedor__ID_Suc__5EBF139D">
+            <End Role="Sucursal" EntitySet="Sucursal" />
+            <End Role="Vendedor" EntitySet="Vendedor" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Fac__ID_Su__0D7A0286" Association="Self.FK__Venta_Fac__ID_Su__0D7A0286">
+            <End Role="Sucursal" EntitySet="Sucursal" />
+            <End Role="Venta_Factura" EntitySet="Venta_Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Fac__ID_Ti__0F624AF8" Association="Self.FK__Venta_Fac__ID_Ti__0F624AF8">
+            <End Role="TipoMoneda" EntitySet="TipoMoneda" />
+            <End Role="Venta_Factura" EntitySet="Venta_Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Fac__ID_Ti__0E6E26BF" Association="Self.FK__Venta_Fac__ID_Ti__0E6E26BF">
+            <End Role="TipoPago" EntitySet="TipoPago" />
+            <End Role="Venta_Factura" EntitySet="Venta_Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Fac__ID_Ti__10566F31" Association="Self.FK__Venta_Fac__ID_Ti__10566F31">
+            <End Role="TipoVenta" EntitySet="TipoVenta" />
+            <End Role="Venta_Factura" EntitySet="Venta_Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Fac__ID_Ve__0C85DE4D" Association="Self.FK__Venta_Fac__ID_Ve__0C85DE4D">
+            <End Role="Vendedor" EntitySet="Vendedor" />
+            <End Role="Venta_Factura" EntitySet="Venta_Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Det__ID_Ve__1332DBDC" Association="Self.FK__Venta_Det__ID_Ve__1332DBDC">
+            <End Role="Venta_Factura" EntitySet="Venta_Factura" />
+            <End Role="Venta_Detalles" EntitySet="Venta_Detalles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Compra_Sucursal" Association="BDMansModel.FK_Compra_Sucursal">
+            <End Role="Sucursal" EntitySet="Sucursal" />
+            <End Role="Compra_Entrada" EntitySet="Compra_Entrada" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_Compra_Sucursal">
+          <End Type="BDMansModel.Sucursal" Role="Sucursal" Multiplicity="0..1" />
+          <End Type="BDMansModel.Compra_Entrada" Role="Compra_Entrada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sucursal">
+              <PropertyRef Name="ID_Sucursal" />
+            </Principal>
+            <Dependent Role="Compra_Entrada">
+              <PropertyRef Name="ID_Sucursal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BDMansModelStoreContainer" CdmEntityContainer="bddVariedadesMansStyleEntities">
+          <EntitySetMapping Name="Categoria">
+            <EntityTypeMapping TypeName="BDMansModel.Categoria">
+              <MappingFragment StoreEntitySet="Categoria">
+                <ScalarProperty Name="ID_Categoria" ColumnName="ID_Categoria" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cliente">
+            <EntityTypeMapping TypeName="BDMansModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="ID_Cliente" ColumnName="ID_Cliente" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Compra_Detalles">
+            <EntityTypeMapping TypeName="BDMansModel.Compra_Detalles">
+              <MappingFragment StoreEntitySet="Compra_Detalles">
+                <ScalarProperty Name="ID_Detalles" ColumnName="ID_Detalles" />
+                <ScalarProperty Name="ID_Entrada" ColumnName="ID_Entrada" />
+                <ScalarProperty Name="ID_Producto" ColumnName="ID_Producto" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Precio_Compra" ColumnName="Precio_Compra" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Compra_Entrada">
+            <EntityTypeMapping TypeName="BDMansModel.Compra_Entrada">
+              <MappingFragment StoreEntitySet="Compra_Entrada">
+                <ScalarProperty Name="ID_Sucursal" ColumnName="ID_Sucursal" />
+                <ScalarProperty Name="ID_Entrada" ColumnName="ID_Entrada" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Fecha_Compra" ColumnName="Fecha_Compra" />
+                <ScalarProperty Name="Precio_Compra" ColumnName="Precio_Compra" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="ID_Proveedor" ColumnName="ID_Proveedor" />
+                <ScalarProperty Name="ID_TipoPago" ColumnName="ID_TipoPago" />
+                <ScalarProperty Name="ID_TipoMoneda" ColumnName="ID_TipoMoneda" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Marcas">
+            <EntityTypeMapping TypeName="BDMansModel.Marcas">
+              <MappingFragment StoreEntitySet="Marcas">
+                <ScalarProperty Name="ID_Marca" ColumnName="ID_Marca" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Producto">
+            <EntityTypeMapping TypeName="BDMansModel.Producto">
+              <MappingFragment StoreEntitySet="Producto">
+                <ScalarProperty Name="ID_Producto" ColumnName="ID_Producto" />
+                <ScalarProperty Name="ID_Categoria" ColumnName="ID_Categoria" />
+                <ScalarProperty Name="ID_Proveedor" ColumnName="ID_Proveedor" />
+                <ScalarProperty Name="ID_Marca" ColumnName="ID_Marca" />
+                <ScalarProperty Name="ID_Sucursal" ColumnName="ID_Sucursal" />
+                <ScalarProperty Name="ID_Unidad" ColumnName="ID_Unidad" />
+                <ScalarProperty Name="ID_TipoMoneda" ColumnName="ID_TipoMoneda" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Precio_Compra" ColumnName="Precio_Compra" />
+                <ScalarProperty Name="Precio_Producto" ColumnName="Precio_Producto" />
+                <ScalarProperty Name="DetalleS" ColumnName="DetalleS" />
+                <ScalarProperty Name="Image_URL" ColumnName="Image_URL" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Proveedor">
+            <EntityTypeMapping TypeName="BDMansModel.Proveedor">
+              <MappingFragment StoreEntitySet="Proveedor">
+                <ScalarProperty Name="ID_Proveedor" ColumnName="ID_Proveedor" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rol">
+            <EntityTypeMapping TypeName="BDMansModel.Rol">
+              <MappingFragment StoreEntitySet="Rol">
+                <ScalarProperty Name="ID_Rol" ColumnName="ID_Rol" />
+                <ScalarProperty Name="Puesto" ColumnName="Puesto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sucursal">
+            <EntityTypeMapping TypeName="BDMansModel.Sucursal">
+              <MappingFragment StoreEntitySet="Sucursal">
+                <ScalarProperty Name="ID_Sucursal" ColumnName="ID_Sucursal" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoMoneda">
+            <EntityTypeMapping TypeName="BDMansModel.TipoMoneda">
+              <MappingFragment StoreEntitySet="TipoMoneda">
+                <ScalarProperty Name="ID_TipoMoneda" ColumnName="ID_TipoMoneda" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Simbolo" ColumnName="Simbolo" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoPago">
+            <EntityTypeMapping TypeName="BDMansModel.TipoPago">
+              <MappingFragment StoreEntitySet="TipoPago">
+                <ScalarProperty Name="ID_TipoPago" ColumnName="ID_TipoPago" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoUnidad">
+            <EntityTypeMapping TypeName="BDMansModel.TipoUnidad">
+              <MappingFragment StoreEntitySet="TipoUnidad">
+                <ScalarProperty Name="ID_Unidad" ColumnName="ID_Unidad" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoVenta">
+            <EntityTypeMapping TypeName="BDMansModel.TipoVenta">
+              <MappingFragment StoreEntitySet="TipoVenta">
+                <ScalarProperty Name="ID_TipoVenta" ColumnName="ID_TipoVenta" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vendedor">
+            <EntityTypeMapping TypeName="BDMansModel.Vendedor">
+              <MappingFragment StoreEntitySet="Vendedor">
+                <ScalarProperty Name="ID_Vendedor" ColumnName="ID_Vendedor" />
+                <ScalarProperty Name="ID_Rol" ColumnName="ID_Rol" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Cedula" ColumnName="Cedula" />
+                <ScalarProperty Name="Edad" ColumnName="Edad" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Contra" ColumnName="Contra" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ID_Sucursal" ColumnName="ID_Sucursal" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="ResetToken" ColumnName="ResetToken" />
+                <ScalarProperty Name="ResetTokenExpiracion" ColumnName="ResetTokenExpiracion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Venta_Detalles">
+            <EntityTypeMapping TypeName="BDMansModel.Venta_Detalles">
+              <MappingFragment StoreEntitySet="Venta_Detalles">
+                <ScalarProperty Name="ID_Detalles" ColumnName="ID_Detalles" />
+                <ScalarProperty Name="ID_Venta" ColumnName="ID_Venta" />
+                <ScalarProperty Name="ID_Producto" ColumnName="ID_Producto" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="PrecioProducto" ColumnName="PrecioProducto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Venta_Factura">
+            <EntityTypeMapping TypeName="BDMansModel.Venta_Factura">
+              <MappingFragment StoreEntitySet="Venta_Factura">
+                <ScalarProperty Name="ID_Venta" ColumnName="ID_Venta" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="ID_Cliente" ColumnName="ID_Cliente" />
+                <ScalarProperty Name="ID_Vendedor" ColumnName="ID_Vendedor" />
+                <ScalarProperty Name="ID_Sucursal" ColumnName="ID_Sucursal" />
+                <ScalarProperty Name="Fecha_Venta" ColumnName="Fecha_Venta" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Paga" ColumnName="Paga" />
+                <ScalarProperty Name="Cambio" ColumnName="Cambio" />
+                <ScalarProperty Name="CostoAdicional" ColumnName="CostoAdicional" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="ID_TipoPago" ColumnName="ID_TipoPago" />
+                <ScalarProperty Name="ID_TipoMoneda" ColumnName="ID_TipoMoneda" />
+                <ScalarProperty Name="ID_TipoVenta" ColumnName="ID_TipoVenta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

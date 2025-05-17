@@ -126,7 +126,7 @@ namespace WebManStyle_ABD.Controllers
             return Ok(producto); // Retorna el producto si se encuentra
         }
 
-        [HttpGet]
+        /*[HttpGet]
         [Route("marcas")]
         public IHttpActionResult ObtenerMarcas()
         {
@@ -135,7 +135,7 @@ namespace WebManStyle_ABD.Controllers
                 return NotFound();
 
             return Ok(marcas);
-        }
+        }*/
 
         [HttpGet]
         [Route("sucursal/{idSucursal}")]
