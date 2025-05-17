@@ -12,20 +12,19 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Cliente
+    public partial class TipoUnidad
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Cliente()
+        public TipoUnidad()
         {
-            this.Venta_Factura = new HashSet<Venta_Factura>();
+            this.Producto = new HashSet<Producto>();
         }
     
-        public int ID_Cliente { get; set; }
+        public int ID_Unidad { get; set; }
         public string Nombre { get; set; }
-        public string Telefono { get; set; }
         public Nullable<int> Estado { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Venta_Factura> Venta_Factura { get; set; }
+        public virtual ICollection<Producto> Producto { get; set; }
     }
 }

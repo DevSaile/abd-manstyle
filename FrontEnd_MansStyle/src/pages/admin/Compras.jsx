@@ -1,22 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
 import Header from "../../components/common/Header";
 import ProductCardSales from "../../components/ventas/ProductCardSales";
 import { Plus, CheckCircle } from "lucide-react";
 import CartSummaryBuying from "../../components/compras/BuyingCartSummary";
 import NewProduct from "../../components/compras/NewProductModal";
-
-
-// TODAVIA NO FUNCIONA, TENGO QUE HACER UN POST PARA REGISTRAR LA COMPRA, ADEMAS TENGO QUE HACER UN GET PARA OBTENER LOS PRODUCTOS DE LA BASE DE DATOS
-// import { obtenerProductosPorSucursal } from "../../services/ProductosService";
-// APARTE DE ESO TENGO QUE HACER QUE EL FILTRADO FUNCIONE CON LOS PRODUCTOS QUE TENGO EN LA BASE DE DATOS
+import { obtenerProductos } from "../../services/ProductosService";
 
 const BuyingPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProveedor, setSelectedProveedor] = useState(null);
   const [showAddProductModal, setShowAddProductModal] = useState(false);
+  const [products, setProducts] = useState([]); // Estado para los productos reales
+
+  // Obtener productos al cargar el componente
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const productos = await obtenerProductos();
+        setProducts(productos);
+      } catch (error) {
+        console.error("Error al cargar productos:", error);
+        setProducts([]);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   // Test data for providers
   const providers = [
@@ -25,20 +36,9 @@ const BuyingPage = () => {
     { label: "Proveedor C", value: "C" },
   ];
 
-  // Test data for products
-  const products = [
-    { ID_Producto: 1, Nombre: "Producto 1", Precio_Producto: 10, Proveedor: "A", url_image: "" },
-    { ID_Producto: 2, Nombre: "Producto 2", Precio_Producto: 20, Proveedor: "B", url_image: "" },
-    { ID_Producto: 3, Nombre: "Producto 3", Precio_Producto: 30, Proveedor: "A", url_image: "" },
-    { ID_Producto: 4, Nombre: "Producto 4", Precio_Producto: 40, Proveedor: "C", url_image: "" },
-  ];
-
-  
-
   // Filter products based on the selected provider and search term
   const filteredProducts = products.filter(
     (product) =>
-      
       product.Nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -54,6 +54,8 @@ const BuyingPage = () => {
         : [...prevCart, { ...product, quantity: 1, buyingPrice: 0 }];
     });
   };
+
+  // ... (resto de tus funciones permanecen igual)
 
   const updateCartItemQuantity = (id, quantity) => {
     setCartItems((prevCart) =>
@@ -77,9 +79,9 @@ const BuyingPage = () => {
 
   return (
     <motion.div className="flex-1 overflow-auto relative z-10"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}>
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1 }}>
       <Header title="Buying" />
 
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
@@ -139,7 +141,7 @@ const BuyingPage = () => {
         <NewProduct
           openAdd={showAddProductModal}
           AddModalClose={() => setShowAddProductModal(false)}
-          />
+        />
       </main>
     </motion.div>
   );

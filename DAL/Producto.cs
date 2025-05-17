@@ -17,32 +17,34 @@ namespace DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Producto()
         {
-            this.Compra_Entrada = new HashSet<Compra_Entrada>();
+            this.Compra_Detalles = new HashSet<Compra_Detalles>();
             this.Venta_Detalles = new HashSet<Venta_Detalles>();
-            this.Venta_Factura = new HashSet<Venta_Factura>();
         }
     
         public int ID_Producto { get; set; }
         public Nullable<int> ID_Categoria { get; set; }
         public Nullable<int> ID_Proveedor { get; set; }
+        public Nullable<int> ID_Marca { get; set; }
+        public Nullable<int> ID_Sucursal { get; set; }
+        public Nullable<int> ID_Unidad { get; set; }
+        public Nullable<int> ID_TipoMoneda { get; set; }
         public string Nombre { get; set; }
-        public string Marca { get; set; }
         public Nullable<int> Cantidad { get; set; }
         public Nullable<decimal> Precio_Compra { get; set; }
         public Nullable<decimal> Precio_Producto { get; set; }
-        public Nullable<int> ID_Sucursal { get; set; }
-        public string Detalles { get; set; }
+        public string DetalleS { get; set; }
         public string Image_URL { get; set; }
         public Nullable<int> Estado { get; set; }
     
         public virtual Categoria Categoria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Compra_Entrada> Compra_Entrada { get; set; }
+        public virtual ICollection<Compra_Detalles> Compra_Detalles { get; set; }
+        public virtual Marcas Marcas { get; set; }
         public virtual Proveedor Proveedor { get; set; }
         public virtual Sucursal Sucursal { get; set; }
+        public virtual TipoMoneda TipoMoneda { get; set; }
+        public virtual TipoUnidad TipoUnidad { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venta_Detalles> Venta_Detalles { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Venta_Factura> Venta_Factura { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace DAL
         public string Cedula { get; set; }
         public Nullable<System.DateTime> Edad { get; set; }
         public string Usuario { get; set; }
-        public string contra { get; set; }
+        public string Contra { get; set; }
         public string Email { get; set; }
         public Nullable<int> ID_Sucursal { get; set; }
         public Nullable<int> Estado { get; set; }

@@ -54,61 +54,79 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Categoria.cs">
-      <DependentUpon>ModelMan.tt</DependentUpon>
+      <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Class1.cs" />
     <Compile Include="Cliente.cs">
-      <DependentUpon>ModelMan.tt</DependentUpon>
+      <DependentUpon>Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Compra_Detalles.cs">
+      <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Compra_Entrada.cs">
-      <DependentUpon>ModelMan.tt</DependentUpon>
+      <DependentUpon>Database.tt</DependentUpon>
     </Compile>
-    <Compile Include="ModelMan.Context.cs">
+    <Compile Include="Database.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ModelMan.Context.tt</DependentUpon>
+      <DependentUpon>Database.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="ModelMan.cs">
+    <Compile Include="Database.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ModelMan.tt</DependentUpon>
+      <DependentUpon>Database.tt</DependentUpon>
     </Compile>
-    <Compile Include="ModelMan.Designer.cs">
+    <Compile Include="Database.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ModelMan.edmx</DependentUpon>
+      <DependentUpon>Database.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Marcas.cs">
+      <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Producto.cs">
-      <DependentUpon>ModelMan.tt</DependentUpon>
+      <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proveedor.cs">
-      <DependentUpon>ModelMan.tt</DependentUpon>
+      <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Rol.cs">
-      <DependentUpon>ModelMan.tt</DependentUpon>
+      <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Sucursal.cs">
-      <DependentUpon>ModelMan.tt</DependentUpon>
+      <DependentUpon>Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TipoMoneda.cs">
+      <DependentUpon>Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TipoPago.cs">
+      <DependentUpon>Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TipoUnidad.cs">
+      <DependentUpon>Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TipoVenta.cs">
+      <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Vendedor.cs">
-      <DependentUpon>ModelMan.tt</DependentUpon>
+      <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Venta_Detalles.cs">
-      <DependentUpon>ModelMan.tt</DependentUpon>
+      <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Venta_Factura.cs">
-      <DependentUpon>ModelMan.tt</DependentUpon>
+      <DependentUpon>Database.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="ModelMan.edmx">
+    <EntityDeploy Include="Database.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ModelMan.Designer.cs</LastGenOutput>
+      <LastGenOutput>Database.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="ModelMan.edmx.diagram">
-      <DependentUpon>ModelMan.edmx</DependentUpon>
+    <None Include="Database.edmx.diagram">
+      <DependentUpon>Database.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -116,15 +134,15 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ModelMan.Context.tt">
+    <Content Include="Database.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ModelMan.edmx</DependentUpon>
-      <LastGenOutput>ModelMan.Context.cs</LastGenOutput>
+      <DependentUpon>Database.edmx</DependentUpon>
+      <LastGenOutput>Database.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="ModelMan.tt">
+    <Content Include="Database.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ModelMan.edmx</DependentUpon>
-      <LastGenOutput>ModelMan.cs</LastGenOutput>
+      <DependentUpon>Database.edmx</DependentUpon>
+      <LastGenOutput>Database.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

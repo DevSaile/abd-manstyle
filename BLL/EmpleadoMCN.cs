@@ -35,7 +35,7 @@ namespace BLL
                     NombreSucursal = v.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Primaria",
                     usuario = v.Usuario,
                     correo = v.Email,
-                    contrasena = v.contra
+                    contrasena = v.Contra
                 })
                 .ToList();
         }
@@ -84,7 +84,7 @@ namespace BLL
                     Cedula = e.Cedula,
                     FechaNacimiento = e.Edad,
                     usuario = e.Usuario,
-                    contrasena = e.contra
+                    contrasena = e.Contra
                 })
                 .FirstOrDefault();
         }
@@ -100,7 +100,7 @@ namespace BLL
                     Edad = empleado.FechaNacimiento,
                     Estado = 1,
                     Usuario = empleado.usuario,
-                    contra = empleado.contrasena,
+                    Contra = empleado.contrasena,
                     ID_Rol = empleado.ID_Rol,
                     ID_Sucursal = empleado.ID_Sucursal,
                     Email = empleado.correo
@@ -179,7 +179,7 @@ namespace BLL
                 actempleado.ID_Sucursal = actualEmpleado.ID_Sucursal;
                 actempleado.ID_Rol = actualEmpleado.ID_Rol;
                 actempleado.Usuario = actualEmpleado.usuario;
-                actempleado.contra = actualEmpleado.contrasena;
+                actempleado.Contra = actualEmpleado.contrasena;
                 actempleado.Email = actualEmpleado.correo;
 
                 db.Entry(actempleado).State = System.Data.Entity.EntityState.Modified;
@@ -197,7 +197,7 @@ namespace BLL
         {
             var empleado = db.Vendedor.FirstOrDefault(e =>
                 e.Usuario == usuario &&
-                e.contra == contra &&
+                e.Contra == contra &&
                 e.Estado == 1 // solo empleados activos
             );
 
@@ -255,7 +255,7 @@ namespace BLL
                     return false;
 
                 // Actualizar la contraseña
-                empleado.contra = nuevaContrasena; // 🔥 (IMPORTANTE: En futuro deberías hacer hashing aquí)
+                empleado.Contra = nuevaContrasena; // 🔥 (IMPORTANTE: En futuro deberías hacer hashing aquí)
 
                 // Limpiar el token para que no lo usen otra vez
                 empleado.ResetToken = null;

@@ -14,13 +14,27 @@ namespace DAL
     
     public partial class Compra_Entrada
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Compra_Entrada()
+        {
+            this.Compra_Detalles = new HashSet<Compra_Detalles>();
+        }
+    
         public int ID_Entrada { get; set; }
         public Nullable<int> Estado { get; set; }
-        public Nullable<int> ID_Producto { get; set; }
         public Nullable<System.DateTime> Fecha_Compra { get; set; }
         public Nullable<decimal> Precio_Compra { get; set; }
-        public Nullable<int> CantidadCompra { get; set; }
+        public Nullable<int> Cantidad { get; set; }
+        public Nullable<int> ID_Proveedor { get; set; }
+        public Nullable<int> ID_TipoPago { get; set; }
+        public Nullable<int> ID_TipoMoneda { get; set; }
+        public Nullable<int> ID_Sucursal { get; set; }
     
-        public virtual Producto Producto { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Compra_Detalles> Compra_Detalles { get; set; }
+        public virtual Proveedor Proveedor { get; set; }
+        public virtual TipoPago TipoPago { get; set; }
+        public virtual TipoMoneda TipoMoneda { get; set; }
+        public virtual Sucursal Sucursal { get; set; }
     }
 }

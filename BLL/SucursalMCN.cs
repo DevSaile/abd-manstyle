@@ -57,7 +57,7 @@ namespace BLL
         {
             var sucu = (from p in db.Producto
                         where p.ID_Producto == idsucuproducto
-                        select p.Marca).FirstOrDefault();
+                        select p.Marcas.Nombre).FirstOrDefault();
 
             //String devolver = sucu == 0 ? "Tienda Principal" : "Tienda Primaria";
 
@@ -92,7 +92,7 @@ namespace BLL
 
             int totalMarcas = db.Producto
                 .Where(p => p.ID_Sucursal == idSucursal)
-                .Select(p => p.Marca)
+                .Select(p => p.Marcas.Nombre)
                 .Distinct()
                 .Count();
 

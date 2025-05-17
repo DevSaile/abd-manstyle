@@ -22,21 +22,25 @@ namespace DAL
     
         public int ID_Venta { get; set; }
         public Nullable<int> Estado { get; set; }
-        public Nullable<int> ID_Producto { get; set; }
         public Nullable<int> ID_Cliente { get; set; }
         public Nullable<int> ID_Vendedor { get; set; }
         public Nullable<int> ID_Sucursal { get; set; }
         public Nullable<System.DateTime> Fecha_Venta { get; set; }
-        public Nullable<int> Cantidad { get; set; }
         public Nullable<decimal> Subtotal { get; set; }
         public Nullable<decimal> Total { get; set; }
-        public Nullable<decimal> PrecioProducto { get; set; }
         public Nullable<decimal> Paga { get; set; }
         public Nullable<decimal> Cambio { get; set; }
+        public Nullable<decimal> CostoAdicional { get; set; }
+        public Nullable<int> Cantidad { get; set; }
+        public Nullable<int> ID_TipoPago { get; set; }
+        public Nullable<int> ID_TipoMoneda { get; set; }
+        public Nullable<int> ID_TipoVenta { get; set; }
     
         public virtual Cliente Cliente { get; set; }
-        public virtual Producto Producto { get; set; }
         public virtual Sucursal Sucursal { get; set; }
+        public virtual TipoMoneda TipoMoneda { get; set; }
+        public virtual TipoPago TipoPago { get; set; }
+        public virtual TipoVenta TipoVenta { get; set; }
         public virtual Vendedor Vendedor { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venta_Detalles> Venta_Detalles { get; set; }

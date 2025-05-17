@@ -36,7 +36,7 @@ namespace BLL
                     Cantidad = venta.Cantidad,
                     Subtotal = venta.Subtotal,
                     Total = venta.Total,
-                    PrecioProducto = venta.PrecioProducto,
+                    //PrecioProducto = venta.PrecioProducto,
                     Paga = venta.pagacon,
                     Cambio = venta.cambio
                 };
@@ -66,7 +66,6 @@ namespace BLL
                 existingVenta.Cantidad = venta.Cantidad;
                 existingVenta.Subtotal = venta.Subtotal;
                 existingVenta.Total = venta.Total;
-                existingVenta.PrecioProducto = venta.PrecioProducto;
                 existingVenta.Paga = venta.pagacon;
                 existingVenta.Cambio = venta.cambio;
 
@@ -117,7 +116,7 @@ namespace BLL
                     Cantidad = venta.Cantidad,
                     Subtotal = venta.Subtotal,
                     Total = venta.Total,
-                    PrecioProducto = venta.PrecioProducto,
+                    //PrecioProducto = venta.PrecioProducto,
                     pagacon = venta.Paga,
                     cambio = venta.Cambio
 
@@ -147,7 +146,7 @@ namespace BLL
                     Cantidad = venta.Cantidad,
                     Subtotal = venta.Subtotal,
                     Total = venta.Total,
-                    PrecioProducto = venta.PrecioProducto,
+                    //PrecioProducto = venta.PrecioProducto,
                     pagacon = venta.Paga,
                     cambio = venta.Cambio
                 };
@@ -182,10 +181,10 @@ namespace BLL
                 {
                     ID_Producto = p.ID_Producto,
                     Nombre = p.Nombre,
-                    Marca = p.Marca,
+                    Marca = p.Marcas.Nombre,
                     Cantidad = p.Cantidad,
                     Precio_Producto = p.Precio_Producto,
-                    Detalles = p.Detalles,
+                    Detalles = p.DetalleS,
                     Descripcion_Categoria = p.ID_Categoria == 1 ? "Cosmeticos" : "Electronica",
                     Descripcion_Sucursal = p.ID_Sucursal == 1 ? "Tienda Principal" : "Tienda Primaria"
 
@@ -243,7 +242,6 @@ namespace BLL
                         Total = venta.Total ?? 0m,
                         Paga = venta.pagacon ?? 0m,
                         Cambio = venta.cambio ?? 0m,
-                        PrecioProducto = venta.PrecioProducto ?? 0m,
                         Cantidad = venta.Cantidad,
                         ID_Sucursal = venta.ID_Sucursal
                     };

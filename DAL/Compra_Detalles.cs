@@ -12,15 +12,15 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Venta_Detalles
+    public partial class Compra_Detalles
     {
         public int ID_Detalles { get; set; }
-        public Nullable<int> ID_Venta { get; set; }
+        public Nullable<int> ID_Entrada { get; set; }
         public Nullable<int> ID_Producto { get; set; }
         public Nullable<int> Cantidad { get; set; }
-        public Nullable<decimal> PrecioProducto { get; set; }
+        public Nullable<decimal> Precio_Compra { get; set; }
     
+        public virtual Compra_Entrada Compra_Entrada { get; set; }
         public virtual Producto Producto { get; set; }
-        public virtual Venta_Factura Venta_Factura { get; set; }
     }
 }
