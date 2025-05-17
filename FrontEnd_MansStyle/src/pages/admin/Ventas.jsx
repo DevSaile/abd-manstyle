@@ -4,12 +4,10 @@ import { motion } from "framer-motion";
 import Header from "../../components/common/Header";
 import ProductCardSales from "../../components/ventas/ProductCardSales";
 import CartSummary from "../../components/ventas/CartSummary";
-import ComboBoxID from "../../components/common/ComboxID";
 import { CheckCircle } from "lucide-react";
 
 // Metodos para registrar la venta
 import { obtenerProductosPorSucursal } from "../../services/ProductosService";
-import { obtenerSucursales } from "../../services/SucursalService";
 import { obtenerClientesActivos } from "../../services/ClientesService";
 import { agregarVenta } from "../../services/VentasService";
 
@@ -64,7 +62,7 @@ const CashierPage = () => {
     };
 
     const handleSale = async () => {
-        if (!selectedClient || cartItems.length === 0) {
+        if (cartItems.length === 0) {
             alert("Selecciona un cliente y agrega productos al carrito.");
             return;
         }
@@ -118,7 +116,7 @@ const CashierPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}>
-            <Header title="Cashier" />
+            <Header title="Ventas" />
 
             <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
                 {/* ComboBoxes for Cliente */}
@@ -131,12 +129,7 @@ const CashierPage = () => {
                         placeholder="Buscar productos..."
                         className="w-8/12 bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
                     />
-                    <ComboBoxID
-                        name="Cliente"
-                        options={clients}
-                        selected={selectedClient}
-                        onSelect={(client) => setSelectedClient(client)}
-                    />
+                
                 </div>
 
                 {/* Flex Container for Products and Cart Summary */}

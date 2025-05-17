@@ -8,7 +8,6 @@ import {
 } from "../../services/ProductosService";
 import { obtenerSucursales } from "../../services/SucursalService";
 import { obtenerCategoriasActivas } from "../../services/CategoriasService";
-import { Plus } from "lucide-react";
 import Header from "../../components/common/Header";
 import ComboBox from "../../components/common/ComboBox";
 import ProductCard from "../../components/productos/ProductCard";
@@ -29,7 +28,6 @@ const ProductsPage = () => {
   const [selectedSucursal, setSelectedSucursal] = useState("All");
 
   const [selectedBrand, setSelectedBrand] = useState("All");
-  const [openExistente, setOpenExistente] = useState(false);
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
@@ -126,9 +124,9 @@ const ProductsPage = () => {
 
   return (
     <div className="flex-1 overflow-auto relative z-10">
-      <Header title="Products" />
+      <Header title="Productos" />
 
-      <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
+      <main className="max-w-7xl mx-5 py-6 px-4 lg:px-8">
         {/* Filters */}
         <motion.div
           className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5 mb-8"
@@ -154,7 +152,7 @@ const ProductsPage = () => {
           <div className="relative">
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder="Buscar productos..."
               className="bg-gray-700 text-white placeholder-gray-400 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
