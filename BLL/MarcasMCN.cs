@@ -10,7 +10,7 @@ namespace BLL
 {
     public class MarcasMCN
     {
-        /*private readonly bddVariedadesMansStyleEntities db;
+        private readonly bddVariedadesMansStyleEntities db;
 
         public MarcasMCN()
         {
@@ -118,7 +118,7 @@ namespace BLL
             {
                 return false;
             }
-        }*/
+        }
     }
 
 }

@@ -7,6 +7,7 @@ import { obtenerCategoriasActivas } from "../../services/CategoriasService";
 import { obtenerSucursales } from "../../services/SucursalService";
 import { agregarProducto } from "../../services/ProductosService";
 import { subirImagen } from "../../services/UploadService"; 
+import { obtenerMarcas } from "../../services/MarcasService";
 
 /*Me falta agregar lo de las marcas*/ 
 /* IGUAL AAQUI ME FALTA AGREGAR LO DE PROVEEDORES*/ 
@@ -16,7 +17,7 @@ const NewProduct = ({ openAdd, AddModalClose }) => {
     Nombre: "",
     Precio_Compra: "",
     Precio_Venta: "",
-    Marca: "",
+    ID_Marca: "",
     Detalles: "",
     ID_Sucursal: "",
     ID_Categoria: "",
@@ -27,12 +28,16 @@ const NewProduct = ({ openAdd, AddModalClose }) => {
 
   const [categorias, setCategorias] = useState([]);
   const [sucursales, setSucursales] = useState([]);
+  const [Marcas, setMarcas] = useState([]);
+
 
   useEffect(() => {
-    Promise.all([obtenerCategoriasActivas(), obtenerSucursales()]).then(
-      ([categoriasData, sucursalesData]) => {
+    Promise.all([obtenerCategoriasActivas(), obtenerSucursales(), obtenerMarcas()]).then(
+      ([categoriasData, sucursalesData, MarcasData]) => {
         setCategorias(categoriasData.map(c => ({ label: c.Nombre, value: c.ID_Categoria })));
         setSucursales(sucursalesData.map(s => ({ label: s.Nombre, value: s.ID_Sucursal })));
+        setMarcas(MarcasData.map(s => ({ label: s.Nombre, value: s.ID_Marca })));
+
       }
     );
   }, []);
@@ -64,7 +69,7 @@ const NewProduct = ({ openAdd, AddModalClose }) => {
   
       const productoDTO = {
         Nombre: newProduct.Nombre,
-        Marca: newProduct.Marca,
+        ID_Marca: newProduct.ID_Marca,
         ID_Sucursal: newProduct.ID_Sucursal,
         ID_Categoria: newProduct.ID_Categoria,
         Cantidad: parseInt(newProduct.Cantidad),
@@ -84,7 +89,7 @@ const NewProduct = ({ openAdd, AddModalClose }) => {
       else {
       }
   
-      refrescarProductos();
+      //refrescarProductos(); FALTA CREAR ESTA FUNCION EN EL PADRE
       AddModalClose();
   
     } catch (error) {
@@ -196,21 +201,17 @@ const NewProduct = ({ openAdd, AddModalClose }) => {
             <label className="block text-sm font-medium text-gray-300 mb-1">Marca</label>
            <ComboBoxID
               name="Seleccionar Marca"
-              options={[
-                { label: "Samsung", value: "Samsung" },
-                { label: "Apple", value: "Apple" },
-                { label: "Sony", value: "Sony" },
-                { label: "LG", value: "LG" },
-                { label: "Otra", value: "Otra" },
-              ]}
+              options={Marcas}
               selected={{
                 label: newProduct.Marca || "",
-                value: newProduct.Marca || "",
+                value: newProduct.ID_Marca || "",
               }}
               onSelect={(selectedOption) =>
                 setNewProduct({
                   ...newProduct,
-                  Marca: selectedOption.value,
+                  ID_Marca: selectedOption.value,
+                  Nombre_Marca: selectedOption.label,
+
                 })
               }
             />

@@ -1,6 +1,6 @@
 import api from "../Api";
 
-export const obtenerMarcas = async () => {
+/*export const obtenerMarcas = async () => {
     try {
         const response = await api.get("/productos/marcas"); // Llama al endpoint de marcas
         return response.data; // Devuelve las marcas únicas
@@ -8,11 +8,11 @@ export const obtenerMarcas = async () => {
         console.error("Error al obtener marcas:", error);
         return []; // Devuelve un array vacío en caso de error
     }
-};
+};*/
 
 
 // Obtener todas las marcas
-export const obtenerMarcass = async () => {
+export const obtenerMarcas = async () => {
     try {
         const response = await api.get("/marcas/todas");
         return response.data;

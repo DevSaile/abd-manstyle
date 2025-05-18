@@ -8,6 +8,7 @@ import {
 } from "../../services/ProductosService";
 import { obtenerSucursales } from "../../services/SucursalService";
 import { obtenerCategoriasActivas } from "../../services/CategoriasService";
+import { obtenerMarcas } from "../../services/MarcasService";
 import { Plus } from "lucide-react";
 import Header from "../../components/common/Header";
 import ComboBox from "../../components/common/ComboBox";
@@ -18,15 +19,19 @@ import ModalDetalles from "../../components/productos/ModalDetalles";
 
 const ProductsPage = () => {
   const [openDetails, setOpenDetails] = useState(false);
+
   const [productos, setProductos] = useState([]);
   const [Sucursales, setSucursales] = useState([]);
   const [Categorias, setCategorias] = useState([]);
+  const [Marcas, setMarcas] = useState([]);
+
 
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedSucursal, setSelectedSucursal] = useState("All");
+  const [selectedMarcas, setSelectedMarca] = useState("All");
 
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [openExistente, setOpenExistente] = useState(false);
@@ -55,6 +60,13 @@ const ProductsPage = () => {
   }, []);
 
   useEffect(() => {
+    obtenerMarcas().then((data) => {
+      const opciones = data.map((Marca) => Marca.Nombre); // Extrae solo los nombres
+      setMarcas(["All", ...opciones]); // Agrega la opción "All" como predeterminada
+    });
+  }, []);
+
+  useEffect(() => {
     obtenerCategoriasActivas().then((data) => {
       const opciones = data.map((Categoria) => Categoria.Nombre); // Extrae solo los nombres
       setCategorias(["All", ...opciones]); // Agrega la opción "All" como predeterminada
@@ -72,10 +84,10 @@ const ProductsPage = () => {
         selectedCategory === "All" || product.Descripcion_Categoria === selectedCategory;
 
       const matchesSucursal =
-        selectedSucursal === "All" || product.versucu === selectedSucursal;
+        selectedSucursal === "All" || product.Descripcion_Sucursal === selectedSucursal;
 
       const matchesBrand =
-        selectedBrand === "All" || product.Marca === selectedBrand;
+        selectedMarcas === "All" || product.Marca === selectedMarcas;
 
       return (
         matchesSearchTerm && matchesCategory && matchesSucursal && matchesBrand
@@ -84,7 +96,7 @@ const ProductsPage = () => {
 
     setFilteredProducts(filtered);
 
-  }, [searchTerm, selectedCategory, selectedSucursal, selectedBrand, productos]);
+  }, [searchTerm, selectedCategory, selectedSucursal, selectedMarcas, productos]);
 
   
   const deletefuncion = async () => {
@@ -148,8 +160,8 @@ const ProductsPage = () => {
           />
           <ComboBox
             name={"Marca"}
-            options={["All", "Brand A", "Brand B", "Brand C"]}
-            onSelect={setSelectedBrand}
+            options={Marcas}
+            onSelect={setSelectedMarca}
           />
           <div className="relative">
             <input

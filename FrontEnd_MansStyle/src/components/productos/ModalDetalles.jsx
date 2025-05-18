@@ -5,11 +5,11 @@ const ModalDetalles = ({ openDetails, DetailsModalClose, product }) => {
   // Default placeholder data
   const defaultProduct = {
     Nombre: "",
-    Precio_Venta: "",
+    Precio_Producto: "",
     Marca: "",
-    Sucursal: "",
+    Descripcion_Sucursal: "",
     Descripcion_Categoria: "",
-    image: null,
+    url_image: null,
   };
 
   // Use product data if available, otherwise fallback to default data
@@ -42,7 +42,7 @@ const ModalDetalles = ({ openDetails, DetailsModalClose, product }) => {
             Precio de Venta:
           </label>
           <p className="bg-gray-700 text-gray-100 rounded-lg px-4 py-2 w-2/3">
-            {displayProduct.Precio_Venta}
+            {displayProduct.Precio_Producto}
           </p>
         </div>
 
@@ -62,7 +62,7 @@ const ModalDetalles = ({ openDetails, DetailsModalClose, product }) => {
             Sucursal:
           </label>
           <p className="bg-gray-700 text-gray-100 rounded-lg px-4 py-2 w-2/3">
-            {displayProduct.Sucursal}
+            {displayProduct.Descripcion_Sucursal}
           </p>
         </div>
 
@@ -82,7 +82,7 @@ const ModalDetalles = ({ openDetails, DetailsModalClose, product }) => {
             Descripción:
           </label>
           <p className="bg-gray-700 text-gray-100 rounded-lg px-4 py-2 w-2/3">
-            {displayProduct.Descripcion}
+            {displayProduct.Detalles}
           </p>
         </div>
 
@@ -92,9 +92,9 @@ const ModalDetalles = ({ openDetails, DetailsModalClose, product }) => {
             Imagen:
           </label>
           <div className="w-2/3">
-            {displayProduct.image ? (
+            {displayProduct.url_image ? (
               <img
-                src={displayProduct.image}
+                src={displayProduct.url_image}
                 alt="Product"
                 className="w-full h-auto rounded-lg"
               />

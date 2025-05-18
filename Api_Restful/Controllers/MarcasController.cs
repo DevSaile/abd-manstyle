@@ -12,7 +12,7 @@ namespace WebManStyle_ABD.Controllers
     [RoutePrefix("api/marcas")]
     public class MarcasController : ApiController
     {
-        /*private readonly MarcasMCN _marcasMCN = new MarcasMCN();
+        private readonly MarcasMCN _marcasMCN = new MarcasMCN();
 
         // Obtener todas las marcas
         [HttpGet]
@@ -90,6 +90,6 @@ namespace WebManStyle_ABD.Controllers
                 return InternalServerError();
 
             return Ok("Marca agregada correctamente.");
-        }*/
+        }
     }
 }
