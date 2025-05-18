@@ -21,6 +21,7 @@ namespace BLL
         public List<MarcasDTO> ObtenerMarcas()
         {
             return db.Marcas
+                .Where(m => m.Estado == 1) // Filtra las marcas con Estado igual a 1
                 .Select(m => new MarcasDTO
                 {
                     ID_Marca = m.ID_Marca,
@@ -79,16 +80,21 @@ namespace BLL
         }
 
         // Eliminar una marca por ID
-        public bool EliminarMarca(int ID_Marca)
+        public bool EliminarMarca(MarcasDTO killMarca)
         {
             try
             {
-                var marca = db.Marcas.Find(ID_Marca);
+                Marcas DeleteMarca = db.Marcas.Find(killMarca.ID_Marca);
 
-                if (marca == null)
+                if (DeleteMarca is null)
+                {
+
                     return false;
+                }
 
-                db.Marcas.Remove(marca);
+                DeleteMarca.Estado = killMarca.Estado;
+
+                db.Entry(DeleteMarca).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
 
                 return true;
@@ -106,7 +112,8 @@ namespace BLL
             {
                 var marca = new Marcas
                 {
-                    Nombre = nuevaMarca.Nombre
+                    Nombre = nuevaMarca.Nombre,
+                    Estado = nuevaMarca.Estado
                 };
 
                 db.Marcas.Add(marca);

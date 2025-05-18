@@ -11,5 +11,7 @@ namespace Models
 
         public int ID_Marca { get; set; }
         public string Nombre { get; set; }
+
+        public int Estado { get; set; } // 1 = Activo, 0 = Inactivo
     }
 }

@@ -4,8 +4,8 @@ import CategoryTable from "../../components/categorias/TablaCategorias";
 import DeleteModal from "../../components/common/DeleteModal";
 import BrandTable from "../../components/categorias/TablaMarcas";
 
-import { obtenerCategoriasActivas } from "../../services/CategoriasService";
-import { obtenerMarcas } from "../../services/MarcasService";
+import { obtenerCategoriasActivas, eliminarCategoria } from "../../services/CategoriasService";
+import { eliminarMarca, obtenerMarcas } from "../../services/MarcasService";
 
 const CategoryPage = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -34,6 +34,7 @@ const CategoryPage = () => {
     }, []);
 
     const refreshCategories = async () => {
+
         // Cargar categorías activas
         obtenerCategoriasActivas().then((data) => {
             console.log("Categorías activas:", data); // Debugging line
@@ -42,6 +43,11 @@ const CategoryPage = () => {
             console.error("Error al obtener categorías activas:", error);
         });
 
+
+    };
+    
+    const refreshBrands = async () => {
+
         // Cargar marcas
         obtenerMarcas().then((data) => {
             console.log("Marcas:", data); // Debugging line
@@ -49,6 +55,24 @@ const CategoryPage = () => {
         }).catch(error => {
             console.error("Error al obtener marcas:", error);
         });  
+
+    }
+    const handleDeleteBrand = async () => {
+        if (!selectedBrand) return;
+
+        const deletedMarca = {
+            ID_Marca: selectedBrand.ID_Marca,
+            Estado: 0 // Asumiendo que 0 es el estado inactivo
+        };
+
+        const result = await eliminarMarca(deletedMarca);
+        if (result) {
+            refreshBrands(); // Refrescar las categorías después de la eliminación
+            setSelectedBrand(null);
+            openDelete(false); // Cerrar el modal de eliminación
+        } else {
+            alert("Error al eliminar la marca");
+        }
     };
 
     const handleDeleteCategory = async () => {
@@ -88,13 +112,16 @@ const CategoryPage = () => {
                     selectedBrand={selectedBrand}
                     setSelectedBrand={setSelectedBrand}
                     openDelete={() => setOpenDeleteBrand(true)}
+                    refreshBrands={refreshBrands} // Pasar la función de refresco
                 />
 
                 <DeleteModal
                     open={openDeleteBrand}
-                    onClose={() => setOpenDeleteBrand(false)}
+                    onClose={() => setOpenDeleteCategory(false)}
                     ObjectName="Marca"
                     ObjectProperName={selectedBrand?.Nombre}
+                    DeleteLogic={handleDeleteBrand} // Lógica de eliminación para marcas
+                    // Se pasa la función handleDeleteBrand como prop
                 />
 
                 <DeleteModal

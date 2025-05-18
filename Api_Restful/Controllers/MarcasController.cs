@@ -66,15 +66,18 @@ namespace WebManStyle_ABD.Controllers
         }
 
         // Eliminar una marca por ID
-        [HttpDelete]
-        [Route("eliminar/{idMarca:int}")]
-        public IHttpActionResult EliminarMarca(int idMarca)
+        [HttpPut]
+        [Route("eliminar")]
+        public IHttpActionResult EliminarMarca([FromBody] MarcasDTO actualMarca)
         {
-            bool resultado = _marcasMCN.EliminarMarca(idMarca);
+            if (actualMarca == null)
+                return BadRequest("Datos de Marca inválidos.");
+
+            bool resultado = _marcasMCN.EliminarMarca(actualMarca);
             if (!resultado)
                 return InternalServerError();
 
-            return Ok("Marca eliminada correctamente.");
+            return Ok("Estado de la Marca actualizado correctamente.");
         }
 
         // Agregar una nueva marca

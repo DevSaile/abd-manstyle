@@ -56,9 +56,9 @@ export const actualizarMarca = async (marca) => {
 };
 
 // Eliminar una marca por ID
-export const eliminarMarca = async (idMarca) => {
+export const eliminarMarca = async (Marca) => {
     try {
-        const response = await api.delete(`/marcas/eliminar/${idMarca}`);
+        const response = await api.put("/marcas/eliminar", Marca);
         return response.data;
     } catch (error) {
         console.error("Error al eliminar la marca:", error);
