@@ -85,7 +85,7 @@ namespace BLL
                         Descripcion_Categoria = p.Categoria.Nombre, // Accede al nombre de la categoría
 
                         Nombre = p.Nombre,
-                        Marca = p.Marcas.Nombre,
+                        ID_Marca = p.ID_Marca,
                         Cantidad = p.Cantidad,
                         //Precio_Compra = p.Precio_Compra,
                         Precio_Producto = p.Precio_Producto,

@@ -22,8 +22,8 @@ const ModalEditar = ({
 
   // Cargar todas las categorías y sucursales al iniciar el componente
   useEffect(() => {
-    Promise.all([obtenerCategoriasActivas(), obtenerSucursales()]).then(
-      ([categoriasData, sucursalesData]) => {
+    Promise.all([obtenerCategoriasActivas(), obtenerSucursales(), obtenerMarcas()]).then(
+      ([categoriasData, sucursalesData, marcasData]) => {
         setCategorias(categoriasData.map(categoria => ({
           label: categoria.Nombre, 
           value: categoria.ID_Categoria
@@ -32,15 +32,14 @@ const ModalEditar = ({
           label: sucursal.Nombre, 
           value: sucursal.ID_Sucursal
         })));
+        setMarcas(marcasData.map(marca => ({
+          label: marca.Nombre, 
+          value: marca.ID_Marca
+        })));
       }
     );
   }, []);
 
-  useEffect(() => {
-    obtenerMarcas().then((marcas) => {
-      setMarcas(marcas); // Actualiza el estado con las marcas únicas
-    });
-  }, []);
 
   // Cargar información del producto cuando el modal se abre
   useEffect(() => {
@@ -70,7 +69,7 @@ const ModalEditar = ({
         const productoActualizado = {
           ID_Producto: selectedProducto.ID_Producto,
           Nombre: selectedProducto.Nombre.trim(),
-          Marca: selectedProducto.Marca?.trim() || "",
+          ID_Marca: selectedProducto.ID_Marca,
           Precio_Producto: parseFloat(selectedProducto.Precio_Producto),
           ID_Sucursal: selectedProducto.ID_Sucursal,
           ID_Categoria: selectedProducto.ID_Categoria,
@@ -133,14 +132,20 @@ const ModalEditar = ({
             <label className="block text-sm font-medium text-gray-300 mb-1">
               Brand
             </label>
-            <input
-            type="text"
-            value={selectedProducto.Marca}
-            onChange={(e) =>
-              setSelectedProducto({ ...selectedProducto, Marca: e.target.value })
-            }
-            className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
+            <ComboBoxID
+              name={selectedProducto.Marca}
+              options={marcas}
+              selected={{
+                label: selectedProducto.Nombre_Marca || "", // Muestra el nombre
+                value: selectedProducto.ID_Marca || ""      // Pero maneja el ID
+              }}
+              onSelect={(selectedOption) =>
+                setSelectedProducto({
+                  ...selectedProducto,
+                  ID_Marca: selectedOption.value,          // Guarda el ID
+                  Nombre_Marca: selectedOption.label       // Opcional: guarda el nombre para mostrar
+                })
+              }
             />
           </div>
 

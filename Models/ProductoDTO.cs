@@ -56,7 +56,7 @@ namespace Models
 
         /*AQUI INICIAN LAS NUEVAS VARIABLES PARA LAS NUEVAS TABLES*/
 
-        public int ID_Marca { get; set; }
+        public int? ID_Marca { get; set; }
         public int ID_TipoMoneda { get; set; }
         public int ID_Unidad { get; set; }
 
