@@ -83,7 +83,7 @@ namespace BLL
                         EstadoProducto = p.Estado == 1 ? "Activo" : "Inactivo",
                         versucu = p.ID_Sucursal == 1 ? "Tienda Principal " : "Tienda Primaria",
                         Descripcion_Categoria = p.Categoria.Nombre, // Accede al nombre de la categoría
-
+                        Marca = p.Marcas.Nombre,
                         Nombre = p.Nombre,
                         ID_Marca = p.ID_Marca,
                         Cantidad = p.Cantidad,
@@ -178,6 +178,7 @@ namespace BLL
             var resultado = db.Producto
                 .Include(p => p.Categoria) // Incluye la relación con Categoria
                 .Include(p => p.Sucursal)  // Incluye la relación con Sucursal
+                .Include(p => p.Marcas)  // Incluye la relación con Sucursal
                 .Where(p => p.Estado == 1) // Filtra productos activos
                 .Select(p => new ProductoDTO // Cambia a ProductoDTO
                 {
