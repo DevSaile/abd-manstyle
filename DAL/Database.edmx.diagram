@@ -43,6 +43,7 @@
         <AssociationConnector Association="BDMansModel.FK__Venta_Fac__ID_Ve__0C85DE4D" ManuallyRouted="false" />
         <AssociationConnector Association="BDMansModel.FK__Venta_Det__ID_Ve__1332DBDC" ManuallyRouted="false" />
         <AssociationConnector Association="BDMansModel.FK_Compra_Sucursal" />
+        <AssociationConnector Association="BDMansModel.FK_CompraDetalles_Sucursal" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

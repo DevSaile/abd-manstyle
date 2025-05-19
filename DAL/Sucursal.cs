@@ -21,6 +21,7 @@ namespace DAL
             this.Vendedor = new HashSet<Vendedor>();
             this.Venta_Factura = new HashSet<Venta_Factura>();
             this.Compra_Entrada = new HashSet<Compra_Entrada>();
+            this.Compra_Detalles = new HashSet<Compra_Detalles>();
         }
     
         public int ID_Sucursal { get; set; }
@@ -36,5 +37,7 @@ namespace DAL
         public virtual ICollection<Venta_Factura> Venta_Factura { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Compra_Entrada> Compra_Entrada { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Compra_Detalles> Compra_Detalles { get; set; }
     }
 }

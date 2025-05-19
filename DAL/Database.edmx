@@ -31,6 +31,7 @@
           <Property Name="ID_Producto" Type="int" />
           <Property Name="Cantidad" Type="int" />
           <Property Name="Precio_Compra" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ID_Sucursal" Type="int" />
         </EntityType>
         <EntityType Name="Compra_Entrada">
           <Key>
@@ -443,6 +444,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CompraDetalles_Sucursal">
+          <End Role="Sucursal" Type="Self.Sucursal" Multiplicity="0..1" />
+          <End Role="Compra_Detalles" Type="Self.Compra_Detalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sucursal">
+              <PropertyRef Name="ID_Sucursal" />
+            </Principal>
+            <Dependent Role="Compra_Detalles">
+              <PropertyRef Name="ID_Sucursal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="BDMansModelStoreContainer">
           <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
@@ -548,6 +561,10 @@
             <End Role="Sucursal" EntitySet="Sucursal" />
             <End Role="Compra_Entrada" EntitySet="Compra_Entrada" />
           </AssociationSet>
+          <AssociationSet Name="FK_CompraDetalles_Sucursal" Association="Self.FK_CompraDetalles_Sucursal">
+            <End Role="Sucursal" EntitySet="Sucursal" />
+            <End Role="Compra_Detalles" EntitySet="Compra_Detalles" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -583,6 +600,8 @@
           <Property Name="Precio_Compra" Type="Decimal" Precision="10" Scale="2" />
           <NavigationProperty Name="Compra_Entrada" Relationship="Self.FK__Compra_De__ID_En__07C12930" FromRole="Compra_Detalles" ToRole="Compra_Entrada" />
           <NavigationProperty Name="Producto" Relationship="Self.FK__Compra_De__ID_Pr__08B54D69" FromRole="Compra_Detalles" ToRole="Producto" />
+          <Property Name="ID_Sucursal" Type="Int32" />
+          <NavigationProperty Name="Sucursal" Relationship="BDMansModel.FK_CompraDetalles_Sucursal" FromRole="Compra_Detalles" ToRole="Sucursal" />
         </EntityType>
         <EntityType Name="Compra_Entrada">
           <Key>
@@ -671,6 +690,7 @@
           <NavigationProperty Name="Vendedor" Relationship="Self.FK__Vendedor__ID_Suc__5EBF139D" FromRole="Sucursal" ToRole="Vendedor" />
           <NavigationProperty Name="Venta_Factura" Relationship="Self.FK__Venta_Fac__ID_Su__0D7A0286" FromRole="Sucursal" ToRole="Venta_Factura" />
           <NavigationProperty Name="Compra_Entrada" Relationship="BDMansModel.FK_Compra_Sucursal" FromRole="Sucursal" ToRole="Compra_Entrada" />
+          <NavigationProperty Name="Compra_Detalles" Relationship="BDMansModel.FK_CompraDetalles_Sucursal" FromRole="Sucursal" ToRole="Compra_Detalles" />
         </EntityType>
         <EntityType Name="TipoMoneda">
           <Key>
@@ -1128,6 +1148,10 @@
             <End Role="Sucursal" EntitySet="Sucursal" />
             <End Role="Compra_Entrada" EntitySet="Compra_Entrada" />
           </AssociationSet>
+          <AssociationSet Name="FK_CompraDetalles_Sucursal" Association="BDMansModel.FK_CompraDetalles_Sucursal">
+            <End Role="Sucursal" EntitySet="Sucursal" />
+            <End Role="Compra_Detalles" EntitySet="Compra_Detalles" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_Compra_Sucursal">
           <End Type="BDMansModel.Sucursal" Role="Sucursal" Multiplicity="0..1" />
@@ -1137,6 +1161,18 @@
               <PropertyRef Name="ID_Sucursal" />
             </Principal>
             <Dependent Role="Compra_Entrada">
+              <PropertyRef Name="ID_Sucursal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompraDetalles_Sucursal">
+          <End Type="BDMansModel.Sucursal" Role="Sucursal" Multiplicity="0..1" />
+          <End Type="BDMansModel.Compra_Detalles" Role="Compra_Detalles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sucursal">
+              <PropertyRef Name="ID_Sucursal" />
+            </Principal>
+            <Dependent Role="Compra_Detalles">
               <PropertyRef Name="ID_Sucursal" />
             </Dependent>
           </ReferentialConstraint>
@@ -1169,6 +1205,7 @@
           <EntitySetMapping Name="Compra_Detalles">
             <EntityTypeMapping TypeName="BDMansModel.Compra_Detalles">
               <MappingFragment StoreEntitySet="Compra_Detalles">
+                <ScalarProperty Name="ID_Sucursal" ColumnName="ID_Sucursal" />
                 <ScalarProperty Name="ID_Detalles" ColumnName="ID_Detalles" />
                 <ScalarProperty Name="ID_Entrada" ColumnName="ID_Entrada" />
                 <ScalarProperty Name="ID_Producto" ColumnName="ID_Producto" />

@@ -127,7 +127,7 @@ namespace BLL
             if (compra.DetallesCompra == null || !compra.DetallesCompra.Any())
                 return -1; // No hay detalles de compra
 
-            if (compra.ID_Proveedor == 0 || compra.ID_Sucursal == 0)
+            if (compra.ID_Sucursal == 0)
                 return -1; // Falta información esencial
 
             using (var transaction = db.Database.BeginTransaction())

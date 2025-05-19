@@ -19,8 +19,10 @@ namespace DAL
         public Nullable<int> ID_Producto { get; set; }
         public Nullable<int> Cantidad { get; set; }
         public Nullable<decimal> Precio_Compra { get; set; }
+        public Nullable<int> ID_Sucursal { get; set; }
     
         public virtual Compra_Entrada Compra_Entrada { get; set; }
         public virtual Producto Producto { get; set; }
+        public virtual Sucursal Sucursal { get; set; }
     }
 }
