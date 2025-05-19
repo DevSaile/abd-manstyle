@@ -201,6 +201,7 @@ namespace BLL
                 .Select(compra => new Compra_EntradaDTO
                 {
                     ID_Entrada = compra.ID_Entrada,
+                    Estado = compra.Estado,
                     Fecha_Compra = compra.Fecha_Compra,
                     NombreProveedor = compra.Proveedor?.Nombre ?? "Desconocido",
                     Nombre_Sucursal = compra.Sucursal?.Nombre ?? "No especificada",
@@ -213,7 +214,9 @@ namespace BLL
                         ID_Producto = detalle.ID_Producto,
                         Cantidad = detalle.Cantidad,
                         Precio_Compra = detalle.Precio_Compra,
-                        NombreProducto = detalle.Producto?.Nombre ?? "Producto desconocido"
+                        NombreProducto = detalle.Producto?.Nombre ?? "Producto desconocido",
+                        Nombre_Sucursal = detalle.Sucursal?.Nombre ?? "Sucursal Desconocida"
+
                     }).ToList()
                 })
                 .ToList();

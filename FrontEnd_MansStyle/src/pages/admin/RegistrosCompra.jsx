@@ -8,42 +8,93 @@ import { obtenerRegistroCompras } from "../../services/CompraHitorialService";
 
 const RegistroCompra = () => {
   const [compras, setCompras] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [stats, setStats] = useState({
     totalCompras: 0,
     comprasActivas: 0,
     comprasCanceladas: 0,
     inversionTotal: 0,
     promedioCompra: 0,
+    totalProductos: 0,
   });
 
   useEffect(() => {
     const cargarDatos = async () => {
       try {
-        const comprasData = await obtenerRegistroCompras();
-        setCompras(comprasData);
+        setLoading(true);
+        setError(null);
+        
+        const resultado = await obtenerRegistroCompras();
+        
+        if (!resultado || !Array.isArray(resultado)) {
+          throw new Error("Formato de datos inválido");
+        }
 
-        // Calcular estadísticas
-        const total = comprasData.length;
-        const activas = comprasData.filter(c => c.Estado === 1).length;
-        const totalInversion = comprasData.reduce(
-          (sum, c) => sum + (c.Precio_Compra * c.CantidadCompra),
-          0
-        );
+        setCompras(resultado);
+
+        // Calcular estadísticas mejoradas
+        const totalCompras = resultado.length;
+        const comprasActivas = resultado.filter(c => c.Estado === 1).length;
+        
+        // Calcular inversión total sumando todos los detalles
+        const inversionTotal = resultado.reduce((total, compra) => {
+          return total + (compra.DetallesCompra?.reduce((sum, detalle) => {
+            return sum + (detalle.Precio_Compra * detalle.Cantidad);
+          }, 0) || 0);
+        }, 0);
+
+        // Calcular total de productos comprados
+        const totalProductos = resultado.reduce((total, compra) => {
+          return total + (compra.DetallesCompra?.reduce((sum, detalle) => {
+            return sum + detalle.Cantidad;
+          }, 0) || 0);
+        }, 0);
 
         setStats({
-          totalCompras: total,
-          comprasActivas: activas,
-          comprasCanceladas: total - activas,
-          inversionTotal: totalInversion,
-          promedioCompra: total > 0 ? totalInversion / total : 0,
+          totalCompras,
+          comprasActivas,
+          comprasCanceladas: totalCompras - comprasActivas,
+          inversionTotal,
+          promedioCompra: totalCompras > 0 ? inversionTotal / totalCompras : 0,
+          totalProductos,
         });
+
       } catch (error) {
         console.error("Error cargando compras:", error);
+        setError(error.message);
+        setCompras([]);
+      } finally {
+        setLoading(false);
       }
     };
 
     cargarDatos();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex-1 relative z-10 overflow-auto">
+        <Header title={"Registro de Compras"} />
+        <div className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
+          <div className="text-center py-10">Cargando compras...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex-1 relative z-10 overflow-auto">
+        <Header title={"Registro de Compras"} />
+        <div className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
+          <div className="text-center py-10 text-red-500">
+            Error: {error}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 relative z-10 overflow-auto">
@@ -57,8 +108,18 @@ const RegistroCompra = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <StatCard name="Total Compras" icon={ShoppingBag} value={stats.totalCompras} color="#6366F1" />
-          <StatCard name="Compras Canceladas" icon={Clock} value={stats.comprasCanceladas} color="#F59E0B" />
+          <StatCard 
+            name="Total Compras" 
+            icon={ShoppingBag} 
+            value={stats.totalCompras} 
+            color="#6366F1" 
+          />
+          <StatCard 
+            name="Compras Activas" 
+            icon={ShoppingBag} 
+            value={stats.comprasActivas} 
+            color="#10B981" 
+          />
           <StatCard
             name="Inversión Total"
             icon={DollarSign}
@@ -71,33 +132,52 @@ const RegistroCompra = () => {
             value={`$${stats.promedioCompra.toFixed(2)}`}
             color="#3B82F6"
           />
+          <StatCard
+            name="Total Productos"
+            icon={TrendingUp}
+            value={stats.totalProductos}
+            color="#8B5CF6"
+          />
         </motion.div>
 
         {/* Listado de Compras */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           {compras.map((compra) => {
-            const total = compra.Precio_Compra ?? 0;
-            const cantidad = compra.CantidadCompra ?? 0;
+            // Calcular total de la compra sumando todos los detalles
+            const totalCompra = compra.DetallesCompra?.reduce((total, detalle) => {
+              return total + (detalle.Precio_Compra * detalle.Cantidad);
+            }, 0) || 0;
+
+            // Calcular cantidad total de productos en la compra
+            const cantidadTotal = compra.DetallesCompra?.reduce((total, detalle) => {
+              return total + detalle.Cantidad;
+            }, 0) || 0;
 
             return (
               <BoughtCard
                 key={compra.ID_Entrada}
+                id={compra.ID_Entrada}
                 date={new Date(compra.Fecha_Compra).toLocaleDateString()}
-                amount={cantidad}
-                total={total}
-                amountGiven={total * cantidad}
-                exchange={(compra.Precio_Producto - total) * cantidad || 0} // puedes ajustarlo cuando tengas Precio_Producto
-                products={[
-                  {
-                    name: compra.Nombre_Producto || "Producto",
-                    unitPrice: total,
-                    quantity: cantidad,
-                  },
-                ]}
+                proveedor={compra.NombreProveedor}
+                sucursal={compra.Nombre_Sucursal} // este de aqui esta directamente seteado en Compra_Detalles
+                status={compra.Estado === 1 ? "Completada" : "Cancelada"}
+                amount={compra.DetallesCompra?.length || 0}
+                total={compra.DetallesCompra?.reduce((sum, d) => sum + (d.Precio_Compra * d.Cantidad), 0) || 0}
+                products={compra.DetallesCompra?.map(d => ({
+                  name: d.NombreProducto,
+                  unitPrice: d.Precio_Compra, // o sea que eso de SUCURSAL iria directamente seteadito aqui
+                  quantity: d.Cantidad,
+                })) || []}
               />
             );
           })}
         </div>
+
+        {compras.length === 0 && (
+          <div className="text-center py-10 text-gray-500">
+            No se encontraron compras registradas
+          </div>
+        )}
       </main>
     </div>
   );

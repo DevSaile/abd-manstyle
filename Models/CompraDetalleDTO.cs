@@ -16,5 +16,6 @@ namespace Models
         public int? ID_Sucursal { get; set; }
         public string NombreProducto { get; set; }
 
+        public string Nombre_Sucursal { get; set; }
     }
 }
