@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   obtenerProductos,
   obtenerProductoPorID,
-  eliminarProducto
+  eliminarProducto,
 } from "../../services/ProductosService";
 import { obtenerSucursales } from "../../services/SucursalService";
 import { obtenerCategoriasActivas } from "../../services/CategoriasService";
@@ -25,7 +25,6 @@ const ProductsPage = () => {
   const [Sucursales, setSucursales] = useState([]);
   const [Categorias, setCategorias] = useState([]);
   const [Marcas, setMarcas] = useState([]);
-
 
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -81,10 +80,12 @@ const ProductsPage = () => {
       );
 
       const matchesCategory =
-        selectedCategory === "All" || product.Descripcion_Categoria === selectedCategory;
+        selectedCategory === "All" ||
+        product.Descripcion_Categoria === selectedCategory;
 
       const matchesSucursal =
-        selectedSucursal === "All" || product.Descripcion_Sucursal === selectedSucursal;
+        selectedSucursal === "All" ||
+        product.Descripcion_Sucursal === selectedSucursal;
 
       const matchesBrand =
         selectedMarcas === "All" || product.Marca === selectedMarcas;
@@ -95,12 +96,15 @@ const ProductsPage = () => {
     });
 
     setFilteredProducts(filtered);
+  }, [
+    searchTerm,
+    selectedCategory,
+    selectedSucursal,
+    selectedMarcas,
+    productos,
+  ]);
 
-  }, [searchTerm, selectedCategory, selectedSucursal, selectedMarcas, productos]);
-
-  
   const deletefuncion = async () => {
-
     if (!selectedProducto?.ID_Producto) {
       alert("No se ha seleccionado ningún producto para eliminar.");
       return;
@@ -110,30 +114,24 @@ const ProductsPage = () => {
       const productoEliminado = {
         ID_Producto: selectedProducto.ID_Producto,
         Estado: 0, // Cambiar estado a 0 (eliminado)
-
       };
-        
+
       const resultado = await eliminarProducto(
         selectedProducto.ID_Producto,
         productoEliminado
       );
-      
-      if (resultado){
+
+      if (resultado) {
         obtenerProductos().then((data) => {
           setProductos(data);
           setFilteredProducts(data); // Refrescar la lista después de editar
         });
-  
+
         alert("Producto eliminado correctamente");
-  
-      }
-      else 
-      ("Error al eliminar el producto");
-        
+      } else "Error al eliminar el producto";
     } catch (error) {
       alert(error.response?.data?.message || "Error al eliminar el producto");
     }
-
   };
 
   return (
@@ -172,23 +170,23 @@ const ProductsPage = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          
+
           <button
-              className=" bg-gray-700 text-white placeholder-gray-400 rounded-lg py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              onClick={() => {
-            setOpenDetails(true);
-          }}
-       >
-          Detalles
-        </button>
-        
+            className=" bg-gray-700 text-white placeholder-gray-400 rounded-lg py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={!selectedProducto}
+            onClick={() => {
+              setOpenDetails(true);
+            }}
+          >
+            Detalles
+          </button>
 
           {/* Product Cards */}
           <div
             className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4
         mb-8 p-10 col-span-4 overflow-y-auto custom-scrollbar
         bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800
-        border border-gray-700 rounded-xl shadow-lg h-5/6"
+        border border-gray-700 rounded-xl shadow-lg h-5/6 min-h-[400px]"
           >
             {filteredProducts.map((product) => (
               <ProductCard
@@ -202,41 +200,32 @@ const ProductsPage = () => {
                     ? product.url_image
                     : "https://via.placeholder.com/150"
                 }
-                onClick={() => {
-                  setSelectedProduct(product);
-                }}
+                onClick={() => setSelectedProduct(product)}
+                selected={selectedProducto?.ID_Producto === product.ID_Producto}
               />
             ))}
-            
           </div>
 
-          <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-2 gap-4">
-    
-   
-        </div>
-        {
-        <button
-          className="bg-transparent text-blue-600 border border-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
-          onClick={() => {
-            setOpenEdit(true);}}
-        > 
-          Editar
-        </button>
-}
-        <button
-          className="bg-transparent text-red-600 border border-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg transition duration-200"
-          onClick={() => {
-            setOpenDelete(true);
-          }}
-        >
-          Eliminar
-        </button>
-      
-      </div>
+         <div className="flex flex-col gap-4">
+  <div className="grid grid-cols-2 gap-4"></div>
+  <button
+    className={`bg-transparent text-blue-600 border border-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-lg transition duration-200
+      ${!selectedProducto ? "opacity-50 cursor-not-allowed hover:bg-transparent hover:text-blue-600" : ""}`}
+    onClick={() => setOpenEdit(true)}
+    disabled={!selectedProducto}
+  >
+    Editar
+  </button>
+  <button
+    className={`bg-transparent text-red-600 border border-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg transition duration-200
+      ${!selectedProducto ? "opacity-50 cursor-not-allowed hover:bg-transparent hover:text-red-600" : ""}`}
+    onClick={() => setOpenDelete(true)}
+    disabled={!selectedProducto}
+  >
+    Eliminar
+  </button>
+</div>
         </motion.div>
-
-
 
         <Modal
           open={openDelete}
@@ -266,7 +255,6 @@ const ProductsPage = () => {
             >
               Delete
             </button>
-            
           </div>
         </Modal>
 
@@ -288,16 +276,14 @@ const ProductsPage = () => {
           DetailsModalClose={() => setOpenDetails(false)}
           product={selectedProducto}
         />
-        
+
         <div className="grid grid-col-1 lg:grid-cols-2 gap-8">
           {/*       Se usara después, por esto se deja comentado
 
           <SalesTrendChart />
           <SellsPerCategory />
           */}
-
         </div>
-
       </main>
     </div>
   );

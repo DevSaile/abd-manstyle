@@ -111,7 +111,7 @@ const ModalEditar = ({
           {/* Name */}
           <div className="col-span-3">
             <label className="block text-sm font-medium text-gray-300 mb-1">
-              Name
+              Nombre
             </label>
             <input
               type="text"
@@ -130,7 +130,7 @@ const ModalEditar = ({
           {/* Brand */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">
-              Brand
+              Marca
             </label>
             <ComboBoxID
               name={selectedProducto.Marca}
@@ -152,7 +152,7 @@ const ModalEditar = ({
           {/* Price */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">
-              Price
+              Precio
             </label>
             <input
               type="number"
@@ -194,7 +194,7 @@ const ModalEditar = ({
           {/* Category */}
           <div className="col-span-2">
             <label className="block text-sm font-medium text-gray-300 mb-1">
-              Category
+              Categoria
             </label>
             <ComboBoxID
               name={selectedProducto.Descripcion_Categoria}
@@ -236,7 +236,14 @@ const ModalEditar = ({
                     <label className="block text-sm font-medium text-gray-300 mb-1">
                         Subir Imagen (opcional)
                     </label>
+                     <label
+    htmlFor="file-upload"
+    className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition duration-200 inline-block"
+  >
+    Seleccionar archivo
+  </label>
                     <input
+                       id="file-upload"
                         type="file"
                         accept="image/*"
                         onChange={(e) => {
@@ -252,7 +259,7 @@ const ModalEditar = ({
                             reader.readAsDataURL(file);
                         }
                         }}
-                        className="text-gray-300"
+                        className="hidden"
                     />
                     </div>
 
@@ -297,13 +304,13 @@ const ModalEditar = ({
               onClick={EditModalClose}
               className="bg-gray-700 text-gray-300 hover:bg-gray-600 px-6 py-2 rounded-lg transition duration-200"
             >
-              Cancel
+              Cancelar
             </button>
             <button
               type="submit"
               className="bg-blue-600 text-gray-100 hover:bg-blue-500 px-6 py-2 rounded-lg transition duration-200"
             >
-              Save
+              Guardar
             </button>
           </div>
         </form>
