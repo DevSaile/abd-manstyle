@@ -30,6 +30,18 @@ namespace WebManStyle_ABD.Controllers
             return Ok(productos);
         }
 
+        [HttpGet]
+        [Route("InfoDeCompra")]
+        public IHttpActionResult ExtraerInfoCompra()
+        {
+            var productos = MetodosProducto.ExtraerInfoCompra();
+            if (productos == null || productos.Count == 0)
+                return NotFound();
+
+            return Ok(productos);
+        }
+
+
         [HttpPost]
         [Route("agregar")]
         public IHttpActionResult AgregarProducto([FromBody] ProductoDTO nuevoProducto)

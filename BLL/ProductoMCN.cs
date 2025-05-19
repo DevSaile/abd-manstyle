@@ -151,7 +151,26 @@ namespace BLL
 
         }
 
- 
+        public List<ProductoDTO> ExtraerInfoCompra()
+        {
+
+            var resultado = db.Producto
+                .Include(p => p.Categoria) // Incluye la relación con Categoria
+                .Include(p => p.Sucursal)  // Incluye la relación con Sucursal
+                .Where(p => p.Estado == 1) // Filtra productos activos
+                .Select(p => new ProductoDTO // Cambia a ProductoDTO
+                {
+                    ID_Producto = p.ID_Producto,
+                    ID_Sucursal = p.ID_Sucursal,
+                    Nombre = p.Nombre,
+                    url_image = p.Image_URL,
+                    Precio_Producto = p.Precio_Producto,
+
+                }).ToList();
+
+            return resultado; // Esto ahora devuelve List<ProductoDTO>
+        }
+
 
         public List<ProductoDTO> verproductos()
         {

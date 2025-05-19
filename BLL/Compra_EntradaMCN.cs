@@ -127,8 +127,6 @@ namespace BLL
             if (compra.DetallesCompra == null || !compra.DetallesCompra.Any())
                 return -1; // No hay detalles de compra
 
-            if (compra.ID_Sucursal == 0)
-                return -1; // Falta información esencial
 
             using (var transaction = db.Database.BeginTransaction())
             {
@@ -167,7 +165,8 @@ namespace BLL
                             ID_Entrada = nuevaCompra.ID_Entrada,
                             ID_Producto = detalle.ID_Producto,
                             Cantidad = detalle.Cantidad,
-                            Precio_Compra = detalle.Precio_Compra
+                            Precio_Compra = detalle.Precio_Compra,
+                            ID_Sucursal = producto.ID_Sucursal
                         };
 
                         db.Compra_Detalles.Add(nuevoDetalle);

@@ -11,6 +11,16 @@ export const obtenerProductos = async () => {
     }
 };
 
+export const ExtraerInfoCompra = async () => {
+    try {
+        const response = await api.get("/productos/InfoDeCompra");
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener productos:", error);
+        return [];
+    }
+};
+
 // Agregar un nuevo producto
 export const agregarProducto = async (producto) => {
     try {
