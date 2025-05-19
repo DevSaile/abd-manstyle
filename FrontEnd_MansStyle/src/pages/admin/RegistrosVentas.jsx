@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CheckCircle, Clock, DollarSign, ShoppingBag } from "lucide-react";
+import { CheckCircle, Clock, DollarSign, ShoppingBag, ArrowDown, ArrowUp } from "lucide-react";
 import { motion } from "framer-motion";
 
 import Header from "../../components/common/Header";
@@ -24,6 +24,7 @@ const RegistrosVenta = () => {
   const [minTotal, setMinTotal] = useState("");
   const [sucursal, setSucursal] = useState("");
   const [sucursales, setSucursales] = useState([]);
+  const [orderAsc, setOrderAsc] = useState(false); // Nuevo estado para el orden
 
   useEffect(() => {
     obtenerTodasLasVentas().then((data) => {
@@ -69,6 +70,9 @@ const RegistrosVenta = () => {
 
     return afterStart && beforeEnd && meetsMinProducts && meetsMinTotal && meetsSucursal;
   });
+
+  // Ordenar según el estado
+  const ventasOrdenadas = orderAsc ? filteredVentas : filteredVentas.toReversed();
 
   return (
     <div className="flex-1 relative z-10 overflow-auto">
@@ -156,6 +160,16 @@ const RegistrosVenta = () => {
               ))}
             </select>
           </div>
+          {/* Botón de orden */}
+          <button
+            type="button"
+            onClick={() => setOrderAsc((prev) => !prev)}
+            className="flex items-center bg-gray-700 text-gray-100 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            title={orderAsc ? "Orden ascendente" : "Orden descendente"}
+          >
+            {orderAsc ? <ArrowUp size={20} /> : <ArrowDown size={20} />}
+            <span className="ml-2">{orderAsc ? "Ascendente" : "Descendente"}</span>
+          </button>
         </div>
 
         <motion.div
@@ -164,8 +178,8 @@ const RegistrosVenta = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          {filteredVentas.length > 0 ? (
-            filteredVentas.toReversed().map((venta, index) => (
+          {ventasOrdenadas.length > 0 ? (
+            ventasOrdenadas.map((venta, index) => (
               <SaleCard
                 key={index}
                 employee={venta.NombreVendedor || "Sin asignar"}

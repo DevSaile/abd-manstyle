@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Clock, DollarSign, ShoppingBag, TrendingUp } from "lucide-react";
+import { Clock, DollarSign, ShoppingBag, TrendingUp, ArrowDown, ArrowUp } from "lucide-react";
 import { motion } from "framer-motion";
 import Header from "../../components/common/Header";
 import StatCard from "../../components/common/StatCard";
@@ -19,32 +19,45 @@ const RegistroCompra = () => {
     totalProductos: 0,
   });
 
+  // Filtros
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [minProducts, setMinProducts] = useState("");
+  const [minTotal, setMinTotal] = useState("");
+  const [sucursal, setSucursal] = useState("");
+  const [sucursales, setSucursales] = useState([]);
+  const [orderAsc, setOrderAsc] = useState(false);
+
   useEffect(() => {
     const cargarDatos = async () => {
       try {
         setLoading(true);
         setError(null);
-        
+
         const resultado = await obtenerRegistroCompras();
-        
+
         if (!resultado || !Array.isArray(resultado)) {
           throw new Error("Formato de datos inválido");
         }
 
         setCompras(resultado);
 
-        // Calcular estadísticas mejoradas
+        // Sucursales únicas para el filtro
+        const uniqueSucursales = Array.from(
+          new Set(resultado.map((c) => c.Nombre_Sucursal || ""))
+        ).filter((s) => s);
+        setSucursales(uniqueSucursales);
+
+        // Calcular estadísticas
         const totalCompras = resultado.length;
         const comprasActivas = resultado.filter(c => c.Estado === 1).length;
-        
-        // Calcular inversión total sumando todos los detalles
+
         const inversionTotal = resultado.reduce((total, compra) => {
           return total + (compra.DetallesCompra?.reduce((sum, detalle) => {
             return sum + (detalle.Precio_Compra * detalle.Cantidad);
           }, 0) || 0);
         }, 0);
 
-        // Calcular total de productos comprados
         const totalProductos = resultado.reduce((total, compra) => {
           return total + (compra.DetallesCompra?.reduce((sum, detalle) => {
             return sum + detalle.Cantidad;
@@ -71,6 +84,33 @@ const RegistroCompra = () => {
 
     cargarDatos();
   }, []);
+
+  // Aplicar filtros
+  const comprasFiltradas = compras.filter((compra) => {
+    // Fecha
+    const compraDate = new Date(compra.Fecha_Compra);
+    const compraDateStr = compraDate.toISOString().slice(0, 10);
+    const afterStart = !startDate || compraDateStr >= startDate;
+    const beforeEnd = !endDate || compraDateStr <= endDate;
+
+    // Número de productos
+    const numProducts = Array.isArray(compra.DetallesCompra) ? compra.DetallesCompra.length : 0;
+    const meetsMinProducts = !minProducts || numProducts >= Number(minProducts);
+
+    // Total de la compra
+    const totalCompra = compra.DetallesCompra?.reduce((total, detalle) => {
+      return total + (detalle.Precio_Compra * detalle.Cantidad);
+    }, 0) || 0;
+    const meetsMinTotal = !minTotal || totalCompra >= Number(minTotal);
+
+    // Sucursal
+    const meetsSucursal = !sucursal || (compra.Nombre_Sucursal === sucursal);
+
+    return afterStart && beforeEnd && meetsMinProducts && meetsMinTotal && meetsSucursal;
+  });
+
+  // Ordenar según el estado
+  const comprasOrdenadas = orderAsc ? comprasFiltradas : comprasFiltradas.toReversed();
 
   if (loading) {
     return (
@@ -140,9 +180,76 @@ const RegistroCompra = () => {
           />
         </motion.div>
 
+        {/* Filtros */}
+        <div className="flex flex-wrap gap-4 mb-6 items-end">
+          <div className="flex flex-col">
+            <label className="text-gray-300 text-sm mb-1">Desde</label>
+            <input
+              type="date"
+              value={startDate}
+              onChange={e => setStartDate(e.target.value)}
+              className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-gray-300 text-sm mb-1">Hasta</label>
+            <input
+              type="date"
+              value={endDate}
+              onChange={e => setEndDate(e.target.value)}
+              className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="flex flex-col w-32">
+            <label className="text-gray-300 text-sm mb-1">Mín. productos</label>
+            <input
+              type="number"
+              min={1}
+              value={minProducts}
+              onChange={e => setMinProducts(e.target.value)}
+              placeholder="Ej: 2"
+              className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="flex flex-col w-36">
+            <label className="text-gray-300 text-sm mb-1">Mín. inversión ($)</label>
+            <input
+              type="number"
+              min={0}
+              value={minTotal}
+              onChange={e => setMinTotal(e.target.value)}
+              placeholder="Ej: 100"
+              className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="flex flex-col w-44">
+            <label className="text-gray-300 text-sm mb-1">Sucursal</label>
+            <select
+              value={sucursal}
+              onChange={e => setSucursal(e.target.value)}
+              className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Todas</option>
+              {sucursales.map((suc) => (
+                <option key={suc} value={suc}>{suc}</option>
+              ))}
+            </select>
+          </div>
+          {/* Botón de orden */}
+          <button
+            type="button"
+            onClick={() => setOrderAsc((prev) => !prev)}
+            className="flex items-center bg-gray-700 text-gray-100 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            title={orderAsc ? "Orden ascendente" : "Orden descendente"}
+          >
+            {orderAsc ? <ArrowUp size={20} /> : <ArrowDown size={20} />}
+            <span className="ml-2">{orderAsc ? "Ascendente" : "Descendente"}</span>
+          </button>
+        </div>
+
         {/* Listado de Compras */}
-        <div className="grid grid-cols-1 gap-6">
-          {compras.map((compra) => {
+        <div className="grid grid-cols-2 gap-6">
+          {comprasOrdenadas.map((compra) => {
             // Calcular total de la compra sumando todos los detalles
             const totalCompra = compra.DetallesCompra?.reduce((total, detalle) => {
               return total + (detalle.Precio_Compra * detalle.Cantidad);
@@ -159,13 +266,13 @@ const RegistroCompra = () => {
                 id={compra.ID_Entrada}
                 date={new Date(compra.Fecha_Compra).toLocaleDateString()}
                 proveedor={compra.NombreProveedor}
-                sucursal={compra.Nombre_Sucursal} // este de aqui esta directamente seteado en Compra_Detalles
+                sucursal={compra.Nombre_Sucursal}
                 status={compra.Estado === 1 ? "Completada" : "Cancelada"}
                 amount={compra.DetallesCompra?.length || 0}
-                total={compra.DetallesCompra?.reduce((sum, d) => sum + (d.Precio_Compra * d.Cantidad), 0) || 0}
+                total={totalCompra}
                 products={compra.DetallesCompra?.map(d => ({
                   name: d.NombreProducto,
-                  unitPrice: d.Precio_Compra, // o sea que eso de SUCURSAL iria directamente seteadito aqui
+                  unitPrice: d.Precio_Compra,
                   quantity: d.Cantidad,
                 })) || []}
               />
@@ -173,7 +280,7 @@ const RegistroCompra = () => {
           })}
         </div>
 
-        {compras.length === 0 && (
+        {comprasOrdenadas.length === 0 && (
           <div className="text-center py-10 text-gray-500">
             No se encontraron compras registradas
           </div>
