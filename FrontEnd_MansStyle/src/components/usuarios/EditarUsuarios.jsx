@@ -3,7 +3,6 @@ import { Modal } from "@rewind-ui/core";
 import ComboBoxID from "../common/ComboxID";
 import { obtenerSucursales } from "../../services/SucursalService";
 import { obtenerRoles, agregarEmpleado, actualizarEmpleado } from "../../services/UsuariosService";
-import { label } from "framer-motion/client";
 
 const ManageUser = ({ open, onClose, userData }) => {
     const [formData, setFormData] = useState({
@@ -22,7 +21,6 @@ const ManageUser = ({ open, onClose, userData }) => {
     const [sucursales, setSucursales] = useState([]);
     const [roles, setRoles] = useState([]);
 
-    // Sincroniza el estado del formulario con los datos del usuario
     useEffect(() => {
         if (userData) {
             setFormData({
@@ -40,7 +38,6 @@ const ManageUser = ({ open, onClose, userData }) => {
                 Contraseña: userData.contrasena || ""
             });
         } else {
-            // Resetear formulario cuando no hay userData (nuevo usuario)
             setFormData({
                 Nombre: "",
                 Cedula: "",
@@ -54,11 +51,8 @@ const ManageUser = ({ open, onClose, userData }) => {
                 ID_Empleado: null
             });
         }
-
-        console.log("Datos del formulario:", formData);
     }, [userData]);
 
-    // Formatear fecha para input type="date"
     const formatDateForInput = (dateString) => {
         try {
             const date = new Date(dateString);
@@ -69,7 +63,6 @@ const ManageUser = ({ open, onClose, userData }) => {
         }
     };
 
-    // Cargar datos iniciales
     useEffect(() => {
         const cargarDatos = async () => {
             try {
@@ -77,19 +70,16 @@ const ManageUser = ({ open, onClose, userData }) => {
                     obtenerRoles(),
                     obtenerSucursales()
                 ]);
-                
                 setRoles(RolesData.map(rol => ({
                     label: rol.Puesto, 
                     value: rol.ID_Rol
                 })));
-                
                 setSucursales(sucursalesData.map(sucursal => ({
                     label: sucursal.Nombre, 
                     value: sucursal.ID_Sucursal
                 })));
             } catch (error) {
                 console.error("Error cargando datos:", error);
-                // Aquí podrías mostrar un mensaje al usuario
             }
         };
 
@@ -106,10 +96,35 @@ const ManageUser = ({ open, onClose, userData }) => {
         }));
     };
 
+    // Cálculo automático de edad
+    useEffect(() => {
+        if (formData.FechaDeNacimiento) {
+            const nacimiento = new Date(formData.FechaDeNacimiento);
+            const hoy = new Date();
+            let edad = hoy.getFullYear() - nacimiento.getFullYear();
+            const m = hoy.getMonth() - nacimiento.getMonth();
+            if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) {
+                edad--;
+            }
+            setFormData(prev => ({ ...prev, Edad: edad }));
+        }
+    }, [formData.FechaDeNacimiento]);
+
     const handleSave = async () => {
-        // Validaciones básicas
         if (!formData.Nombre || !formData.Cedula || !formData.Email) {
             alert("Por favor complete los campos requeridos");
+            return;
+        }
+
+        const cedulaRegex = /^\d{3}-\d{6}-\d{4}[A-Z]$/;
+        if (!cedulaRegex.test(formData.Cedula)) {
+            alert("La cédula no tiene el formato correcto (###-######-####X)");
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.Email)) {
+            alert("El correo no tiene un formato válido");
             return;
         }
 
@@ -127,7 +142,6 @@ const ManageUser = ({ open, onClose, userData }) => {
             Estado: 1
         };
 
-        // Si es edición, agregar ID
         if (formData.ID_Empleado) {
             datosEmpleado.ID_Empleado = formData.ID_Empleado;
         }
@@ -139,7 +153,7 @@ const ManageUser = ({ open, onClose, userData }) => {
 
             if (resultado) {
                 alert(`Usuario ${formData.ID_Empleado ? "actualizado" : "creado"} correctamente`);
-                onClose(true); // Pasar true para indicar éxito
+                onClose(true);
             } else {
                 throw new Error("No se recibió respuesta del servidor");
             }
@@ -158,8 +172,6 @@ const ManageUser = ({ open, onClose, userData }) => {
             className="bg-gray-800 text-gray-100 border border-gray-700 rounded-lg shadow-2xl p-6"
         >
             <form className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-6">
-                {/* Campos del formulario (igual que antes) */}
-                {/* Nombre */}
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Nombre*</label>
                     <input
@@ -167,12 +179,11 @@ const ManageUser = ({ open, onClose, userData }) => {
                         name="Nombre"
                         value={formData.Nombre}
                         onChange={handleChange}
-                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2"
                         required
                     />
                 </div>
 
-                {/* Cédula */}
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Cédula*</label>
                     <input
@@ -180,24 +191,23 @@ const ManageUser = ({ open, onClose, userData }) => {
                         name="Cedula"
                         value={formData.Cedula}
                         onChange={handleChange}
-                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2"
+                        placeholder="###-######-####X"
                         required
                     />
                 </div>
 
-                {/* Edad */}
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Edad</label>
                     <input
                         type="number"
                         name="Edad"
                         value={formData.Edad}
-                        onChange={handleChange}
-                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        readOnly
+                        className="w-full bg-gray-600 text-gray-100 rounded-lg px-4 py-2"
                     />
                 </div>
 
-                {/* Fecha de Nacimiento */}
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Fecha de Nacimiento</label>
                     <input
@@ -205,11 +215,10 @@ const ManageUser = ({ open, onClose, userData }) => {
                         name="FechaDeNacimiento"
                         value={formData.FechaDeNacimiento}
                         onChange={handleChange}
-                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2"
                     />
                 </div>
 
-                {/* Nombre de Usuario */}
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Nombre de Usuario</label>
                     <input
@@ -217,11 +226,10 @@ const ManageUser = ({ open, onClose, userData }) => {
                         name="NombreDeUsuario"
                         value={formData.NombreDeUsuario}
                         onChange={handleChange}
-                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2"
                     />
                 </div>
 
-                {/* Contraseña */}
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Contraseña</label>
                     <input
@@ -229,11 +237,10 @@ const ManageUser = ({ open, onClose, userData }) => {
                         name="Contraseña"
                         value={formData.Contraseña}
                         onChange={handleChange}
-                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2"
                     />
                 </div>
 
-                {/* Sucursal */}
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Sucursal</label>
                     <ComboBoxID
@@ -249,7 +256,6 @@ const ManageUser = ({ open, onClose, userData }) => {
                     />
                 </div>
 
-                {/* Rol */}
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Rol</label>
                     <ComboBoxID
@@ -265,7 +271,6 @@ const ManageUser = ({ open, onClose, userData }) => {
                     />
                 </div>
 
-                {/* Email */}
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Email*</label>
                     <input
@@ -273,12 +278,11 @@ const ManageUser = ({ open, onClose, userData }) => {
                         name="Email"
                         value={formData.Email}
                         onChange={handleChange}
-                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2"
                         required
                     />
                 </div>
 
-                {/* Botones */}
                 <div className="flex justify-end gap-4 mb-4 col-span-2">
                     <button
                         type="button"

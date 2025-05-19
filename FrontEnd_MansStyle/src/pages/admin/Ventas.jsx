@@ -1,31 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
 import Header from "../../components/common/Header";
 import ProductCardSales from "../../components/ventas/ProductCardSales";
 import CartSummary from "../../components/ventas/CartSummary";
 import { CheckCircle } from "lucide-react";
-
-// Metodos para registrar la venta
 import { obtenerProductosPorSucursal } from "../../services/ProductosService";
-import { obtenerClientesActivos } from "../../services/ClientesService";
 import { agregarVenta } from "../../services/VentasService";
 
 const CashierPage = () => {
     const [cartItems, setCartItems] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedClient, setSelectedClient] = useState(null);
-    const [clients, setClients] = useState([]);
     const [products, setProducts] = useState([]);
     const [amountGiven, setAmountGiven] = useState(""); // Nuevo estado
 
     useEffect(() => {
-        // Fetch clients
-        obtenerClientesActivos().then((clientesData) => {
-            setClients(clientesData.map((c) => ({ label: c.Nombre, value: c.ID_Cliente })));
-        });
-
-        // Fetch products based on Sucursal ID from localStorage
+   
         const storedSucursalId = localStorage.getItem("idSucursal");
         if (storedSucursalId) {
             obtenerProductosPorSucursal(storedSucursalId).then((productosData) => {
@@ -80,7 +69,7 @@ const CashierPage = () => {
 
         const venta = {
             Estado: 1,
-            ID_Cliente: selectedClient.value,
+            ID_Cliente: 1,
             ID_Sucursal: localStorage.getItem("idSucursal"), // Use Sucursal ID from localStorage
             Fecha_Venta: new Date(),
             Subtotal: total,
