@@ -8,7 +8,6 @@ import {
 } from "../../services/ProductosService";
 import { obtenerSucursales } from "../../services/SucursalService";
 import { obtenerCategoriasActivas } from "../../services/CategoriasService";
-
 import { obtenerMarcas } from "../../services/MarcasService";
 import { Plus } from "lucide-react";
 import Header from "../../components/common/Header";
@@ -26,24 +25,27 @@ const ProductsPage = () => {
   const [Categorias, setCategorias] = useState([]);
   const [Marcas, setMarcas] = useState([]);
 
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-
+  // Filtros seleccionados
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedSucursal, setSelectedSucursal] = useState("All");
   const [selectedMarcas, setSelectedMarca] = useState("All");
 
-  const [selectedBrand, setSelectedBrand] = useState("All");
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const [openDelete, setOpenDelete] = useState(false);
-  const [openEdit, setOpenEdit] = useState(false);
+  // Opciones filtradas dinámicamente
+  const [filteredSucursales, setFilteredSucursales] = useState([]);
+  const [filteredMarcas, setFilteredMarcas] = useState([]);
+  const [filteredCategorias, setFilteredCategorias] = useState([]);
 
   const [selectedProducto, setSelectedProduct] = useState(null);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [openAdd, setOpenAdd] = useState(false);
 
   const userRole = localStorage.getItem("rol");
-  // Fetch products from the API
 
+  // Fetch products from the API
   useEffect(() => {
     obtenerProductos().then((data) => {
       setProductos(data);
@@ -53,26 +55,105 @@ const ProductsPage = () => {
 
   useEffect(() => {
     obtenerSucursales().then((data) => {
-      const opciones = data.map((sucursal) => sucursal.Nombre); // Extrae solo los nombres
-      setSucursales(["All", ...opciones]); // Agrega la opción "All" como predeterminada
+      const opciones = data.map((sucursal) => sucursal.Nombre);
+      setSucursales(["All", ...opciones]);
     });
   }, []);
 
   useEffect(() => {
     obtenerMarcas().then((data) => {
-      const opciones = data.map((Marca) => Marca.Nombre); // Extrae solo los nombres
-      setMarcas(["All", ...opciones]); // Agrega la opción "All" como predeterminada
+      const opciones = data.map((Marca) => Marca.Nombre);
+      setMarcas(["All", ...opciones]);
     });
   }, []);
 
   useEffect(() => {
     obtenerCategoriasActivas().then((data) => {
-      const opciones = data.map((Categoria) => Categoria.Nombre); // Extrae solo los nombres
-      setCategorias(["All", ...opciones]); // Agrega la opción "All" como predeterminada
+      const opciones = data.map((Categoria) => Categoria.Nombre);
+      setCategorias(["All", ...opciones]);
     });
   }, []);
 
-  // Filter products whenever filters change
+  // Filtrado dinámico de opciones de Sucursal, Marca y Categoría
+  useEffect(() => {
+    // Sucursales disponibles según marca y categoría seleccionadas
+    const sucursalesDisponibles = [
+      "All",
+      ...Array.from(
+        new Set(
+          productos
+            .filter(
+              (p) =>
+                (selectedMarcas === "All" || p.Marca === selectedMarcas) &&
+                (selectedCategory === "All" ||
+                  p.Descripcion_Categoria === selectedCategory)
+            )
+            .map((p) => p.Descripcion_Sucursal)
+        )
+      ),
+    ];
+
+    // Marcas disponibles según sucursal y categoría seleccionadas
+    const marcasDisponibles = [
+      "All",
+      ...Array.from(
+        new Set(
+          productos
+            .filter(
+              (p) =>
+                (selectedSucursal === "All" ||
+                  p.Descripcion_Sucursal === selectedSucursal) &&
+                (selectedCategory === "All" ||
+                  p.Descripcion_Categoria === selectedCategory)
+            )
+            .map((p) => p.Marca)
+        )
+      ),
+    ];
+
+    // Categorías disponibles según sucursal y marca seleccionadas
+    const categoriasDisponibles = [
+      "All",
+      ...Array.from(
+        new Set(
+          productos
+            .filter(
+              (p) =>
+                (selectedSucursal === "All" ||
+                  p.Descripcion_Sucursal === selectedSucursal) &&
+                (selectedMarcas === "All" || p.Marca === selectedMarcas)
+            )
+            .map((p) => p.Descripcion_Categoria)
+        )
+      ),
+    ];
+
+    setFilteredSucursales(sucursalesDisponibles);
+    setFilteredMarcas(marcasDisponibles);
+    setFilteredCategorias(categoriasDisponibles);
+
+    // Si la selección actual ya no es válida, resetea a "All"
+    if (
+      selectedSucursal !== "All" &&
+      !sucursalesDisponibles.includes(selectedSucursal)
+    ) {
+      setSelectedSucursal("All");
+    }
+    if (
+      selectedMarcas !== "All" &&
+      !marcasDisponibles.includes(selectedMarcas)
+    ) {
+      setSelectedMarca("All");
+    }
+    if (
+      selectedCategory !== "All" &&
+      !categoriasDisponibles.includes(selectedCategory)
+    ) {
+      setSelectedCategory("All");
+    }
+  }, [productos, selectedSucursal, selectedMarcas, selectedCategory]);
+
+  // Filtrado de productos según los filtros activos
   useEffect(() => {
     const filtered = productos.filter((product) => {
       const matchesSearchTerm = product.Nombre.toLowerCase().includes(
@@ -113,7 +194,7 @@ const ProductsPage = () => {
     try {
       const productoEliminado = {
         ID_Producto: selectedProducto.ID_Producto,
-        Estado: 0, // Cambiar estado a 0 (eliminado)
+        Estado: 0,
       };
 
       const resultado = await eliminarProducto(
@@ -124,7 +205,7 @@ const ProductsPage = () => {
       if (resultado) {
         obtenerProductos().then((data) => {
           setProductos(data);
-          setFilteredProducts(data); // Refrescar la lista después de editar
+          setFilteredProducts(data);
         });
 
         alert("Producto eliminado correctamente");
@@ -148,18 +229,21 @@ const ProductsPage = () => {
         >
           <ComboBox
             name={"Categorias"}
-            options={Categorias}
+            options={filteredCategorias}
             onSelect={setSelectedCategory}
+            selected={selectedCategory}
           />
           <ComboBox
             name={"Sucursales"}
-            options={Sucursales}
+            options={filteredSucursales}
             onSelect={setSelectedSucursal}
+            selected={selectedSucursal}
           />
           <ComboBox
             name={"Marca"}
-            options={Marcas}
+            options={filteredMarcas}
             onSelect={setSelectedMarca}
+            selected={selectedMarcas}
           />
           <div className="relative">
             <input
@@ -231,9 +315,9 @@ const ProductsPage = () => {
           open={openDelete}
           onClose={() => setOpenDelete(false)}
           title="Confirm Delete"
-          size="l" // Make the modal larger
-          className="bg-gray-800 text-gray-100 border border-gray-700 rounded-lg shadow-2xl p-6 grid grid-cols-2" // Consistent styles
-          transition={{ duration: 1.5 }} // Slower animation
+          size="l"
+          className="bg-gray-800 text-gray-100 border border-gray-700 rounded-lg shadow-2xl p-6 grid grid-cols-2"
+          transition={{ duration: 1.5 }}
         >
           <p className="text-gray-300 text-lg text-center mb-6 col-span-2">
             Are you sure you want to delete this product?{" "}
@@ -264,11 +348,11 @@ const ProductsPage = () => {
           refrescarProductos={() => {
             obtenerProductos().then((data) => {
               setProductos(data);
-              setFilteredProducts(data); // Refrescar la lista después de editar
+              setFilteredProducts(data);
             });
           }}
-          fetchProductoByID={obtenerProductoPorID} // Nueva prop para cargar producto por ID
-          productoID={selectedProducto?.ID_Producto || null} // Pasar ID del producto seleccionado
+          fetchProductoByID={obtenerProductoPorID}
+          productoID={selectedProducto?.ID_Producto || null}
         />
 
         <ModalDetalles
