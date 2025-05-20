@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
-const ComboBoxID = ({ name, options = [], selected, onSelect }) => {
+const ComboBoxID = ({ name, options = [], selected }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const comboBoxRef = useRef(null);
@@ -70,7 +70,7 @@ const ComboBoxID = ({ name, options = [], selected, onSelect }) => {
           transition={{ duration: 0.2 }}
           onClick={(e) => e.stopPropagation()}
         >
-          <input
+         <input
             type="text"
             className="bg-gray-700 text-white w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Search..."

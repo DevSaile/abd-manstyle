@@ -18,10 +18,13 @@ import ResetPassword from "./pages/public/ResetPassword";
 import ProtectedRoute from "./components/public/auth/ProtectedRoute";
 import Error404 from "./pages/public/Error404";
 import Catalog from "./pages/public/Catalog";
+import { ToastContainer } from "@rewind-ui/core";
 
 function App() {
   return (
+    
     <Routes>
+
       {/* Public Routes */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<LandingPage />} />

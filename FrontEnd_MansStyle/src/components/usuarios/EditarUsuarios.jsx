@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal } from "@rewind-ui/core";
+import { Drawer } from "@rewind-ui/core";
 import ComboBoxID from "../common/ComboxID";
 import { obtenerSucursales } from "../../services/SucursalService";
 import { obtenerRoles, agregarEmpleado, actualizarEmpleado, obtenerEmpleadosActivos } from "../../services/UsuariosService";
@@ -192,6 +192,8 @@ const ManageUser = ({ open, onClose, userData }) => {
                 return "La cédula es obligatoria y debe tener el formato ###-######-####X.";
             case "Email":
                 return "El correo es obligatorio y debe tener un formato válido.";
+            case "NombreDeUsuario":	
+                return "El nombre de usuario es obligatorio.";
             default:
                 return "Campo inválido.";
         }
@@ -208,6 +210,7 @@ const ManageUser = ({ open, onClose, userData }) => {
         if (!formData.Nombre) { newInvalidFields.push("Nombre"); newTouchedFields["Nombre"] = true; }
         if (!formData.Cedula) { newInvalidFields.push("Cedula"); newTouchedFields["Cedula"] = true; }
         if (!formData.Email) { newInvalidFields.push("Email"); newTouchedFields["Email"] = true; }
+        if (!formData.NombreDeUsuario) { newInvalidFields.push("NombreDeUsuario"); newTouchedFields["NombreDeUsuario"] = true; }
 
         const cedulaRegex = /^\d{3}-\d{6}-\d{4}[A-Z]$/;
         if (formData.Cedula && !cedulaRegex.test(formData.Cedula)) { newInvalidFields.push("Cedula"); newTouchedFields["Cedula"] = true; }
@@ -284,171 +287,184 @@ const ManageUser = ({ open, onClose, userData }) => {
     };
 
     return (
-        <Modal
+        <Drawer
             open={open}
             onClose={() => onClose(false)}
-            title={userData ? "Editar Usuario" : "Agregar Usuario"}
-            size="lg"
-            className="bg-gray-800 text-gray-100 border border-gray-700 rounded-lg shadow-2xl p-6"
+            position="right"
+            size="xl"
+            className="bg-gray-900 text-gray-100 border-l border-gray-700 shadow-2xl"
         >
-            <form className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-6">
-                {/* Nombre */}
-                <div className="relative">
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Nombre*</label>
-                    <input
-                        type="text"
-                        name="Nombre"
-                        value={formData.Nombre}
-                        onChange={handleChange}
-                        onFocus={() => handleFocus("Nombre")}
-                        onBlur={() => handleBlur("Nombre")}
-                        className={`w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
-                            ${isInvalid("Nombre") ? "border-2 border-red-500" : ""}
-                            focus:border-blue-500`}
-                        required
-                    />
-                    {isInvalid("Nombre") && touchedFields["Nombre"] && (
-                        <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">
-                            {getTooltip("Nombre")}
-                        </div>
-                    )}
+            <div className="flex flex-col h-full">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700">
+                    <h2 className="text-xl font-semibold">
+                        {userData ? "Editar Usuario" : "Agregar Usuario"}
+                    </h2>
+                    <button
+                        onClick={() => onClose(false)}
+                        className="text-gray-400 hover:text-gray-200 text-2xl font-bold"
+                        aria-label="Cerrar"
+                    >
+                        ×
+                    </button>
                 </div>
+                <form className="flex-1 overflow-y-auto px-6 py-4 grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-6">
+                    {/* Nombre */}
+                    <div className="relative">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Nombre*</label>
+                        <input
+                            type="text"
+                            name="Nombre"
+                            value={formData.Nombre}
+                            onChange={handleChange}
+                            onFocus={() => handleFocus("Nombre")}
+                            onBlur={() => handleBlur("Nombre")}
+                            className={`w-full bg-gray-800 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
+                                ${isInvalid("Nombre") ? "border-2 border-red-500" : ""}
+                                focus:border-blue-500`}
+                            required
+                        />
+                        {isInvalid("Nombre") && touchedFields["Nombre"] && (
+                            <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">
+                                {getTooltip("Nombre")}
+                            </div>
+                        )}
+                    </div>
 
-                {/* Cedula */}
-                <div className="relative">
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Cédula*</label>
-                    <input
-                        type="text"
-                        name="Cedula"
-                        value={formData.Cedula}
-                        onChange={handleChange}
-                        onFocus={() => handleFocus("Cedula")}
-                        onBlur={() => handleBlur("Cedula")}
-                        className={`w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
-                            ${isInvalid("Cedula") ? "border-2 border-red-500" : ""}
-                            focus:border-blue-500`}
-                        placeholder="###-######-####X"
-                        required
-                    />
-                    {isInvalid("Cedula") && touchedFields["Cedula"] && (
-                        <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">
-                            {getTooltip("Cedula")}
-                        </div>
-                    )}
-                </div>
+                    {/* Cedula */}
+                    <div className="relative">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Cédula*</label>
+                        <input
+                            type="text"
+                            name="Cedula"
+                            value={formData.Cedula}
+                            onChange={handleChange}
+                            onFocus={() => handleFocus("Cedula")}
+                            onBlur={() => handleBlur("Cedula")}
+                            className={`w-full bg-gray-800 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
+                                ${isInvalid("Cedula") ? "border-2 border-red-500" : ""}
+                                focus:border-blue-500`}
+                            placeholder="###-######-####X"
+                            required
+                        />
+                        {isInvalid("Cedula") && touchedFields["Cedula"] && (
+                            <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">
+                                {getTooltip("Cedula")}
+                            </div>
+                        )}
+                    </div>
 
-                {/* Edad */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Edad</label>
-                    <input
-                        type="number"
-                        name="Edad"
-                        value={formData.Edad}
-                        readOnly
-                        className="w-full bg-gray-600 text-gray-100 rounded-lg px-4 py-2"
-                    />
-                </div>
+                    {/* Edad */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Edad</label>
+                        <input
+                            type="number"
+                            name="Edad"
+                            value={formData.Edad}
+                            readOnly
+                            className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2"
+                        />
+                    </div>
 
-                {/* Fecha de Nacimiento */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Fecha de Nacimiento</label>
-                    <input
-                        type="date"
-                        name="FechaDeNacimiento"
-                        value={formData.FechaDeNacimiento}
-                        onChange={handleChange}
-                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2"
-                    />
-                </div>
+                    {/* Fecha de Nacimiento */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Fecha de Nacimiento</label>
+                        <input
+                            type="date"
+                            name="FechaDeNacimiento"
+                            value={formData.FechaDeNacimiento}
+                            onChange={handleChange}
+                            className="w-full bg-gray-800 text-gray-100 rounded-lg px-4 py-2"
+                        />
+                    </div>
 
-                {/* Nombre de Usuario */}
-                <div className="relative">
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Nombre de Usuario</label>
-                    <input
-                        type="text"
-                        name="NombreDeUsuario"
-                        value={formData.NombreDeUsuario}
-                        onChange={handleChange}
-                        onFocus={() => handleFocus("NombreDeUsuario")}
-                        onBlur={() => handleBlur("NombreDeUsuario")}
-                        className={`w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
-                            ${isInvalid("NombreDeUsuario") ? "border-2 border-red-500" : ""}
-                            focus:border-blue-500`}
-                    />
-                    {isInvalid("NombreDeUsuario") && touchedFields["NombreDeUsuario"] && (
-                        <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">
-                            {getTooltip("NombreDeUsuario")}
-                        </div>
-                    )}
-                </div>
+                    {/* Nombre de Usuario */}
+                    <div className="relative">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Nombre de Usuario</label>
+                        <input
+                            type="text"
+                            name="NombreDeUsuario"
+                            value={formData.NombreDeUsuario}
+                            onChange={handleChange}
+                            onFocus={() => handleFocus("NombreDeUsuario")}
+                            onBlur={() => handleBlur("NombreDeUsuario")}
+                            className={`w-full bg-gray-800 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
+                                ${isInvalid("NombreDeUsuario") ? "border-2 border-red-500" : ""}
+                                focus:border-blue-500`}
+                        />
+                        {isInvalid("NombreDeUsuario") && touchedFields["NombreDeUsuario"] && (
+                            <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">
+                                {getTooltip("NombreDeUsuario")}
+                            </div>
+                        )}
+                    </div>
 
-                {/* Contraseña */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Contraseña</label>
-                    <input
-                        type="password"
-                        name="Contraseña"
-                        value={formData.Contraseña}
-                        onChange={handleChange}
-                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2"
-                    />
-                </div>
+                    {/* Contraseña */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Contraseña</label>
+                        <input
+                            type="password"
+                            name="Contraseña"
+                            value={formData.Contraseña}
+                            onChange={handleChange}
+                            className="w-full bg-gray-800 text-gray-100 rounded-lg px-4 py-2"
+                        />
+                    </div>
 
-                {/* Sucursal */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Sucursal</label>
-                    <ComboBoxID
-                        name="Sucursal"
-                        options={sucursales}
-                        selected={{
-                            label: sucursales.find((s) => s.value === formData.Sucursal)?.label || "",
-                            value: formData.Sucursal,
-                        }}
-                        onSelect={(sucursal) =>
-                            setFormData(prev => ({ ...prev, Sucursal: sucursal.value }))
-                        }
-                    />
-                </div>
+                    {/* Sucursal */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Sucursal</label>
+                        <ComboBoxID
+                            name="Sucursal"
+                            options={sucursales}
+                            selected={{
+                                label: sucursales.find((s) => s.value === formData.Sucursal)?.label || "",
+                                value: formData.Sucursal,
+                            }}
+                            onSelect={(sucursal) =>
+                                setFormData(prev => ({ ...prev, Sucursal: sucursal.value }))
+                            }
+                        />
+                    </div>
 
-                {/* Rol */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Rol</label>
-                    <ComboBoxID
-                        name="Rol"
-                        options={roles}
-                        selected={{
-                            label: roles.find((r) => r.value === formData.Rol)?.label || "",
-                            value: formData.Rol,
-                        }}
-                        onSelect={(rol) =>
-                            setFormData(prev => ({ ...prev, Rol: rol.value }))
-                        }
-                    />
-                </div>
+                    {/* Rol */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Rol</label>
+                        <ComboBoxID
+                            name="Rol"
+                            options={roles}
+                            selected={{
+                                label: roles.find((r) => r.value === formData.Rol)?.label || "",
+                                value: formData.Rol,
+                            }}
+                            onSelect={(rol) =>
+                                setFormData(prev => ({ ...prev, Rol: rol.value }))
+                            }
+                        />
+                    </div>
 
-                {/* Email */}
-                <div className="relative">
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Email*</label>
-                    <input
-                        type="email"
-                        name="Email"
-                        value={formData.Email}
-                        onChange={handleChange}
-                        onFocus={() => handleFocus("Email")}
-                        onBlur={() => handleBlur("Email")}
-                        className={`w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
-                            ${isInvalid("Email") ? "border-2 border-red-500" : ""}
-                            focus:border-blue-500`}
-                        required
-                    />
-                    {isInvalid("Email") && touchedFields["Email"] && (
-                        <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">
-                            {getTooltip("Email")}
-                        </div>
-                    )}
-                </div>
-
-                <div className="flex justify-end gap-4 mb-4 col-span-2">
+                    {/* Email */}
+                    <div className="relative">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Email*</label>
+                        <input
+                            type="email"
+                            name="Email"
+                            value={formData.Email}
+                            onChange={handleChange}
+                            onFocus={() => handleFocus("Email")}
+                            onBlur={() => handleBlur("Email")}
+                            className={`w-full bg-gray-800 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
+                                ${isInvalid("Email") ? "border-2 border-red-500" : ""}
+                                focus:border-blue-500`}
+                            required
+                        />
+                        {isInvalid("Email") && touchedFields["Email"] && (
+                            <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">
+                                {getTooltip("Email")}
+                            </div>
+                        )}
+                    </div>
+                </form>
+                <div className="flex justify-end gap-4 px-6 py-4 border-t border-gray-700">
                     <button
                         type="button"
                         onClick={() => onClose(false)}
@@ -464,8 +480,8 @@ const ManageUser = ({ open, onClose, userData }) => {
                         Guardar
                     </button>
                 </div>
-            </form>
-        </Modal>
+            </div>
+        </Drawer>
     );
 };
 

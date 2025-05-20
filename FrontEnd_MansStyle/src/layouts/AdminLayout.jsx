@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../components/common/Sidebar";
+import { ToastContainer } from "@rewind-ui/core";
 
 function AdminLayout() {
   const navigate = useNavigate();
@@ -25,7 +26,8 @@ function AdminLayout() {
 
   return (
     <div className="flex h-screen bg-gray-900 text-gray-100 overflow-hidden">
-      {/* Background */}
+      {/* Background */}            <ToastContainer position="top-right" />
+
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-gray-800 opacity-80" />
         <div className="absolute inset-0 backdrop-blur-sm" />
