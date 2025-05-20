@@ -157,7 +157,12 @@ namespace BLL
                             return -1;
                         }
 
-                        producto.Cantidad += detalle.Cantidad; // Incrementar stock
+                        if (producto.Cantidad == null)
+                        {
+                            producto.Cantidad = 0;
+                        }
+
+                        producto.Cantidad += detalle.Cantidad ?? 0; // Usar 0 si detalle.Cantidad es null
                         db.Entry(producto).State = EntityState.Modified;
 
                         Compra_Detalles nuevoDetalle = new Compra_Detalles

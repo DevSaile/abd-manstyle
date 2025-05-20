@@ -72,7 +72,7 @@ const NewProduct = ({ openAdd, AddModalClose }) => {
         ID_Marca: newProduct.ID_Marca,
         ID_Sucursal: newProduct.ID_Sucursal,
         ID_Categoria: newProduct.ID_Categoria,
-        Cantidad: parseInt(newProduct.Cantidad),
+        Cantidad: 0,
         Precio_Producto: parseFloat(newProduct.Precio_Venta),
         Precio_Compra: parseFloat(newProduct.Precio_Compra),
         Detalles: newProduct.Detalles,
