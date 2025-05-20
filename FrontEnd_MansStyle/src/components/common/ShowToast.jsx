@@ -20,7 +20,7 @@ export const ShowToast = ({
   tone = "solid",
   show = false,
   delay = 300,
-  position = "top-right",
+  position = "bottom-right",
   onClose, // opcional: callback cuando se muestra el toast
 }) => {
   const toast = useToast();

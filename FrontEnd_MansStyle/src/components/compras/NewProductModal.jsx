@@ -80,6 +80,19 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
       }
       if (onProductAdded) onProductAdded(); // <-- refresca productos
       AddModalClose();
+      setNewProduct({
+  Nombre: "",
+  Precio_Compra: "",
+  Precio_Venta: "",
+  ID_Marca: "",
+  Detalles: "",
+  ID_Sucursal: "",
+  ID_Categoria: "",
+  url_image: "",
+  Cantidad: "",
+  archivoImagen: null,
+});
+
        
         
     } catch (error) {
@@ -146,7 +159,7 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
               <label className="block text-sm font-medium text-gray-300 mb-1">Sucursal</label>
               <ComboBoxID
                 name="Seleccionar Sucursal"
-                enableSearchBar={false}
+                enableSearchbar={false}
                 options={sucursales}
                 selected={{
                   label: newProduct.Nombre_Sucursal || "",
