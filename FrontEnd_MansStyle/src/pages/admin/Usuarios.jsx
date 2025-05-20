@@ -4,6 +4,7 @@ import UsersTable from "../../components/usuarios/TablaUsuarios";
 import ManageUser from "../../components/usuarios/EditarUsuarios";
 import DeleteModal from "../../components/usuarios/EliminarUsuario";
 import { obtenerEmpleadosActivos, eliminarEmpleado } from "../../services/UsuariosService";
+import { ShowToast } from "../../components/common/ShowToast";
 
 const UsersPage = () => {
     const [userData, setUserData] = useState([]);
@@ -11,6 +12,8 @@ const UsersPage = () => {
     const [openEdit, setOpenEdit] = useState(false);
     const [openCreate, setOpenCreate] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
+    const [OpenToastEdit, setOpenToastEdit] = useState(false);
+    const [OpenToastCreate, setOpenToastCreate] = useState(false);
 
     useEffect(() => {
         cargarUsuarios();
@@ -104,32 +107,45 @@ const UsersPage = () => {
                     onCreateClick={() => setOpenCreate(true)}
                 />
 
-                {/* Modal de Edición */}
-                <ManageUser
+                 <ManageUser
                     open={openEdit}
                     onClose={(success) => {
                         setOpenEdit(false);
                         if (success) cargarUsuarios();
                     }}
                     userData={selectedUser}
+                    OnUserComplete={() => {setOpenToastEdit(true)}}
                 />
 
-                {/* Modal de Creación */}
                 <ManageUser
                     open={openCreate}
                     onClose={(success) => {
                         setOpenCreate(false);
                         if (success) cargarUsuarios();
                     }}
+                    OnUserComplete={() => {setOpenToastCreate(true)}}
                 />
 
-                {/* Modal de Eliminación */}
                 <DeleteModal
                     open={openDelete}
                     onClose={() => setOpenDelete(false)}
                     onConfirm={handleDeleteUser}
                     selectedUser={selectedUser}
                 />
+
+                <ShowToast
+                    show={OpenToastEdit}
+                    onClose={() => setOpenToastEdit(false)}
+                    message="Usuario editado correctamente"
+                    type="success"
+                />
+
+                <ShowToast
+                    show={OpenToastCreate}
+                    onClose={() => setOpenToastCreate(false)}
+                    message="Usuario creado correctamente"
+                    type="success"
+                /> 
             </main>
         </div>
     );

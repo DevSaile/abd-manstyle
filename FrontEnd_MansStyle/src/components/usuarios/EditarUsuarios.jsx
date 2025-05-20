@@ -4,7 +4,7 @@ import ComboBoxID from "../common/ComboxID";
 import { obtenerSucursales } from "../../services/SucursalService";
 import { obtenerRoles, agregarEmpleado, actualizarEmpleado, obtenerEmpleadosActivos } from "../../services/UsuariosService";
 
-const ManageUser = ({ open, onClose, userData }) => {
+const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
     const [formData, setFormData] = useState({
         Nombre: "",
         Cedula: "",
@@ -275,7 +275,7 @@ const ManageUser = ({ open, onClose, userData }) => {
                 : await agregarEmpleado(datosEmpleado);
 
             if (resultado) {
-                alert(`Usuario ${formData.ID_Empleado ? "actualizado" : "creado"} correctamente`);
+      if (OnUserComplete) OnUserComplete(); // <-- refresca productos
                 onClose(true);
             } else {
                 throw new Error("No se recibió respuesta del servidor");
