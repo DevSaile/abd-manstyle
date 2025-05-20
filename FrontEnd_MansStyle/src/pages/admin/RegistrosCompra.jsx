@@ -154,12 +154,7 @@ const RegistroCompra = () => {
             value={stats.totalCompras} 
             color="#6366F1" 
           />
-          <StatCard 
-            name="Compras Activas" 
-            icon={ShoppingBag} 
-            value={stats.comprasActivas} 
-            color="#10B981" 
-          />
+        
           <StatCard
             name="Inversión Total"
             icon={DollarSign}

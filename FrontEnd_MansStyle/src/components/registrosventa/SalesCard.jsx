@@ -71,9 +71,9 @@ const SaleCard = ({
             <table className='w-full text-sm text-left text-gray-300 mt-2'>
               <thead className='text-xs uppercase text-gray-400 border-b border-gray-600'>
                 <tr>
-                  <th className='py-2'>Product</th>
-                  <th>Unit Price</th>
-                  <th>Qty</th>
+                  <th className='py-2'>Producto</th>
+                  <th>Precio Unidad</th>
+                  <th>Cantidad</th>
                   <th>Total</th>
                 </tr>
               </thead>

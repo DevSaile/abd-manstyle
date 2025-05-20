@@ -2,28 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "@rewind-ui/core";
 import ComboBoxID from "../common/ComboxID";
 import { obtenerSucursales } from "../../services/SucursalService";
-import {
-    obtenerRoles,
-    obtenerEmpleadosActivos,
-    agregarEmpleado,
-    actualizarEmpleado,
-} from "../../services/UsuariosService";
-
-const requiredFields = [
-    "Nombre",
-    "Cedula",
-    "Edad",
-    "FechaDeNacimiento",
-    "NombreDeUsuario",
-    "Contraseña",
-    "Sucursal",
-    "Email",
-    "Rol",
-];
-
-
-const cedulaRegex = /^\d{3}-\d{6}-\d{4}[A-Z]$/;
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import { obtenerRoles, agregarEmpleado, actualizarEmpleado, obtenerEmpleadosActivos } from "../../services/UsuariosService";
 
 const ManageUser = ({ open, onClose, userData }) => {
     const [formData, setFormData] = useState({
@@ -36,42 +15,15 @@ const ManageUser = ({ open, onClose, userData }) => {
         Sucursal: "",
         Email: "",
         Rol: "",
-        ID_Empleado: null,
+        ID_Empleado: null
     });
 
     const [sucursales, setSucursales] = useState([]);
     const [roles, setRoles] = useState([]);
     const [usuariosExistentes, setUsuariosExistentes] = useState([]);
     const [invalidFields, setInvalidFields] = useState([]);
-    const [erroresDuplicados, setErroresDuplicados] = useState({});
     const [touchedFields, setTouchedFields] = useState({});
-
-    useEffect(() => {
-        const cargarDatos = async () => {
-            try {
-                const [RolesData, sucursalesData, empleadosData] = await Promise.all([
-                    obtenerRoles(),
-                    obtenerSucursales(),
-                    obtenerEmpleadosActivos(),
-                ]);
-                setRoles(RolesData.map((rol) => ({
-                    label: rol.Puesto,
-                    value: rol.ID_Rol,
-                })));
-                setSucursales(sucursalesData.map((sucursal) => ({
-                    label: sucursal.Nombre,
-                    value: sucursal.ID_Sucursal,
-                })));
-                setUsuariosExistentes(empleadosData);
-            } catch (error) {
-                console.error("Error cargando datos:", error);
-            }
-        };
-
-        if (open) {
-            cargarDatos();
-        }
-    }, [open]);
+    const [erroresDuplicados, setErroresDuplicados] = useState({});
 
     useEffect(() => {
         if (userData) {
@@ -79,15 +31,15 @@ const ManageUser = ({ open, onClose, userData }) => {
                 Nombre: userData.Nombre || "",
                 Cedula: userData.Cedula || "",
                 Edad: userData.Edad || "",
-                FechaDeNacimiento: userData.FechaNacimiento
+                FechaDeNacimiento: userData.FechaNacimiento 
                     ? formatDateForInput(userData.FechaNacimiento)
                     : "",
                 NombreDeUsuario: userData.Usuario || "",
-                Contraseña: userData.contrasena || "",
                 Sucursal: userData.ID_Sucursal || "",
                 Email: userData.correo || "",
                 Rol: userData.ID_Rol || "",
                 ID_Empleado: userData.ID_Empleado || null,
+                Contraseña: userData.contrasena || ""
             });
         } else {
             setFormData({
@@ -100,24 +52,60 @@ const ManageUser = ({ open, onClose, userData }) => {
                 Sucursal: "",
                 Email: "",
                 Rol: "",
-                ID_Empleado: null,
+                ID_Empleado: null
             });
         }
         setInvalidFields([]);
-        setErroresDuplicados({});
         setTouchedFields({});
+        setErroresDuplicados({});
     }, [userData, open]);
 
     const formatDateForInput = (dateString) => {
         try {
             const date = new Date(dateString);
             if (isNaN(date.getTime())) return "";
-            return date.toISOString().split("T")[0];
+            return date.toISOString().split('T')[0];
         } catch {
             return "";
         }
     };
 
+    useEffect(() => {
+        const cargarDatos = async () => {
+            try {
+                const [RolesData, sucursalesData, empleadosData] = await Promise.all([
+                    obtenerRoles(),
+                    obtenerSucursales(),
+                    obtenerEmpleadosActivos()
+                ]);
+                setRoles(RolesData.map(rol => ({
+                    label: rol.Puesto, 
+                    value: rol.ID_Rol
+                })));
+                setSucursales(sucursalesData.map(sucursal => ({
+                    label: sucursal.Nombre, 
+                    value: sucursal.ID_Sucursal
+                })));
+                setUsuariosExistentes(empleadosData);
+            } catch (error) {
+                console.error("Error cargando datos:", error);
+            }
+        };
+
+        if (open) {
+            cargarDatos();
+        }
+    }, [open]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ 
+            ...prev, 
+            [name]: value 
+        }));
+    };
+
+    // Cálculo automático de edad
     useEffect(() => {
         if (formData.FechaDeNacimiento) {
             const nacimiento = new Date(formData.FechaDeNacimiento);
@@ -127,26 +115,18 @@ const ManageUser = ({ open, onClose, userData }) => {
             if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) {
                 edad--;
             }
-            setFormData((prev) => ({ ...prev, Edad: edad }));
+            setFormData(prev => ({ ...prev, Edad: edad }));
         }
     }, [formData.FechaDeNacimiento]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
-
     const handleFocus = (field) => {
-        setTouchedFields((prev) => ({ ...prev, [field]: true }));
-        setInvalidFields((prev) => prev.filter((f) => f !== field));
-        setErroresDuplicados((prev) => ({ ...prev, [field]: false }));
+        setTouchedFields(prev => ({ ...prev, [field]: false }));
+        setInvalidFields(prev => prev.filter(f => f !== field));
+        setErroresDuplicados(prev => ({ ...prev, [field]: false }));
     };
 
     const handleBlur = (field) => {
-        setTouchedFields((prev) => ({ ...prev, [field]: true }));
+        setTouchedFields(prev => ({ ...prev, [field]: true }));
 
         let newInvalidFields = [...invalidFields];
         let newErroresDuplicados = { ...erroresDuplicados };
@@ -160,6 +140,7 @@ const ManageUser = ({ open, onClose, userData }) => {
 
         // Formato
         if (field === "Cedula") {
+            const cedulaRegex = /^\d{3}-\d{6}-\d{4}[A-Z]$/;
             if (formData.Cedula && !cedulaRegex.test(formData.Cedula)) {
                 if (!newInvalidFields.includes("Cedula")) newInvalidFields.push("Cedula");
             } else {
@@ -167,6 +148,7 @@ const ManageUser = ({ open, onClose, userData }) => {
             }
         }
         if (field === "Email") {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (formData.Email && !emailRegex.test(formData.Email)) {
                 if (!newInvalidFields.includes("Email")) newInvalidFields.push("Email");
             } else {
@@ -180,22 +162,11 @@ const ManageUser = ({ open, onClose, userData }) => {
             usuariosExistentes.forEach((usuario) => {
                 if (
                     usuario.ID_Empleado !== formData.ID_Empleado &&
-                    usuario[field] === formData[field]
-                ) {
-                    isDuplicated = true;
-                }
-                // Para correo y usuario, los nombres de campo pueden diferir
-                if (
-                    field === "Email" &&
-                    usuario.ID_Empleado !== formData.ID_Empleado &&
-                    usuario.correo === formData.Email
-                ) {
-                    isDuplicated = true;
-                }
-                if (
-                    field === "NombreDeUsuario" &&
-                    usuario.ID_Empleado !== formData.ID_Empleado &&
-                    usuario.Usuario === formData.NombreDeUsuario
+                    (
+                        (field === "Cedula" && usuario.Cedula === formData.Cedula) ||
+                        (field === "Email" && usuario.correo === formData.Email) ||
+                        (field === "NombreDeUsuario" && usuario.Usuario === formData.NombreDeUsuario)
+                    )
                 ) {
                     isDuplicated = true;
                 }
@@ -210,77 +181,85 @@ const ManageUser = ({ open, onClose, userData }) => {
     const getTooltip = (field) => {
         if (!invalidFields.includes(field) && !erroresDuplicados[field]) return null;
         if (erroresDuplicados[field]) {
-            return `El ${field === "NombreDeUsuario" ? "usuario" : field.toLowerCase()} ya está en uso.`;
+            if (field === "NombreDeUsuario") return "El nombre de usuario ya está en uso.";
+            if (field === "Cedula") return "La cédula ya está en uso.";
+            if (field === "Email") return "El correo ya está en uso.";
         }
         switch (field) {
+            case "Nombre":
+                return "El nombre es obligatorio.";
             case "Cedula":
-                return "La cédula debe tener formato ###-######-####X.";
+                return "La cédula es obligatoria y debe tener el formato ###-######-####X.";
             case "Email":
-                return "El correo debe tener un formato válido.";
-            
+                return "El correo es obligatorio y debe tener un formato válido.";
+            default:
+                return "Campo inválido.";
         }
     };
 
     const isInvalid = (field) => invalidFields.includes(field) || erroresDuplicados[field];
 
     const handleSave = async () => {
-        // Solo validación final para evitar guardar con errores
         const newInvalidFields = [];
         const newErroresDuplicados = {};
+        const newTouchedFields = {};
 
-        requiredFields.forEach((field) => {
-            if (!formData[field]) {
-                newInvalidFields.push(field);
-            }
-        });
+        // Validación de campos requeridos y formato
+        if (!formData.Nombre) { newInvalidFields.push("Nombre"); newTouchedFields["Nombre"] = true; }
+        if (!formData.Cedula) { newInvalidFields.push("Cedula"); newTouchedFields["Cedula"] = true; }
+        if (!formData.Email) { newInvalidFields.push("Email"); newTouchedFields["Email"] = true; }
 
-        if (formData.Cedula && !cedulaRegex.test(formData.Cedula)) {
-            newInvalidFields.push("Cedula");
-        }
-        if (formData.Email && !emailRegex.test(formData.Email)) {
-            newInvalidFields.push("Email");
-        }
+        const cedulaRegex = /^\d{3}-\d{6}-\d{4}[A-Z]$/;
+        if (formData.Cedula && !cedulaRegex.test(formData.Cedula)) { newInvalidFields.push("Cedula"); newTouchedFields["Cedula"] = true; }
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (formData.Email && !emailRegex.test(formData.Email)) { newInvalidFields.push("Email"); newTouchedFields["Email"] = true; }
+
+        // Validación de duplicados
         usuariosExistentes.forEach((usuario) => {
             if (
                 usuario.ID_Empleado !== formData.ID_Empleado &&
                 usuario.Cedula === formData.Cedula
             ) {
                 newErroresDuplicados["Cedula"] = true;
+                newTouchedFields["Cedula"] = true;
             }
             if (
                 usuario.ID_Empleado !== formData.ID_Empleado &&
                 usuario.correo === formData.Email
             ) {
                 newErroresDuplicados["Email"] = true;
+                newTouchedFields["Email"] = true;
             }
             if (
                 usuario.ID_Empleado !== formData.ID_Empleado &&
                 usuario.Usuario === formData.NombreDeUsuario
             ) {
                 newErroresDuplicados["NombreDeUsuario"] = true;
+                newTouchedFields["NombreDeUsuario"] = true;
             }
         });
 
         setInvalidFields(newInvalidFields);
         setErroresDuplicados(newErroresDuplicados);
+        setTouchedFields((prev) => ({ ...prev, ...newTouchedFields }));
 
-        if (newInvalidFields.length > 0 || Object.keys(newErroresDuplicados).length > 0) {
+        if (newInvalidFields.length > 0 || Object.values(newErroresDuplicados).some(Boolean)) {
             return;
         }
 
         const datosEmpleado = {
             Nombre: formData.Nombre.trim(),
             Cedula: formData.Cedula.trim(),
-            FechaNacimiento: formData.FechaDeNacimiento
+            FechaNacimiento: formData.FechaDeNacimiento 
                 ? new Date(formData.FechaDeNacimiento).toISOString()
                 : null,
-            Usuario: formData.NombreDeUsuario.trim(),
-            contrasena: formData.Contraseña,
+            Usuario: formData.NombreDeUsuario.trim() || null,
+            contrasena: formData.Contraseña || null,
             ID_Rol: formData.Rol || 0,
             ID_Sucursal: formData.Sucursal || 1,
             correo: formData.Email.trim(),
-            Estado: 1,
+            Estado: 1
         };
 
         if (formData.ID_Empleado) {
@@ -288,7 +267,7 @@ const ManageUser = ({ open, onClose, userData }) => {
         }
 
         try {
-            const resultado = formData.ID_Empleado
+            const resultado = formData.ID_Empleado 
                 ? await actualizarEmpleado(datosEmpleado)
                 : await agregarEmpleado(datosEmpleado);
 
@@ -313,38 +292,52 @@ const ManageUser = ({ open, onClose, userData }) => {
             className="bg-gray-800 text-gray-100 border border-gray-700 rounded-lg shadow-2xl p-6"
         >
             <form className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-6">
-                {[
-                    { label: "Nombre*", name: "Nombre" },
-                    { label: "Cédula*", name: "Cedula", placeholder: "###-######-####X" },
-                    { label: "Email*", name: "Email" },
-                    { label: "Nombre de Usuario*", name: "NombreDeUsuario" },
-                    { label: "Contraseña*", name: "Contraseña", type: "password" },
-                ].map(({ label, name, placeholder, type = "text" }) => (
-                    <div className="relative" key={name}>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
-                            {label}
-                        </label>
-                        <input
-                            type={type}
-                            name={name}
-                            value={formData[name]}
-                            onChange={handleChange}
-                            onFocus={() => handleFocus(name)}
-                            onBlur={() => handleBlur(name)}
-                            placeholder={placeholder}
-                            className={`w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200 ${
-                                isInvalid(name) ? "border-2 border-red-500" : ""
-                            } focus:border-blue-500`}
-                            required
-                        />
-                        {isInvalid(name) && touchedFields[name] && (
-                            <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">
-                                {getTooltip(name)}
-                            </div>
-                        )}
-                    </div>
-                ))}
+                {/* Nombre */}
+                <div className="relative">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Nombre*</label>
+                    <input
+                        type="text"
+                        name="Nombre"
+                        value={formData.Nombre}
+                        onChange={handleChange}
+                        onFocus={() => handleFocus("Nombre")}
+                        onBlur={() => handleBlur("Nombre")}
+                        className={`w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
+                            ${isInvalid("Nombre") ? "border-2 border-red-500" : ""}
+                            focus:border-blue-500`}
+                        required
+                    />
+                    {isInvalid("Nombre") && touchedFields["Nombre"] && (
+                        <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">
+                            {getTooltip("Nombre")}
+                        </div>
+                    )}
+                </div>
 
+                {/* Cedula */}
+                <div className="relative">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Cédula*</label>
+                    <input
+                        type="text"
+                        name="Cedula"
+                        value={formData.Cedula}
+                        onChange={handleChange}
+                        onFocus={() => handleFocus("Cedula")}
+                        onBlur={() => handleBlur("Cedula")}
+                        className={`w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
+                            ${isInvalid("Cedula") ? "border-2 border-red-500" : ""}
+                            focus:border-blue-500`}
+                        placeholder="###-######-####X"
+                        required
+                    />
+                    {isInvalid("Cedula") && touchedFields["Cedula"] && (
+                        <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">
+                            {getTooltip("Cedula")}
+                        </div>
+                    )}
+                </div>
+
+                {/* Edad */}
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Edad</label>
                     <input
@@ -356,10 +349,9 @@ const ManageUser = ({ open, onClose, userData }) => {
                     />
                 </div>
 
+                {/* Fecha de Nacimiento */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">
-                        Fecha de Nacimiento
-                    </label>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Fecha de Nacimiento</label>
                     <input
                         type="date"
                         name="FechaDeNacimiento"
@@ -369,6 +361,40 @@ const ManageUser = ({ open, onClose, userData }) => {
                     />
                 </div>
 
+                {/* Nombre de Usuario */}
+                <div className="relative">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Nombre de Usuario</label>
+                    <input
+                        type="text"
+                        name="NombreDeUsuario"
+                        value={formData.NombreDeUsuario}
+                        onChange={handleChange}
+                        onFocus={() => handleFocus("NombreDeUsuario")}
+                        onBlur={() => handleBlur("NombreDeUsuario")}
+                        className={`w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
+                            ${isInvalid("NombreDeUsuario") ? "border-2 border-red-500" : ""}
+                            focus:border-blue-500`}
+                    />
+                    {isInvalid("NombreDeUsuario") && touchedFields["NombreDeUsuario"] && (
+                        <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">
+                            {getTooltip("NombreDeUsuario")}
+                        </div>
+                    )}
+                </div>
+
+                {/* Contraseña */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Contraseña</label>
+                    <input
+                        type="password"
+                        name="Contraseña"
+                        value={formData.Contraseña}
+                        onChange={handleChange}
+                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2"
+                    />
+                </div>
+
+                {/* Sucursal */}
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Sucursal</label>
                     <ComboBoxID
@@ -379,11 +405,12 @@ const ManageUser = ({ open, onClose, userData }) => {
                             value: formData.Sucursal,
                         }}
                         onSelect={(sucursal) =>
-                            setFormData((prev) => ({ ...prev, Sucursal: sucursal.value }))
+                            setFormData(prev => ({ ...prev, Sucursal: sucursal.value }))
                         }
                     />
                 </div>
 
+                {/* Rol */}
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Rol</label>
                     <ComboBoxID
@@ -394,9 +421,31 @@ const ManageUser = ({ open, onClose, userData }) => {
                             value: formData.Rol,
                         }}
                         onSelect={(rol) =>
-                            setFormData((prev) => ({ ...prev, Rol: rol.value }))
+                            setFormData(prev => ({ ...prev, Rol: rol.value }))
                         }
                     />
+                </div>
+
+                {/* Email */}
+                <div className="relative">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Email*</label>
+                    <input
+                        type="email"
+                        name="Email"
+                        value={formData.Email}
+                        onChange={handleChange}
+                        onFocus={() => handleFocus("Email")}
+                        onBlur={() => handleBlur("Email")}
+                        className={`w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
+                            ${isInvalid("Email") ? "border-2 border-red-500" : ""}
+                            focus:border-blue-500`}
+                        required
+                    />
+                    {isInvalid("Email") && touchedFields["Email"] && (
+                        <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">
+                            {getTooltip("Email")}
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex justify-end gap-4 mb-4 col-span-2">

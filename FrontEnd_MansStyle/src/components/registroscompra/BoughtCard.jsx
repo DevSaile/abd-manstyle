@@ -81,7 +81,7 @@ const BoughtCard = ({
           
           <div className="flex items-center justify-end text-sm text-gray-400">
             <DollarSign className="mr-2 text-purple-400" size={18} />
-            <span>${total.toFixed(2)}</span>
+            <span>C${total.toFixed(2)}</span>
           </div>
         </div>
 
@@ -130,10 +130,10 @@ const BoughtCard = ({
                 {products.map((product, index) => (
                   <tr key={index} className="border-b border-gray-700 hover:bg-gray-700/30">
                     <td className="py-3">{product.name}</td>
-                    <td className="text-right">${product.unitPrice.toFixed(2)}</td>
+                    <td className="text-right">C${product.unitPrice.toFixed(2)}</td>
                     <td className="text-right">{product.quantity}</td>
                     <td className="text-right font-medium">
-                      ${(product.unitPrice * product.quantity).toFixed(2)}
+C${(product.unitPrice * product.quantity).toFixed(2)}
                     </td>
                   </tr>
                 ))}
@@ -145,14 +145,14 @@ const BoughtCard = ({
               <div className="bg-gray-700/50 p-3 rounded-lg">
                 <p className="text-gray-400">Total invertido:</p>
                 <p className="text-xl font-bold text-green-400">
-                  ${totalPagado.toFixed(2)}
+                  C${totalPagado.toFixed(2)}
                 </p>
               </div>
               
               <div className="bg-gray-700/50 p-3 rounded-lg">
                 <p className="text-gray-400">Ganancia potencial:</p>
                 <p className="text-xl font-bold text-blue-400">
-                  ${gananciaPotencial.toFixed(2)}
+                  C${gananciaPotencial.toFixed(2)}
                 </p>
               </div>
             </div>
