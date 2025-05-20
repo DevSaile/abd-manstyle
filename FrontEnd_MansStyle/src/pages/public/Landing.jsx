@@ -1,16 +1,15 @@
 import React, { useEffect } from "react";
 import ScrollReveal from "scrollreveal";
+import { Smartphone, Headphones, ShoppingBag, Watch, Gem } from "lucide-react";
 import "animate.css";
 import { ReactComponent as Ilustracion } from "../../assest/ilustracion.svg";
 import ParticlesBackground from "../../components/public/common/ParticlesBackground";
 import { ReactComponent as Airpods } from "../../assest/airpods.svg";
-import {ReactComponent as Perfume} from "../../assest/perfume.svg";
-import {ReactComponent as Shirt} from "../../assest/mens.svg"; 
+import { ReactComponent as Perfume } from "../../assest/perfume.svg";
+import { ReactComponent as Shirt } from "../../assest/mens.svg";
 import ExampleCard from "../../components/public/landing/ExampleCard";
 
 const LandingPage = () => {
-  const Examples = [{ img: Airpods, titulo: "Accesorios para celulares" }];
-
   useEffect(() => {
     ScrollReveal().reveal("[data-sr]", {
       distance: "60px",
@@ -59,7 +58,7 @@ const LandingPage = () => {
             Tenemos lo que usted busca
           </h2>
           <div className="grid md:grid-cols-3 gap-8 relative mt-20">
-          <ExampleCard
+            <ExampleCard
               image={
                 <Airpods className="h-full w-full object-contain text-white" />
               }
@@ -69,7 +68,6 @@ const LandingPage = () => {
               className="absolute top-0 left-0 w-full h-full"
               image={
                 <Perfume className="h-full w-full object-contain text-white" />
-
               }
               Description="Cosmeticos"
             />
@@ -80,7 +78,6 @@ const LandingPage = () => {
               }
               Description="Vestimenta"
             />
-        
           </div>
         </div>
       </section>
@@ -88,31 +85,77 @@ const LandingPage = () => {
       <section className="py-20 px-6 bg-[#1c1c1c]">
         <div className="max-w-6xl mx-auto" data-sr>
           <h2 className="text-center text-3xl md:text-4xl font-bold mb-12">
-            Beneficios del sistema
+            Variedad en un solo lugar
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Inventario organizado",
-                text: "Visualizá tu stock en tiempo real y recibí alertas.",
-              },
-              {
-                title: "Facturación rápida",
-                text: "Generá facturas automáticamente.",
-              },
-              {
-                title: "Multisucursal",
-                text: "Control total de múltiples tiendas.",
-              },
-            ].map((item, idx) => (
-              <div key={idx} className="bg-[#2a2a2a] p-6 rounded-lg shadow-lg">
-                <h3 className="text-xl font-semibold text-indigo-400 mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-gray-300">{item.text}</p>
+          {/* Carrusel de iconos */}
+          <div className="w-full flex justify-center mb-12">
+            <div className="relative w-full max-w-2xl overflow-hidden">
+              <div className="flex gap-8 animate-scroll-x items-center">
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <Smartphone size={64} className="text-indigo-400 mb-2" />
+                  <span className="text-gray-300 text-sm">Celulares</span>
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <Headphones size={64} className="text-blue-400 mb-2" />
+                  <span className="text-gray-300 text-sm">Accesorios</span>
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <Shirt size={64} className="text-pink-400 mb-2" />
+                  <span className="text-gray-300 text-sm">Ropa</span>
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <ShoppingBag size={64} className="text-green-400 mb-2" />
+                  <span className="text-gray-300 text-sm">Bolsos</span>
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <Watch size={64} className="text-yellow-400 mb-2" />
+                  <span className="text-gray-300 text-sm">Relojes</span>
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <Gem size={64} className="text-purple-400 mb-2" />
+                  <span className="text-gray-300 text-sm">Joyería</span>
+                </div>
+                {/* Repetir para efecto infinito */}
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <Smartphone size={64} className="text-indigo-400 mb-2" />
+                  <span className="text-gray-300 text-sm">Celulares</span>
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <Headphones size={64} className="text-blue-400 mb-2" />
+                  <span className="text-gray-300 text-sm">Accesorios</span>
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <Shirt size={64} className="text-pink-400 mb-2" />
+                  <span className="text-gray-300 text-sm">Ropa</span>
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <ShoppingBag size={64} className="text-green-400 mb-2" />
+                  <span className="text-gray-300 text-sm">Bolsos</span>
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <Watch size={64} className="text-yellow-400 mb-2" />
+                  <span className="text-gray-300 text-sm">Relojes</span>
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <Gem size={64} className="text-purple-400 mb-2" />
+                  <span className="text-gray-300 text-sm">Joyería</span>
+                </div>
               </div>
-            ))}
+            </div>
           </div>
+          <style>
+            {`
+              @keyframes scroll-x {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .animate-scroll-x {
+                width: max-content;
+                animation: scroll-x 18s linear infinite;
+              }
+            `}
+          </style>
+          <div className="grid md:grid-cols-3 gap-8"></div>
         </div>
       </section>
 
