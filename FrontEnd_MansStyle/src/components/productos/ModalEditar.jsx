@@ -6,6 +6,7 @@ import { obtenerSucursales } from "../../services/SucursalService";
 import { actualizarProducto } from "../../services/ProductosService";
 
 import { obtenerMarcas } from "../../services/MarcasService"; // Asegúrate de importar el método correcto
+import { subirImagen } from "../../services/UploadService";
 
 const ModalEditar = ({
   openEdit,
@@ -17,84 +18,121 @@ const ModalEditar = ({
   const [categorias, setCategorias] = useState([]);
   const [sucursales, setSucursales] = useState([]);
   const [marcas, setMarcas] = useState([]);
+  const [selectedProducto, setSelectedProducto] = useState({
+    ID_Producto: null,
+    Nombre: "",
+    ID_Marca: null,
+    Precio_Producto: 0,
+    ID_Sucursal: null,
+    ID_Categoria: null,
+    url_image: "",
+    Detalles: "",
+    Nombre_Marca: "",
+    Nombre_Sucursal: "",
+    Nombre_Categoria: "",
+    // Para manejo de imagen
+    nuevaImagen: null, // Para archivos subidos
+    usarURL: false, // Flag para saber si usar URL
+  });
 
-  const [selectedProducto, setSelectedProducto] = useState(null); // Estado para el producto cargado
-
-  // Cargar todas las categorías y sucursales al iniciar el componente
   useEffect(() => {
-    Promise.all([obtenerCategoriasActivas(), obtenerSucursales(), obtenerMarcas()]).then(
-      ([categoriasData, sucursalesData, marcasData]) => {
-        setCategorias(categoriasData.map(categoria => ({
-          label: categoria.Nombre, 
-          value: categoria.ID_Categoria
-        })));
-        setSucursales(sucursalesData.map(sucursal => ({
-          label: sucursal.Nombre, 
-          value: sucursal.ID_Sucursal
-        })));
-        setMarcas(marcasData.map(marca => ({
-          label: marca.Nombre, 
-          value: marca.ID_Marca
-        })));
-      }
-    );
+    Promise.all([
+      obtenerCategoriasActivas(),
+      obtenerSucursales(),
+      obtenerMarcas(),
+    ]).then(([categoriasData, sucursalesData, marcasData]) => {
+      setCategorias(
+        categoriasData.map((c) => ({ label: c.Nombre, value: c.ID_Categoria }))
+      );
+      setSucursales(
+        sucursalesData.map((s) => ({ label: s.Nombre, value: s.ID_Sucursal }))
+      );
+      setMarcas(
+        marcasData.map((m) => ({ label: m.Nombre, value: m.ID_Marca }))
+      );
+    });
   }, []);
 
-
-  // Cargar información del producto cuando el modal se abre
   useEffect(() => {
     if (openEdit && productoID) {
       fetchProductoByID(productoID).then((data) => {
-        setSelectedProducto(data); // Cargar datos del producto
+        setSelectedProducto({
+          ...data,
+          nuevaImagen: null,
+          usarURL: false,
+        });
       });
     }
   }, [openEdit, productoID]);
 
+  const esURLValida = (url) => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
 
+  // Obtener URL para vista previa
+  const obtenerUrlVistaPrevia = () => {
+    if (selectedProducto.nuevaImagen) {
+      return URL.createObjectURL(selectedProducto.nuevaImagen);
+    }
+    if (selectedProducto.usarURL && selectedProducto.url_image) {
+      return selectedProducto.url_image;
+    }
+    if (selectedProducto.url_image && esURLValida(selectedProducto.url_image)) {
+      return selectedProducto.url_image;
+    }
+    return "https://via.placeholder.com/150";
+  };
 
-    // Verifica si es una URL válida
-    const esURLValida = (url) => {
-        return typeof url === "string" && url.startsWith("http");
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      
-      if (!selectedProducto?.ID_Producto) {
-        alert("No se ha seleccionado ningún producto");
-        return;
+    try {
+      let urlImagenFinal = selectedProducto.url_image;
+
+      // Subir nueva imagen si existe
+      if (selectedProducto.nuevaImagen) {
+        const resultado = await subirImagen(selectedProducto.nuevaImagen);
+        urlImagenFinal = resultado?.url || resultado;
       }
-    
-      try {
-        const productoActualizado = {
-          ID_Producto: selectedProducto.ID_Producto,
-          Nombre: selectedProducto.Nombre.trim(),
-          ID_Marca: selectedProducto.ID_Marca,
-          Precio_Producto: parseFloat(selectedProducto.Precio_Producto),
-          ID_Sucursal: selectedProducto.ID_Sucursal,
-          ID_Categoria: selectedProducto.ID_Categoria,
-          url_image: esURLValida(selectedProducto.url_image) ? selectedProducto.url_image : null, // Cambiado a url_image
-          Detalles: selectedProducto.Detalles?.trim() || "",
-          //Cantidad: selectedProducto.Cantidad || 0, // Añadido
-          //Precio_Compra: selectedProducto.Precio_Compra || 0 // Añadido si es necesario
-        };
-        
-        console.log("Producto actualizado:", productoActualizado);
-        const resultado = await actualizarProducto(
-          selectedProducto.ID_Producto,
-          productoActualizado
-        );
-    
-        if (!resultado) throw new Error("Error al actualizar");
-        
-        refrescarProductos();
-        EditModalClose();
-        
-      } catch (error) {
-        console.error("Error:", error);
-        alert(error.response?.data?.message || "Error al actualizar el producto");
+      // Usar URL directa si es válida y no hay archivo subido
+      else if (
+        selectedProducto.usarURL &&
+        esURLValida(selectedProducto.url_image)
+      ) {
+        urlImagenFinal = selectedProducto.url_image;
       }
-    };
+      // Si no hay imagen nueva ni URL válida, mantener la existente (puede ser vacía)
+
+      const productoActualizado = {
+        ID_Producto: selectedProducto.ID_Producto,
+        Nombre: selectedProducto.Nombre.trim(),
+        ID_Marca: selectedProducto.ID_Marca,
+        Precio_Producto: parseFloat(selectedProducto.Precio_Producto),
+        ID_Sucursal: selectedProducto.ID_Sucursal,
+        ID_Categoria: selectedProducto.ID_Categoria,
+        url_image: urlImagenFinal,
+        Detalles: selectedProducto.Detalles?.trim() || "",
+      };
+
+      const resultado = await actualizarProducto(
+        selectedProducto.ID_Producto,
+        productoActualizado
+      );
+
+      if (!resultado) throw new Error("Error al actualizar");
+
+      refrescarProductos();
+      EditModalClose();
+    } catch (error) {
+      console.error("Error:", error);
+      alert(error.response?.data?.message || "Error al actualizar el producto");
+    }
+  };
 
   return (
     <Modal
@@ -137,13 +175,13 @@ const ModalEditar = ({
               options={marcas}
               selected={{
                 label: selectedProducto.Nombre_Marca || "", // Muestra el nombre
-                value: selectedProducto.ID_Marca || ""      // Pero maneja el ID
+                value: selectedProducto.ID_Marca || "", // Pero maneja el ID
               }}
               onSelect={(selectedOption) =>
                 setSelectedProducto({
                   ...selectedProducto,
-                  ID_Marca: selectedOption.value,          // Guarda el ID
-                  Nombre_Marca: selectedOption.label       // Opcional: guarda el nombre para mostrar
+                  ID_Marca: selectedOption.value, // Guarda el ID
+                  Nombre_Marca: selectedOption.label, // Opcional: guarda el nombre para mostrar
                 })
               }
             />
@@ -178,17 +216,16 @@ const ModalEditar = ({
               options={sucursales}
               selected={{
                 label: selectedProducto.Nombre_Sucursal || "", // Muestra el nombre
-                value: selectedProducto.ID_Sucursal || ""      // Pero maneja el ID
+                value: selectedProducto.ID_Sucursal || "", // Pero maneja el ID
               }}
               onSelect={(selectedOption) =>
                 setSelectedProducto({
                   ...selectedProducto,
-                  ID_Sucursal: selectedOption.value,          // Guarda el ID
-                  Nombre_Sucursal: selectedOption.label       // Opcional: guarda el nombre para mostrar
+                  ID_Sucursal: selectedOption.value, // Guarda el ID
+                  Nombre_Sucursal: selectedOption.label, // Opcional: guarda el nombre para mostrar
                 })
               }
             />
-            
           </div>
 
           {/* Category */}
@@ -201,84 +238,89 @@ const ModalEditar = ({
               options={categorias}
               selected={{
                 label: selectedProducto.Nombre_Categoria || "",
-                value: selectedProducto.ID_Categoria || ""
+                value: selectedProducto.ID_Categoria || "",
               }}
               onSelect={(selectedOption) =>
                 setSelectedProducto({
                   ...selectedProducto,
                   ID_Categoria: selectedOption.value,
-                  Nombre_Categoria: selectedOption.label
+                  Nombre_Categoria: selectedOption.label,
                 })
               }
             />
           </div>
-          {/* Product Image Section */}
-            <div className="col-span-4 grid grid-cols-2 gap-4">
-                {/* Vista previa de la imagen */}
-                <div className="flex flex-col items-center">
-                    <label className="block text-sm font-medium text-gray-300 mb-2">Vista Previa</label>
-                    <div className="w-40 h-40 rounded-lg overflow-hidden border border-gray-600">
-                    <img
-                        src={
-                        selectedProducto.url_image
-                            ? selectedProducto.url_image
-                            : "https://via.placeholder.com/150"
-                        }
-                        alt="Vista previa"
-                        className="w-full h-full object-cover"
-                    />
-                    </div>
-                </div>
-
-                {/* Entrada de imagen */}
-                <div className="flex flex-col justify-between">
-                    <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-300 mb-1">
-                        Subir Imagen (opcional)
-                    </label>
-                     <label
-    htmlFor="file-upload"
-    className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition duration-200 inline-block"
-  >
-    Seleccionar archivo
-  </label>
-                    <input
-                       id="file-upload"
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                        const file = e.target.files[0];
-                        if (file) {
-                            const reader = new FileReader();
-                            reader.onloadend = () => {
-                            setSelectedProducto({
-                                ...selectedProducto,
-                                url_image: reader.result,
-                            });
-                            };
-                            reader.readAsDataURL(file);
-                        }
-                        }}
-                        className="hidden"
-                    />
-                    </div>
-
-                    <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">
-                        O ingresa una URL de imagen
-                    </label>
-                    <input
-                        type="text"
-                        value={selectedProducto.url_image || ""}
-                        onChange={(e) =>
-                        setSelectedProducto({ ...selectedProducto, url_image: e.target.value })
-                        }
-                        className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="https://..."
-                    />
-                    </div>
-                </div>
+          {/* Sección de imagen */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start col-span-4">
+            <div className="flex flex-col items-center space-y-2">
+              <label className="text-sm font-medium text-gray-300">
+                Vista Previa
+              </label>
+              <div className="w-40 h-40 rounded-xl overflow-hidden border border-gray-600">
+                <img
+                  src={obtenerUrlVistaPrevia()}
+                  alt="Vista previa"
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Subir Imagen (opcional)
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const archivo = e.target.files[0];
+                    setSelectedProducto({
+                      ...selectedProducto,
+                      nuevaImagen: archivo,
+                      usarURL: false,
+                    });
+                  }}
+                  className="text-gray-300"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  O usar URL de imagen
+                </label>
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={selectedProducto.usarURL}
+                    onChange={(e) =>
+                      setSelectedProducto({
+                        ...selectedProducto,
+                        usarURL: e.target.checked,
+                        nuevaImagen: e.target.checked
+                          ? null
+                          : selectedProducto.nuevaImagen,
+                      })
+                    }
+                    className="mr-2"
+                  />
+                  <input
+                    type="text"
+                    value={selectedProducto.url_image}
+                    onChange={(e) =>
+                      setSelectedProducto({
+                        ...selectedProducto,
+                        url_image: e.target.value,
+                      })
+                    }
+                    disabled={!selectedProducto.usarURL}
+                    className="flex-1 bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="https://..."
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Description */}
           <div className="col-span-4">
             <label className="block text-sm font-medium text-gray-300 mb-1">
@@ -297,6 +339,7 @@ const ModalEditar = ({
               placeholder="Añadir descripcion..."
             />
           </div>
+
           {/* Buttons */}
           <div className="col-span-4 flex justify-end gap-4">
             <button

@@ -31,3 +31,5 @@ packages/
 
 # ASP.NET related ignore files
 applicationhost.config
+
+uploads/
