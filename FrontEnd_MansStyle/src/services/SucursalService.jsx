@@ -55,6 +55,16 @@ export const obtenerSucursalesPorIDProducto = async (idproducto) => {
     }
 };
 
+export const ObtenerVentasPorDiaSemana = async (idSucursal) => {
+    try {
+        const response = await api.get(`/sucursales/ventas-por-dia-semana/${idSucursal}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener sucursales por ID de producto:", error);
+        return [];
+    }
+};
+
 // Obtener totales relacionados con una sucursal específica
 export const obtenerTotalesPorSucursal = async (idSucursal) => {
     try {
@@ -77,24 +87,24 @@ export const obtenerProductosPorCategoria = async (idSucursal) => {
     }
 };
 
-// Obtener los 5 productos con mayor stock para una sucursal específica
-export const obtenerTop5ProductosMayorStock = async (idSucursal) => {
-    try {
-        const response = await api.get(`/sucursales/top-stock/${idSucursal}`);
-        return response.data;
-    } catch (error) {
-        console.error("Error al obtener los productos con mayor stock:", error);
-        return [];
-    }
+
+export const ObtenerTop5MayorStock = async (idSucursal) => {
+	try {
+		const res = await api.get(`/sucursales/productos/top-mayor-stock/${idSucursal}`);
+		return res.data;
+	} catch (error) {
+		console.error("Error al obtener productos con mayor stock:", error);
+		return [];
+	}
 };
 
-// Obtener productos con bajo stock para una sucursal específica según un umbral
-export const obtenerProductosBajoStock = async (idSucursal, umbral) => {
-    try {
-        const response = await api.get(`/sucursales/bajo-stock/${idSucursal}/${umbral}`);
-        return response.data;
-    } catch (error) {
-        console.error("Error al obtener productos con bajo stock:", error);
-        return [];
-    }
+export const ObtenerProductosBajoStock = async (idSucursal, umbral) => {
+	try {
+		const res = await api.get(`/sucursales/productos/bajo-stock/${idSucursal}/${umbral}`);
+		return res.data;
+	} catch (error) {
+		console.error("Error al obtener productos bajo stock:", error);
+		return [];
+	}
 };
+

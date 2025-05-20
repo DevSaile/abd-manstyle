@@ -126,7 +126,7 @@ namespace BLL
         public List<ProductoDTO> ObtenerTop5MayorStock(int idSucursal)
         {
             return db.Producto
-                .Where(p => p.ID_Sucursal == idSucursal)
+                .Where(p => p.ID_Sucursal == idSucursal && p.Estado == 1)
                 .OrderByDescending(p => p.Cantidad)
                 .Take(5)
                 .Select(p => new ProductoDTO
@@ -140,12 +140,34 @@ namespace BLL
         public List<ProductoDTO> ObtenerProductosBajoStock(int idSucursal, int umbral)
         {
             return db.Producto
-                .Where(p => p.ID_Sucursal == idSucursal && p.Cantidad < umbral)
+                .Where(p => p.ID_Sucursal == idSucursal && p.Estado == 1 && p.Cantidad < umbral)
                 .Select(p => new ProductoDTO
                 {
                     Nombre = p.Nombre,
                     Cantidad = p.Cantidad
                 }).ToList();
+        }
+        // Método en el servicio
+        // Método en el servicio
+        public List<VentaPorDiaDTO> ObtenerVentasPorDiaSemana(int idSucursal)
+        {
+            string[] diasSemana = { "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado" };
+
+            var ventas = db.Venta_Factura
+                .Where(v => v.ID_Sucursal == idSucursal)
+                .ToList(); // Fetch data into memory
+
+            var result = ventas
+                .GroupBy(v => v.Fecha_Venta.Value.DayOfWeek)
+                .Select(g => new VentaPorDiaDTO
+                {
+                    Name = diasSemana[(int)g.Key],
+                    Sales = g.Sum(v => v.Total)
+                })
+                .OrderBy(x => Array.IndexOf(diasSemana, x.Name))
+                .ToList();
+
+            return result;
         }
 
 

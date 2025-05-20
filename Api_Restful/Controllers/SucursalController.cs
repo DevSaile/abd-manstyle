@@ -29,6 +29,14 @@ namespace WebManStyle_ABD.Controllers
             return Ok(sucursales);
         }
 
+        [HttpGet]
+        [Route("ventas-por-dia-semana/{idSucursal:int}")] //ESTE DE AQUI ESTA EN USO
+        public IHttpActionResult ObtenerVentasPorDiaSemana(int idSucursal)
+        {
+            var datos = _sucursalMCN.ObtenerVentasPorDiaSemana(idSucursal);
+            return Ok(datos);
+        }
+
         // Obtener ID de sucursal por ID de empleado
         [HttpGet]
         [Route("empleado/{idempleado:int}")]
@@ -78,7 +86,7 @@ namespace WebManStyle_ABD.Controllers
         }
         // Obtener totales relacionados con una sucursal específica
         [HttpGet]
-        [Route("totales/{idSucursal:int}")]
+        [Route("totales/{idSucursal:int}")] //ESTE DE AQUI ESTA EN USO
         public IHttpActionResult ObtenerTotalesSucursal(int idSucursal)
         {
             var resultado = _sucursalMCN.ObtenerTotalesSucursal(idSucursal);
@@ -90,7 +98,7 @@ namespace WebManStyle_ABD.Controllers
 
         // Obtener productos agrupados por categoría para una sucursal específica
         [HttpGet]
-        [Route("categorias/{idSucursal:int}")]
+        [Route("categorias/{idSucursal:int}")] //ESTE DE AQUI ESTA EN USO
         public IHttpActionResult ObtenerProductosPorCategoria(int idSucursal)
         {
             var productosPorCategoria = _sucursalMCN.ObtenerProductosPorCategoria(idSucursal);
@@ -100,29 +108,22 @@ namespace WebManStyle_ABD.Controllers
             return Ok(productosPorCategoria);
         }
 
-        // Obtener los 5 productos con mayor stock para una sucursal específica
         [HttpGet]
-        [Route("top-stock/{idSucursal:int}")]
+        [Route("productos/top-mayor-stock/{idSucursal:int}")]
         public IHttpActionResult ObtenerTop5MayorStock(int idSucursal)
         {
-            var topProductos = _sucursalMCN.ObtenerTop5MayorStock(idSucursal);
-            if (topProductos == null || topProductos.Count == 0)
-                return NotFound();
-
-            return Ok(topProductos);
+            var productos = _sucursalMCN.ObtenerTop5MayorStock(idSucursal);
+            return Ok(productos);
         }
 
-        // Obtener productos con bajo stock para una sucursal específica según un umbral
         [HttpGet]
-        [Route("bajo-stock/{idSucursal:int}/{umbral:int}")]
+        [Route("productos/bajo-stock/{idSucursal:int}/{umbral:int}")]
         public IHttpActionResult ObtenerProductosBajoStock(int idSucursal, int umbral)
         {
-            var productosBajoStock = _sucursalMCN.ObtenerProductosBajoStock(idSucursal, umbral);
-            if (productosBajoStock == null || productosBajoStock.Count == 0)
-                return NotFound();
-
-            return Ok(productosBajoStock);
+            var productos = _sucursalMCN.ObtenerProductosBajoStock(idSucursal, umbral);
+            return Ok(productos);
         }
+
 
     }
 }

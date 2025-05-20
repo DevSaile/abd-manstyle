@@ -61,6 +61,7 @@
     <Compile Include="TipoPagoDTO.cs" />
     <Compile Include="TipoUnidadDTO.cs" />
     <Compile Include="TipoVentaDTO.cs" />
+    <Compile Include="VentaPorDiaDTO.cs" />
     <Compile Include="Venta_DetallesDTO.cs" />
     <Compile Include="Venta_FacturaDTO.cs" />
   </ItemGroup>
