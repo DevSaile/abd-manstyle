@@ -35,7 +35,7 @@ const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
 
   return (
     <div
-      className="relative"
+    className="relative min-w-[200px] max-w-xs w-full"
       ref={comboBoxRef}
       onClick={(e) => e.stopPropagation()} // Prevent event propagation to the modal
     >

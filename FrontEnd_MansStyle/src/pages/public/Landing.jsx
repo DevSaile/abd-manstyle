@@ -8,6 +8,7 @@ import { ReactComponent as Airpods } from "../../assest/airpods.svg";
 import { ReactComponent as Perfume } from "../../assest/perfume.svg";
 import { ReactComponent as Shirt } from "../../assest/mens.svg";
 import ExampleCard from "../../components/public/landing/ExampleCard";
+import Navbar from "../../components/public/landing/Navbar";
 
 const LandingPage = () => {
   useEffect(() => {
@@ -23,6 +24,10 @@ const LandingPage = () => {
   return (
     <>
       {/* Main */}
+            <Navbar />
+                  <div className="pointer-events-none fixed top-0 left-0 w-full h-32 z-20 bg-gradient-to-b from-black via-black/80 to-transparent" />
+
+
       <main className="min-h-screen flex flex-col justify-center items-center px-6 md:px-20 lg:px-32 pt-20">
         <ParticlesBackground color={"0f0f0f"} />
 
