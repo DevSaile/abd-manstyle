@@ -17,7 +17,7 @@ const CatalogProductCard = ({ name, price, image }) => {
 
       {/* Product Price */}
       <p className="text-sm text-gray-300 mt-2 mb-3">
-        <span className="font-medium">Precio:</span> <strong>${price}</strong>
+        <span className="font-medium">Precio:</span> <strong>C${price}</strong>
       </p>
     </div>
   );

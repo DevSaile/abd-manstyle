@@ -5,29 +5,37 @@ import ComboBox from "../../components/common/ComboBox";
 import { obtenerProductos } from "../../services/ProductosService";
 import { obtenerCategoriasActivas } from "../../services/CategoriasService";
 import { obtenerMarcas } from "../../services/MarcasService";
+import { obtenerSucursales } from "../../services/SucursalService";
 
 const Catalog = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [sucursales, setSucursales] = useState([]);
 
   // Filtros seleccionados
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedBrand, setSelectedBrand] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("Todos");
+  const [selectedBrand, setSelectedBrand] = useState("Todos");
+  const [selectedSucursal, setSelectedSucursal] = useState("Todos");
 
   // Opciones filtradas dinámicamente
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [filteredBrands, setFilteredBrands] = useState([]);
+  const [filteredSucursales, setFilteredSucursales] = useState([]);
 
-  // Obtener categorías y marcas activas
+  // Obtener categorías, marcas y sucursales activas
   useEffect(() => {
     obtenerCategoriasActivas().then((data) => {
       const opciones = data.map((Categoria) => Categoria.Descripcion_Categoria);
-      setCategories(["All", ...opciones]);
+      setCategories(["Todos", ...opciones]);
     });
     obtenerMarcas().then((data) => {
       const opciones = data.map((Marca) => Marca.Nombre);
-      setBrands(["All", ...opciones]);
+      setBrands(["Todos", ...opciones]);
+    });
+    obtenerSucursales().then((data) => {
+      const opciones = data.map((Sucursal) => Sucursal.Nombre);
+      setSucursales(["Todos", ...opciones]);
     });
   }, []);
 
@@ -38,18 +46,38 @@ const Catalog = () => {
     });
   }, []);
 
-  // Filtrado dinámico de opciones de categorías y marcas
+  // Filtrado dinámico de opciones de sucursal, categorías y marcas
   useEffect(() => {
-    // Marcas disponibles según la categoría seleccionada
-    const marcasDisponibles = [
-      "All",
+    // Sucursales disponibles según marca y categoría seleccionadas
+    const sucursalesDisponibles = [
+      "Todos",
       ...Array.from(
         new Set(
           products
             .filter(
               (p) =>
-                selectedCategory === "All" ||
-                p.Descripcion_Categoria === selectedCategory
+                (selectedBrand === "Todos" || p.Marca === selectedBrand) &&
+                (selectedCategory === "Todos" ||
+                  p.Descripcion_Categoria === selectedCategory)
+            )
+            .map((p) => p.Descripcion_Sucursal)
+            .filter(Boolean)
+        )
+      ),
+    ];
+
+    // Marcas disponibles según sucursal y categoría seleccionadas
+    const marcasDisponibles = [
+      "Todos",
+      ...Array.from(
+        new Set(
+          products
+            .filter(
+              (p) =>
+                (selectedSucursal === "Todos" ||
+                  p.Descripcion_Sucursal === selectedSucursal) &&
+                (selectedCategory === "Todos" ||
+                  p.Descripcion_Categoria === selectedCategory)
             )
             .map((p) => p.Marca)
             .filter(Boolean)
@@ -57,16 +85,17 @@ const Catalog = () => {
       ),
     ];
 
-    // Categorías disponibles según la marca seleccionada
+    // Categorías disponibles según sucursal y marca seleccionadas
     const categoriasDisponibles = [
-      "All",
+      "Todos",
       ...Array.from(
         new Set(
           products
             .filter(
               (p) =>
-                selectedBrand === "All" ||
-                (p.Marca && p.Marca.toLowerCase() === selectedBrand.toLowerCase())
+                (selectedSucursal === "Todos" ||
+                  p.Descripcion_Sucursal === selectedSucursal) &&
+                (selectedBrand === "Todos" || p.Marca === selectedBrand)
             )
             .map((p) => p.Descripcion_Categoria)
             .filter(Boolean)
@@ -74,33 +103,39 @@ const Catalog = () => {
       ),
     ];
 
+    setFilteredSucursales(sucursalesDisponibles);
     setFilteredBrands(marcasDisponibles);
     setFilteredCategories(categoriasDisponibles);
 
     // Reset si la selección actual ya no es válida
     if (
-      selectedBrand !== "All" &&
-      !marcasDisponibles.includes(selectedBrand)
+      selectedSucursal !== "Todos" &&
+      !sucursalesDisponibles.includes(selectedSucursal)
     ) {
-      setSelectedBrand("All");
+      setSelectedSucursal("Todos");
+    }
+    if (selectedBrand !== "Todos" && !marcasDisponibles.includes(selectedBrand)) {
+      setSelectedBrand("Todos");
     }
     if (
-      selectedCategory !== "All" &&
+      selectedCategory !== "Todos" &&
       !categoriasDisponibles.includes(selectedCategory)
     ) {
-      setSelectedCategory("All");
+      setSelectedCategory("Todos");
     }
-  }, [products, selectedCategory, selectedBrand]);
+  }, [products, selectedSucursal, selectedBrand, selectedCategory]);
 
   // Filtrar productos según los filtros activos
   const filteredProducts = products.filter((p) => {
     const matchCategory =
-      selectedCategory === "All" ||
+      selectedCategory === "Todos" ||
       p.Descripcion_Categoria === selectedCategory;
     const matchBrand =
-      selectedBrand === "All" ||
+      selectedBrand === "Todos" ||
       (p.Marca && p.Marca.toLowerCase() === selectedBrand.toLowerCase());
-    return matchCategory && matchBrand;
+    const matchSucursal =
+      selectedSucursal === "Todos" || p.Descripcion_Sucursal === selectedSucursal;
+    return matchCategory && matchBrand && matchSucursal;
   });
 
   return (
@@ -109,16 +144,34 @@ const Catalog = () => {
         filters={
           <div className="flex gap-2 ml-8">
             <ComboBox
-              name={selectedCategory || "Todas las categorías"}
+              name={"Categoria"}
               options={filteredCategories}
               onSelect={setSelectedCategory}
               selected={selectedCategory}
+              bgColor="bg-[#0f0f0f]"
+              dropdownBgColor="bg-neutral-900"
+              inputBgColor="bg-neutral-900"
+              hoverBgColor="hover:bg-[#0f0f0f]"
             />
             <ComboBox
-              name={selectedBrand || "Todas las marcas"}
+              name={"Marca"}
               options={filteredBrands}
               onSelect={setSelectedBrand}
               selected={selectedBrand}
+              bgColor="bg-[#0f0f0f]"
+              dropdownBgColor="bg-neutral-900"
+              inputBgColor="bg-neutral-900"
+              hoverBgColor="hover:bg-[#0f0f0f]"
+            />
+            <ComboBox
+              name={"Sucursal"}
+              options={filteredSucursales}
+              onSelect={setSelectedSucursal}
+              selected={selectedSucursal}
+              bgColor="bg-[#0f0f0f]"
+              dropdownBgColor="bg-neutral-900"
+              inputBgColor="bg-neutral-900"
+              hoverBgColor="hover:bg-[#0f0f0f]"
             />
           </div>
         }

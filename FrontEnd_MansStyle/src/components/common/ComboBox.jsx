@@ -1,14 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
-const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
+const ComboBox = ({
+  name,
+  options = [],
+  onSelect,
+  enableSearchBar = true,
+  bgColor = "bg-gray-700", // NEW: background color prop
+  dropdownBgColor = "bg-gray-700", // NEW: dropdown background color prop
+  inputBgColor = "bg-gray-700", // NEW: input background color prop
+  hoverBgColor = "hover:bg-gray-800", // NEW: hover color for options
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(""); // Used for filtering options
-  const [selectedOption, setSelectedOption] = useState(name); // Tracks the selected option
-  const comboBoxRef = useRef(null); // Reference to the ComboBox container
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedOption, setSelectedOption] = useState(name);
+  const comboBoxRef = useRef(null);
 
   const toggleDropdown = (e) => {
-    e.stopPropagation(); // Prevent event propagation to the modal
+    e.stopPropagation();
     setIsOpen(!isOpen);
   };
 
@@ -17,9 +26,7 @@ const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
       typeof item === "string" &&
       item.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
 
-  // Close the dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (comboBoxRef.current && !comboBoxRef.current.contains(event.target)) {
@@ -35,15 +42,15 @@ const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
 
   return (
     <div
-    className="relative min-w-[200px] max-w-xs w-full"
+      className="relative min-w-[200px] max-w-xs w-full"
       ref={comboBoxRef}
-      onClick={(e) => e.stopPropagation()} // Prevent event propagation to the modal
+      onClick={(e) => e.stopPropagation()}
     >
       <button
-        className="bg-gray-700 text-gray-400 font-bold py-2 px-4 rounded-lg inline-flex items-center w-full overflow-y-auto"
+        className={`${bgColor} text-gray-400 font-bold py-2 px-4 rounded-lg inline-flex items-center w-full overflow-y-auto`}
         onClick={(e) => {
-          e.stopPropagation(); // Prevent event propagation
-          e.preventDefault(); // Prevent default action
+          e.stopPropagation();
+          e.preventDefault();
           toggleDropdown(e);
         }}
       >
@@ -58,21 +65,21 @@ const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
       </button>
       {isOpen && (
         <motion.div
-          className="absolute bg-gray-700 rounded-lg mt-1 w-full shadow-lg z-10"
+          className={`absolute ${dropdownBgColor} rounded-lg mt-1 w-full shadow-lg z-10`}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.2 }}
-          onClick={(e) => e.stopPropagation()} // Prevent event propagation
+          onClick={(e) => e.stopPropagation()}
         >
           {enableSearchBar && (
             <input
               type="text"
-              className="bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-3 py-2 focus:outline-none focus:ring-2"
-              placeholder="Search..."
+              className={`${inputBgColor} text-white placeholder-gray-400 rounded-lg pl-3 py-2 focus:outline-none focus:ring-2 w-full`}
+              placeholder="Buscar..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              onClick={(e) => e.stopPropagation()} // Prevent event propagation
+              onClick={(e) => e.stopPropagation()}
             />
           )}
           <ul className="max-h-40 overflow-y-auto custom-scrollbar mb-2">
@@ -80,13 +87,13 @@ const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
               filteredItems.map((item, index) => (
                 <li
                   key={index}
-                  className="hover:bg-gray-800 py-2 px-4 cursor-pointer"
+                  className={`${hoverBgColor} py-2 px-4 cursor-pointer`}
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent event propagation
-                    setSelectedOption(item); // Update the selected option
-                    setSearchTerm(""); // Clear the search term
-                    setIsOpen(false); // Close the dropdown
-                    onSelect(item); // Notify parent of the selected item
+                    e.stopPropagation();
+                    setSelectedOption(item);
+                    setSearchTerm("");
+                    setIsOpen(false);
+                    onSelect(item);
                   }}
                 >
                   {item}

@@ -23,7 +23,7 @@ const ProductCardSales = ({ name, Sucursal, price, brand, category, stock, image
                 <div>
                     <h3 className="text-lg font-semibold text-gray-100 truncate">{name}</h3>
                     <p className="text-sm text-gray-400 mt-2">
-                        <span className="font-medium text-gray-300">Price:</span> ${price}
+                        C${price}
                     </p>
                 </div>
              

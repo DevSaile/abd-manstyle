@@ -21,7 +21,7 @@ const ProductCard = ({ name, price, category, stock, image, onClick, selected })
             <div className="p-3 grid grid-cols-flow grid-rows-4">
                 <h3 className="text-lg font-semibold text-gray-100 truncate">{name}</h3>
                 <p>
-                    <span className="font-medium font text-s text-gray-300">Precio:</span> <strong className='text-s'>${price}</strong>
+                    <span className="font-medium font text-s text-gray-300">Precio:</span> <strong className='text-s'>C${price}</strong>
                 </p>
                 <p>
                     <span className="font- text-s text-gray-300">Categoria:</span> <strong className="text-s">{category}</strong>

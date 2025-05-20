@@ -187,7 +187,7 @@ const NewProduct = ({ openAdd, AddModalClose }) => {
        
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">Precio de Venta</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1">Precio de Venta(C$)</label>
             <input
               type="number"
               value={newProduct.Precio_Venta}

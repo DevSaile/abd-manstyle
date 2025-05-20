@@ -212,7 +212,7 @@ const RegistroCompra = () => {
             />
           </div>
           <div className="flex flex-col w-36">
-            <label className="text-gray-300 text-sm mb-1">Mín. inversión ($)</label>
+            <label className="text-gray-300 text-sm mb-1">Mín. inversión (C$)</label>
             <input
               type="number"
               min={0}

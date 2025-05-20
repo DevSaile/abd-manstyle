@@ -26,9 +26,9 @@ const ProductsPage = () => {
   const [Marcas, setMarcas] = useState([]);
 
   // Filtros seleccionados
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedSucursal, setSelectedSucursal] = useState("All");
-  const [selectedMarcas, setSelectedMarca] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("Todos");
+  const [selectedSucursal, setSelectedSucursal] = useState("Todos");
+  const [selectedMarcas, setSelectedMarca] = useState("Todos");
 
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -56,21 +56,21 @@ const ProductsPage = () => {
   useEffect(() => {
     obtenerSucursales().then((data) => {
       const opciones = data.map((sucursal) => sucursal.Nombre);
-      setSucursales(["All", ...opciones]);
+      setSucursales(["Todos", ...opciones]);
     });
   }, []);
 
   useEffect(() => {
     obtenerMarcas().then((data) => {
       const opciones = data.map((Marca) => Marca.Nombre);
-      setMarcas(["All", ...opciones]);
+      setMarcas(["Todos", ...opciones]);
     });
   }, []);
 
   useEffect(() => {
     obtenerCategoriasActivas().then((data) => {
       const opciones = data.map((Categoria) => Categoria.Nombre);
-      setCategorias(["All", ...opciones]);
+      setCategorias(["Todos", ...opciones]);
     });
   }, []);
 
@@ -78,14 +78,14 @@ const ProductsPage = () => {
   useEffect(() => {
     // Sucursales disponibles según marca y categoría seleccionadas
     const sucursalesDisponibles = [
-      "All",
+      "Todos",
       ...Array.from(
         new Set(
           productos
             .filter(
               (p) =>
-                (selectedMarcas === "All" || p.Marca === selectedMarcas) &&
-                (selectedCategory === "All" ||
+                (selectedMarcas === "Todos" || p.Marca === selectedMarcas) &&
+                (selectedCategory === "Todos" ||
                   p.Descripcion_Categoria === selectedCategory)
             )
             .map((p) => p.Descripcion_Sucursal)
@@ -95,15 +95,15 @@ const ProductsPage = () => {
 
     // Marcas disponibles según sucursal y categoría seleccionadas
     const marcasDisponibles = [
-      "All",
+      "Todos",
       ...Array.from(
         new Set(
           productos
             .filter(
               (p) =>
-                (selectedSucursal === "All" ||
+                (selectedSucursal === "Todos" ||
                   p.Descripcion_Sucursal === selectedSucursal) &&
-                (selectedCategory === "All" ||
+                (selectedCategory === "Todos" ||
                   p.Descripcion_Categoria === selectedCategory)
             )
             .map((p) => p.Marca)
@@ -113,15 +113,15 @@ const ProductsPage = () => {
 
     // Categorías disponibles según sucursal y marca seleccionadas
     const categoriasDisponibles = [
-      "All",
+      "Todos",
       ...Array.from(
         new Set(
           productos
             .filter(
               (p) =>
-                (selectedSucursal === "All" ||
+                (selectedSucursal === "Todos" ||
                   p.Descripcion_Sucursal === selectedSucursal) &&
-                (selectedMarcas === "All" || p.Marca === selectedMarcas)
+                (selectedMarcas === "Todos" || p.Marca === selectedMarcas)
             )
             .map((p) => p.Descripcion_Categoria)
         )
@@ -132,24 +132,24 @@ const ProductsPage = () => {
     setFilteredMarcas(marcasDisponibles);
     setFilteredCategorias(categoriasDisponibles);
 
-    // Si la selección actual ya no es válida, resetea a "All"
+    // Si la selección actual ya no es válida, resetea a "Todos"
     if (
-      selectedSucursal !== "All" &&
+      selectedSucursal !== "Todos" &&
       !sucursalesDisponibles.includes(selectedSucursal)
     ) {
-      setSelectedSucursal("All");
+      setSelectedSucursal("Todos");
     }
     if (
-      selectedMarcas !== "All" &&
+      selectedMarcas !== "Todos" &&
       !marcasDisponibles.includes(selectedMarcas)
     ) {
-      setSelectedMarca("All");
+      setSelectedMarca("Todos");
     }
     if (
-      selectedCategory !== "All" &&
+      selectedCategory !== "Todos" &&
       !categoriasDisponibles.includes(selectedCategory)
     ) {
-      setSelectedCategory("All");
+      setSelectedCategory("Todos");
     }
   }, [productos, selectedSucursal, selectedMarcas, selectedCategory]);
 
@@ -161,15 +161,15 @@ const ProductsPage = () => {
       );
 
       const matchesCategory =
-        selectedCategory === "All" ||
+        selectedCategory === "Todos" ||
         product.Descripcion_Categoria === selectedCategory;
 
       const matchesSucursal =
-        selectedSucursal === "All" ||
+        selectedSucursal === "Todos" ||
         product.Descripcion_Sucursal === selectedSucursal;
 
       const matchesBrand =
-        selectedMarcas === "All" || product.Marca === selectedMarcas;
+        selectedMarcas === "Todos" || product.Marca === selectedMarcas;
 
       return (
         matchesSearchTerm && matchesCategory && matchesSucursal && matchesBrand
