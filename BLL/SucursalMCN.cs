@@ -90,9 +90,8 @@ namespace BLL
                 .Join(db.Venta_Detalles, vf => vf.ID_Venta, vd => vd.ID_Venta, (vf, vd) => new { vf, vd })
                 .Sum(v => (decimal)(v.vd.Cantidad * v.vd.PrecioProducto));
 
-            int totalMarcas = db.Producto
-                .Where(p => p.ID_Sucursal == idSucursal)
-                .Select(p => p.Marcas.Nombre)
+            int totalMarcas = db.Marcas
+                .Select(M => M.ID_Marca)
                 .Distinct()
                 .Count();
 
