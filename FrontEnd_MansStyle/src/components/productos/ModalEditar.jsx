@@ -47,6 +47,7 @@ const ModalEditar = ({
       setSucursales(
         sucursalesData.map((s) => ({ label: s.Nombre, value: s.ID_Sucursal }))
       );
+      console.log(sucursalesData)
       setMarcas(
         marcasData.map((m) => ({ label: m.Nombre, value: m.ID_Marca }))
       );
@@ -119,11 +120,15 @@ const ModalEditar = ({
         Detalles: selectedProducto.Detalles?.trim() || "",
       };
 
+      console.log(productoActualizado)
+
       const resultado = await actualizarProducto(
         selectedProducto.ID_Producto,
         productoActualizado
       );
 
+      console.log(selectedProducto.Precio_Producto)
+      console.log(resultado)
       if (!resultado) throw new Error("Error al actualizar");
 
       refrescarProductos();
@@ -211,21 +216,22 @@ const ModalEditar = ({
             <label className="block text-sm font-medium text-gray-300 mb-1">
               Sucursal
             </label>
-            <ComboBoxID
+              <ComboBoxID
               name={selectedProducto.versucu}
-              options={sucursales}
-              selected={{
-                label: selectedProducto.Nombre_Sucursal || "", // Muestra el nombre
-                value: selectedProducto.ID_Sucursal || "", // Pero maneja el ID
-              }}
-              onSelect={(selectedOption) =>
-                setSelectedProducto({
-                  ...selectedProducto,
-                  ID_Sucursal: selectedOption.value, // Guarda el ID
-                  Nombre_Sucursal: selectedOption.label, // Opcional: guarda el nombre para mostrar
-                })
-              }
-            />
+                options={sucursales}
+                selected={{
+                  label: selectedProducto.Nombre_Sucursal || "",
+                  value: selectedProducto.ID_Sucursal || "",
+                }}
+                onSelect={(selectedOption) =>
+                  setSelectedProducto({
+                    ...selectedProducto,
+                    ID_Sucursal: selectedOption.value,
+                    Nombre_Sucursal: selectedOption.label,
+                  })
+                }
+              />
+
           </div>
 
           {/* Category */}

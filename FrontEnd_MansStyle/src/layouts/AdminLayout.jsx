@@ -24,7 +24,7 @@ function AdminLayout() {
   }, []);
 
   return (
-    <div className="flex h-screen bg-gray-900 text-gray-100 overflow-hidden">
+    <div className="flex h-screen bg-gray-900 text-gray-100 overflow-y-auto">
 
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-gray-800 opacity-80" />
