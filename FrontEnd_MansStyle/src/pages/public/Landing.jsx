@@ -1,21 +1,21 @@
 import React, { useEffect } from "react";
 import ScrollReveal from "scrollreveal";
-import { Smartphone, Headphones, ShoppingBag, Watch, Gem } from "lucide-react";
 import "animate.css";
 import { ReactComponent as Ilustracion } from "../../assest/ilustracion.svg";
-import ParticlesBackground from "../../components/public/common/ParticlesBackground";
 import { ReactComponent as Airpods } from "../../assest/airpods.svg";
 import { ReactComponent as Perfume } from "../../assest/perfume.svg";
 import { ReactComponent as Shirt } from "../../assest/mens.svg";
 import ExampleCard from "../../components/public/landing/ExampleCard";
-import Navbar from "../../components/public/landing/Navbar";
 import airpods from "../../assest/carrousel/airpods.webp";
 import labial from "../../assest/carrousel/labial.webp";
 import parlantes from "../../assest/carrousel/parlantes.webp";
 import perfume from "../../assest/carrousel/perfume.webp";
 import protectoresCam from "../../assest/carrousel/protectores_cam.webp";
 import tripode from "../../assest/carrousel/tripode.webp";
+import Slider from "../../components/public/landing/Slider";
 const LandingPage = () => {
+  const Images = [airpods, labial, parlantes, perfume, protectoresCam, tripode];
+
   useEffect(() => {
     ScrollReveal().reveal("[data-sr]", {
       distance: "60px",
@@ -29,35 +29,33 @@ const LandingPage = () => {
   return (
     <>
       {/* Main */}
-      <Navbar />
       <div className="pointer-events-none fixed top-0 left-0 w-full h-32 z-20 bg-gradient-to-b from-black via-black/80 to-transparent" />
-
-      <main className="min-h-screen flex flex-col justify-center items-center px-6 md:px-20 lg:px-32 pt-20">
-        <ParticlesBackground color={"0f0f0f"} />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-10 w-full max-w-7xl">
-  <div className="animate__animated animate__fadeInLeft" data-sr>
-    <Ilustracion className="w-full h-auto mt-20" />
-  </div>
-  <div
-    className="animate__animated animate__fadeInRight md:flex md:flex-col md:justify-center md:h-full md:pl-8 mb-28"
-    data-sr
-  >
-    <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-4 md:mb-6 md:text-left">
-      Variedades Man's Style <br />
-    </h1>
-    <p className="text-gray-300 text-lg mb-6 md:text-left">
-      Somos una tienda de variedades, contamos con dos sucursales en Managua. Visitenos!
-    </p>
-    <a
-      href="#"
-      className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full text-base font-semibold transition md:self-start"
+     <main className="min-h-screen flex flex-col justify-center items-center px-6 md:px-20  ">
+  <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-10 w-full max-w-7xl">
+   
+    <div
+      className="animate__animated animate__fadeInRight md:flex md:flex-col md:justify-center md:h-full "
+      data-sr
     >
-      Conocer más
-    </a>
+      <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-4 md:mb-6 md:text-left">
+        Variedades Man's Style <br />
+      </h1>
+      <p className="text-gray-300 text-lg mb-6 md:text-left">
+        Somos una tienda de variedades, contamos con dos sucursales en Managua. Visitenos!
+      </p>
+      <a
+        href="#"
+        className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full text-base font-semibold transition md:self-start"
+      >
+        Conocer más
+      </a>
+    </div>
+     <div className="animate__animated animate__fadeInLeft bg-black bg-opacity-30 border-2 border-white rounded-xl" data-sr>
+      <Slider images={Images} />
+    </div>
   </div>
-</div>
-      </main>
+</main>
+
 
       {/* Secciones */}
       <section className="py-20 px-6 bg-[#141414]" data-sr>
@@ -96,52 +94,98 @@ const LandingPage = () => {
             Variedad en un solo lugar
           </h2>
           {/* Carrusel de iconos */}
-  <div className="w-full flex justify-center mb-12">
-  <div className="relative w-full max-w-full overflow-hidden">
-    <div className="flex gap-8 animate-scroll-x items-center">
-      {/* Primer set de imágenes */}
-      <div className="flex-shrink-0 flex flex-col items-center">
-        <img src={airpods} alt="Airpods" className="h-40 w-40 object-contain mb-2" />
-      </div>
-      <div className="flex-shrink-0 flex flex-col items-center">
-        <img src={labial} alt="Labial" className="h-40 w-40 object-contain mb-2" />
-      </div>
-      <div className="flex-shrink-0 flex flex-col items-center">
-        <img src={parlantes} alt="Parlantes" className="h-40 w-40 object-contain mb-2" />
-      </div>
-      <div className="flex-shrink-0 flex flex-col items-center">
-        <img src={perfume} alt="Perfume" className="h-40 w-40 object-contain mb-2" />
-      </div>
-      <div className="flex-shrink-0 flex flex-col items-center">
-        <img src={protectoresCam} alt="Protectores Cam" className="h-40 w-40 object-contain mb-2" />
-      </div>
-      <div className="flex-shrink-0 flex flex-col items-center">
-        <img src={tripode} alt="Trípode" className="h-40 w-40 object-contain mb-2" />
-      </div>
-      {/* Segundo set de imágenes (idéntico al primero) */}
-      <div className="flex-shrink-0 flex flex-col items-center">
-        <img src={airpods} alt="Airpods" className="h-40 w-40 object-contain mb-2" />
-      </div>
-      <div className="flex-shrink-0 flex flex-col items-center">
-        <img src={labial} alt="Labial" className="h-40 w-40 object-contain mb-2" />
-      </div>
-      <div className="flex-shrink-0 flex flex-col items-center">
-        <img src={parlantes} alt="Parlantes" className="h-40 w-40 object-contain mb-2" />
-      </div>
-      <div className="flex-shrink-0 flex flex-col items-center">
-        <img src={perfume} alt="Perfume" className="h-40 w-40 object-contain mb-2" />
-      </div>
-      <div className="flex-shrink-0 flex flex-col items-center">
-        <img src={protectoresCam} alt="Protectores Cam" className="h-40 w-40 object-contain mb-2" />
-      </div>
-      <div className="flex-shrink-0 flex flex-col items-center">
-        <img src={tripode} alt="Trípode" className="h-40 w-40 object-contain mb-2" />
-      </div>
-
-      
-    </div>
-  </div>
-</div>
+          <div className="w-full flex justify-center mb-12">
+            <div className="relative w-full max-w-full overflow-hidden">
+              <div className="flex gap-8 animate-scroll-x items-center">
+                {/* Primer set de imágenes */}
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <img
+                    src={airpods}
+                    alt="Airpods"
+                    className="h-40 w-40 object-contain mb-2"
+                  />
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <img
+                    src={labial}
+                    alt="Labial"
+                    className="h-40 w-40 object-contain mb-2"
+                  />
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <img
+                    src={parlantes}
+                    alt="Parlantes"
+                    className="h-40 w-40 object-contain mb-2"
+                  />
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <img
+                    src={perfume}
+                    alt="Perfume"
+                    className="h-40 w-40 object-contain mb-2"
+                  />
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <img
+                    src={protectoresCam}
+                    alt="Protectores Cam"
+                    className="h-40 w-40 object-contain mb-2"
+                  />
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <img
+                    src={tripode}
+                    alt="Trípode"
+                    className="h-40 w-40 object-contain mb-2"
+                  />
+                </div>
+                {/* Segundo set de imágenes (idéntico al primero) */}
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <img
+                    src={airpods}
+                    alt="Airpods"
+                    className="h-40 w-40 object-contain mb-2"
+                  />
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <img
+                    src={labial}
+                    alt="Labial"
+                    className="h-40 w-40 object-contain mb-2"
+                  />
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <img
+                    src={parlantes}
+                    alt="Parlantes"
+                    className="h-40 w-40 object-contain mb-2"
+                  />
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <img
+                    src={perfume}
+                    alt="Perfume"
+                    className="h-40 w-40 object-contain mb-2"
+                  />
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <img
+                    src={protectoresCam}
+                    alt="Protectores Cam"
+                    className="h-40 w-40 object-contain mb-2"
+                  />
+                </div>
+                <div className="flex-shrink-0 flex flex-col items-center">
+                  <img
+                    src={tripode}
+                    alt="Trípode"
+                    className="h-40 w-40 object-contain mb-2"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
           <style>
             {`
               @keyframes scroll-x {
@@ -160,9 +204,13 @@ const LandingPage = () => {
 
       <section className="py-20 px-6 bg-[#141414]" data-sr>
         <div className="max-w-5xl mx-auto text-center">
-        <h1 className="text-4xl font-bold mb-10 mt-6z">Nuestras Sucursales!</h1>
+          <h1 className="text-4xl font-bold mb-10 mt-6z">
+            Nuestras Sucursales!
+          </h1>
 
-          <h2 className="text-3xl font-bold mb-6">Sucursal Unidad de Proposito</h2>
+          <h2 className="text-3xl font-bold mb-6">
+            Sucursal Unidad de Proposito
+          </h2>
           <div className="w-full h-96 rounded-lg overflow-hidden shadow-lg">
             <iframe
               className="w-full h-full"
@@ -173,45 +221,20 @@ const LandingPage = () => {
               title="Ubicación"
             ></iframe>
           </div>
-                    <h2 className="text-3xl font-bold mb-6 mt-6">Sucursal Americas 2</h2>
+          <h2 className="text-3xl font-bold mb-6 mt-6">Sucursal Americas 2</h2>
 
-              <div className="w-full h-96 rounded-lg overflow-hidden shadow-lg">
-        <iframe
-          className="w-full h-full"
-          src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d243.7672932153066!2d-86.18840531741803!3d12.161556183420084!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTLCsDA5JzQxLjYiTiA4NsKwMTEnMTcuOSJX!5e0!3m2!1ses-419!2sni!4v1747719557643!5m2!1ses-419!2sni"
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="Ubicación 2"
-        ></iframe>
-      </div>
-          
-        </div>
-      </section>
-
-      <section className="py-20 px-6 bg-[#1c1c1c]" data-sr>
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-10">Testimonios</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-[#222] p-6 rounded-lg shadow-md text-left">
-              <p className="text-gray-300 mb-3">
-                “Todo más ordenado y profesional.”
-              </p>
-              <span className="text-sm text-gray-400">- Karen, encargada</span>
-            </div>
-            <div className="bg-[#222] p-6 rounded-lg shadow-md text-left">
-              <p className="text-gray-300 mb-3">
-                “Control total desde cualquier lugar.”
-              </p>
-              <span className="text-sm text-gray-400">- Juan, propietario</span>
-            </div>
+          <div className="w-full h-96 rounded-lg overflow-hidden shadow-lg">
+            <iframe
+              className="w-full h-full"
+              src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d243.7672932153066!2d-86.18840531741803!3d12.161556183420084!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTLCsDA5JzQxLjYiTiA4NsKwMTEnMTcuOSJX!5e0!3m2!1ses-419!2sni!4v1747719557643!5m2!1ses-419!2sni"
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Ubicación 2"
+            ></iframe>
           </div>
         </div>
       </section>
-
-      <footer className="bg-[#0f0f0f] text-gray-500 text-center py-6 text-sm">
-        &copy; 2025 Variedades Man's Style. Todos los derechos reservados.
-      </footer>
     </>
   );
 };
