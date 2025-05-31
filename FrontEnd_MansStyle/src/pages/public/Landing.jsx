@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import ScrollReveal from "scrollreveal";
-import "animate.css";
-import { ReactComponent as Ilustracion } from "../../assest/ilustracion.svg";
 import { ReactComponent as Airpods } from "../../assest/airpods.svg";
 import { ReactComponent as Perfume } from "../../assest/perfume.svg";
 import { ReactComponent as Shirt } from "../../assest/mens.svg";
 import ExampleCard from "../../components/public/landing/ExampleCard";
-import airpods from "../../assest/carrousel/airpods.webp";
-import labial from "../../assest/carrousel/labial.webp";
-import parlantes from "../../assest/carrousel/parlantes.webp";
-import perfume from "../../assest/carrousel/perfume.webp";
-import protectoresCam from "../../assest/carrousel/protectores_cam.webp";
-import tripode from "../../assest/carrousel/tripode.webp";
+import {
+  airpods,
+  labial,
+  parlantes,
+  perfume,
+  protectoresCam,
+  tripode,
+} from "../../assest/carrousel/exports";
 import Slider from "../../components/public/landing/Slider";
 const LandingPage = () => {
   const Images = [airpods, labial, parlantes, perfume, protectoresCam, tripode];
@@ -30,32 +30,47 @@ const LandingPage = () => {
     <>
       {/* Main */}
       <div className="pointer-events-none fixed top-0 left-0 w-full h-32 z-20 bg-gradient-to-b from-black via-black/80 to-transparent" />
-     <main className="min-h-screen flex flex-col justify-center items-center px-6 md:px-20  ">
-  <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-10 w-full max-w-7xl">
-   
-    <div
-      className="animate__animated animate__fadeInRight md:flex md:flex-col md:justify-center md:h-full "
-      data-sr
-    >
-      <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-4 md:mb-6 md:text-left">
-        Variedades Man's Style <br />
-      </h1>
-      <p className="text-gray-300 text-lg mb-6 md:text-left">
-        Somos una tienda de variedades, contamos con dos sucursales en Managua. Visitenos!
-      </p>
-      <a
-        href="#"
-        className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full text-base font-semibold transition md:self-start"
-      >
-        Conocer más
-      </a>
-    </div>
-     <div className="animate__animated animate__fadeInLeft bg-black bg-opacity-30 border-2 border-white rounded-xl" data-sr>
-      <Slider images={Images} />
-    </div>
-  </div>
-</main>
-
+      <main className="min-h-screen flex flex-col justify-center items-center px-6 md:px-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-10 w-full max-w-7xl">
+          <div
+            className=" md:flex md:flex-col md:justify-center md:h-full"
+            data-sr
+          >
+            <h1
+              className="text-4xl md:text-5xl font-extrabold leading-tight mb-4 md:mb-6 md:text-left font-[poppins] bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg"
+              style={{ letterSpacing: "1px" }}
+            >
+              Variedades Man's Style <br />
+            </h1>
+            <p className="text-lg md:text-xl mb-3 md:mb-4 md:text-left font-[poppins] text-gray-200">
+              Somos una tienda de variedades, aquí podrás encontrar&nbsp;
+              <span className="underline decoration-indigo-400 font-[poppins] underline-offset-4">
+                accesorios para celulares, artículos electrónicos, LED's,
+                perfumes, covers personalizados
+              </span>
+              &nbsp;y más.
+            </p>
+            <p className="text-lg md:text-xl mb-6 md:mb-8 md:text-left font-[poppins] text-gray-300">
+              <span className="font-semibold">
+                Contamos con dos sucursales en Managua.
+              </span>{" "}
+              ¡Visítenos!
+            </p>
+            <a
+              href="#"
+              className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full text-base font-semibold transition md:self-start"
+            >
+              Conocer más
+            </a>
+          </div>
+          <div
+            className="bg-transparent border-white/20 rounded-2xl shadow-2xl p-4 flex items-center justify-center"
+            data-sr
+          >
+            <Slider images={Images} />
+          </div>
+        </div>
+      </main>
 
       {/* Secciones */}
       <section className="py-20 px-6 bg-[#141414]" data-sr>
@@ -186,18 +201,7 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
-          <style>
-            {`
-              @keyframes scroll-x {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(-50%); }
-              }
-              .animate-scroll-x {
-                width: max-content;
-                animation: scroll-x 18s linear infinite;
-              }
-            `}
-          </style>
+
           <div className="grid md:grid-cols-3 gap-8"></div>
         </div>
       </section>
