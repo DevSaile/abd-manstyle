@@ -10,7 +10,6 @@ function PublicLayout() {
 
       {/* Content layer */}
       <div className="relative z-10">
-        <Navbar />
 
         <Outlet />
       </div>

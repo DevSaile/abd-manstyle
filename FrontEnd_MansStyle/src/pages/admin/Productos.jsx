@@ -9,7 +9,7 @@ import {
 import { obtenerSucursales } from "../../services/SucursalService";
 import { obtenerCategoriasActivas } from "../../services/CategoriasService";
 import { obtenerMarcas } from "../../services/MarcasService";
-import { Plus } from "lucide-react";
+import useProductos from "../../hooks/useProducts";
 import Header from "../../components/common/Header";
 import ComboBox from "../../components/common/ComboBox";
 import ProductCard from "../../components/productos/ProductCard";
@@ -20,7 +20,6 @@ import ModalDetalles from "../../components/productos/ModalDetalles";
 const ProductsPage = () => {
   const [openDetails, setOpenDetails] = useState(false);
 
-  const [productos, setProductos] = useState([]);
   const [Sucursales, setSucursales] = useState([]);
   const [Categorias, setCategorias] = useState([]);
   const [Marcas, setMarcas] = useState([]);
@@ -29,6 +28,7 @@ const ProductsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [selectedSucursal, setSelectedSucursal] = useState("Todos");
   const [selectedMarcas, setSelectedMarca] = useState("Todos");
+    const { productos, loading, error, recargar } = useProductos(); // ✅ Nuevo hook
 
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");

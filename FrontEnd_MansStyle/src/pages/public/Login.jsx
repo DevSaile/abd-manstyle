@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import ParticlesBackground from '../../components/public/common/ParticlesBackground';
+import tiendaImg from '../../assest/login_image.webp';
 import { loginUsuario } from '../../services/LoginService'; 
 
 const Login = () => {
@@ -15,92 +16,82 @@ const Login = () => {
 
     try {
       const response = await loginUsuario(usuario, contrasena);
-      console.log('Respuesta del servidor:', response);
-
       if (response && response.ID_Empleado) { 
-     
-        const userRole = response.NombreRol
-        const idSucursal = response.ID_Sucursal; // Assuming the ID_Sucursal is returned in the response
-
+        const userRole = response.NombreRol;
+        const idSucursal = response.ID_Sucursal;
         localStorage.setItem('usuario', JSON.stringify(response)); 
-        localStorage.setItem('rol', userRole); // Assuming the role is returned as "rol"
-        localStorage.setItem('idSucursal', idSucursal); // Store the employee ID
-        localStorage.setItem('isAuthenticated', 'true'); // Mark the user as authenticated
-
-        console.log('Rol guardado en localStorage:', idSucursal);
-
-        console.log('Usuario guardado en localStorage:', response);
+        localStorage.setItem('rol', userRole);
+        localStorage.setItem('idSucursal', idSucursal);
+        localStorage.setItem('isAuthenticated', 'true');
         navigate('/inicio'); 
       } else {
         setError('Credenciales incorrectas');
       }
     } catch (err) {
-      console.error('Error al iniciar sesión:', err);
       setError('Credenciales incorrectas o error en el servidor');
     }
   };
 
   const handleForgotPassword = () => {
-    // Lógica adicional, por ejemplo: validación
     navigate("/recuperar-contrasena");
   };
 
-
   return (
-    <div className="relative min-h-screen flex items-center justify-center">
+    <div className="relative min-h-screen flex font-[poppins] bg-black">
       {/* Fondo de partículas */}
       <ParticlesBackground color="#0f0f0f" />
 
-      {/* Formulario de login */}
-      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-96 text-center relative z-10">
-        <h1 className="text-white text-5xl font-extrabold mb-6 tracking-wide">
-          <span className="azul-claro">Variedades</span> Man's Style
-        </h1>
-        <h2 className="text-white text-2xl mb-4">Iniciar Sesión</h2>
+      {/* Imagen a la izquierda */}
+      <div className="hidden md:flex flex-col justify-center items-center w-1/2 bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+        <img
+          src={tiendaImg}
+          alt="Login Illustration"
+          className="max-w-[80%] max-h-[80%] object-contain drop-shadow-2xl"
+        />
+      </div>
 
-        <form onSubmit={handleLogin}>
-          <div className="mb-4">
+      {/* Formulario de login a la derecha */}
+      <div className="flex flex-col justify-center items-center w-full md:w-1/2 bg-[#18181b] p-10 text-center relative z-10 min-h-screen shadow-2xl">
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-2 bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg font-[poppins] tracking-wide">
+          Variedades Man's Style
+        </h1>
+        <h2 className="text-xl md:text-2xl mb-10 text-gray-200 font-semibold font-[poppins]">Iniciar Sesión</h2>
+        <form onSubmit={handleLogin} className="w-full max-w-sm mx-auto flex flex-col gap-7">
+          <div>
             <input
               type="text"
               placeholder="Usuario"
               value={usuario}
               onChange={(e) => setUsuario(e.target.value)}
-              className="w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-xl bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 font-[poppins] placeholder-gray-400"
               required
             />
           </div>
-          <div className="mb-4">
+          <div>
             <input
               type="password"
               placeholder="Contraseña"
               value={contrasena}
               onChange={(e) => setContrasena(e.target.value)}
-              className="w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-xl bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 font-[poppins] placeholder-gray-400"
               required
             />
           </div>
-
-          {error && <p className="text-red-400 mb-2">{error}</p>}
-
+          {error && <p className="text-red-400 -mt-4">{error}</p>}
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded w-full transition duration-300"
+            className="bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 hover:from-indigo-600 hover:to-pink-600 text-white px-4 py-3 rounded-xl w-full font-semibold transition duration-300 shadow-lg font-[poppins]"
           >
             Iniciar sesión
           </button>
         </form>
-
-        <div className="mt-4 text-sm">
-          <a href="#" className="text-blue-400 hover:underline">
-            Recuperar cuenta
-          </a>{' '}
-          |{' '}
+        <div className="mt-10 text-sm flex flex-col gap-2">
           <button
             type="button"
             onClick={handleForgotPassword}
-            className="text-blue-400 hover:underline focus:outline-none"
+            className="text-indigo-300 hover:underline focus:outline-none font-[poppins] transition"
           >
-            Olvidé mi contraseña
+            ¿Olvidaste tu contraseña?
           </button>
         </div>
       </div>

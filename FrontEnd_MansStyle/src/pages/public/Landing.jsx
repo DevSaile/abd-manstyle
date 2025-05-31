@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState} from "react";
 import ProductSection from "../../components/public/landing/ProductSection";
 import {
   airpods,
@@ -9,13 +9,23 @@ import {
   tripode,
 } from "../../assest/carrousel/exports";
 import Slider from "../../components/public/landing/Slider";
+import Navbar from "../../components/public/landing/Navbar";
 const LandingPage = () => {
   const Images = [airpods, labial, parlantes, perfume, protectoresCam, tripode];
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [products, setProducts] = useState([]);
 
+  useEffect(() => {
+    const result = products.filter((product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  },[searchTerm, products]);
 
   return (
     <>
+            <Navbar />
+
       {/* Main */}
       <div className="pointer-events-none fixed top-0 left-0 w-full h-32 z-20 bg-gradient-to-b from-black via-black/80 to-transparent" />
       <main className="min-h-screen flex flex-col justify-start items-center px-6 md:px-20 pt-24">
@@ -50,7 +60,6 @@ const LandingPage = () => {
               "
               placeholder="Buscar productos"
             />
-        
           </div>
           <div
             className="bg-transparent border-white/20 rounded-2xl shadow-2xl p-4 flex items-center justify-center"
@@ -64,7 +73,7 @@ const LandingPage = () => {
       {/* Secciones */}
       <section className="px-6 bg-[#141414]" data-sr>
         <ProductSection />
-      </section> 
+      </section>
 
       <section className="py-20 px-6 bg-[#1c1c1c]">
         <div className="max-w-6xl mx-auto" data-sr>
@@ -74,94 +83,7 @@ const LandingPage = () => {
           {/* Carrusel de iconos */}
           <div className="w-full flex justify-center mb-12">
             <div className="relative w-full max-w-full overflow-hidden">
-              <div className="flex gap-8 animate-scroll-x items-center">
-                {/* Primer set de imágenes */}
-                <div className="flex-shrink-0 flex flex-col items-center">
-                  <img
-                    src={airpods}
-                    alt="Airpods"
-                    className="h-40 w-40 object-contain mb-2"
-                  />
-                </div>
-                <div className="flex-shrink-0 flex flex-col items-center">
-                  <img
-                    src={labial}
-                    alt="Labial"
-                    className="h-40 w-40 object-contain mb-2"
-                  />
-                </div>
-                <div className="flex-shrink-0 flex flex-col items-center">
-                  <img
-                    src={parlantes}
-                    alt="Parlantes"
-                    className="h-40 w-40 object-contain mb-2"
-                  />
-                </div>
-                <div className="flex-shrink-0 flex flex-col items-center">
-                  <img
-                    src={perfume}
-                    alt="Perfume"
-                    className="h-40 w-40 object-contain mb-2"
-                  />
-                </div>
-                <div className="flex-shrink-0 flex flex-col items-center">
-                  <img
-                    src={protectoresCam}
-                    alt="Protectores Cam"
-                    className="h-40 w-40 object-contain mb-2"
-                  />
-                </div>
-                <div className="flex-shrink-0 flex flex-col items-center">
-                  <img
-                    src={tripode}
-                    alt="Trípode"
-                    className="h-40 w-40 object-contain mb-2"
-                  />
-                </div>
-                {/* Segundo set de imágenes (idéntico al primero) */}
-                <div className="flex-shrink-0 flex flex-col items-center">
-                  <img
-                    src={airpods}
-                    alt="Airpods"
-                    className="h-40 w-40 object-contain mb-2"
-                  />
-                </div>
-                <div className="flex-shrink-0 flex flex-col items-center">
-                  <img
-                    src={labial}
-                    alt="Labial"
-                    className="h-40 w-40 object-contain mb-2"
-                  />
-                </div>
-                <div className="flex-shrink-0 flex flex-col items-center">
-                  <img
-                    src={parlantes}
-                    alt="Parlantes"
-                    className="h-40 w-40 object-contain mb-2"
-                  />
-                </div>
-                <div className="flex-shrink-0 flex flex-col items-center">
-                  <img
-                    src={perfume}
-                    alt="Perfume"
-                    className="h-40 w-40 object-contain mb-2"
-                  />
-                </div>
-                <div className="flex-shrink-0 flex flex-col items-center">
-                  <img
-                    src={protectoresCam}
-                    alt="Protectores Cam"
-                    className="h-40 w-40 object-contain mb-2"
-                  />
-                </div>
-                <div className="flex-shrink-0 flex flex-col items-center">
-                  <img
-                    src={tripode}
-                    alt="Trípode"
-                    className="h-40 w-40 object-contain mb-2"
-                  />
-                </div>
-              </div>
+       
             </div>
           </div>
 
