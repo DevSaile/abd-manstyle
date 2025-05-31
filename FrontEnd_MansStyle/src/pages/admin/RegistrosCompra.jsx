@@ -114,7 +114,7 @@ const RegistroCompra = () => {
 
   if (loading) {
     return (
-      <div className="flex-1 relative z-10 overflow-auto">
+      <div className="flex-1 relative z-10 overflow-y-auto">
         <Header title={"Registro de Compras"} />
         <div className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
           <div className="text-center py-10">Cargando compras...</div>
@@ -125,7 +125,7 @@ const RegistroCompra = () => {
 
   if (error) {
     return (
-      <div className="flex-1 relative z-10 overflow-auto">
+      <div className="flex-1 relative z-10 overflow-y-auto">
         <Header title={"Registro de Compras"} />
         <div className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
           <div className="text-center py-10 text-red-500">
@@ -137,7 +137,7 @@ const RegistroCompra = () => {
   }
 
   return (
-    <div className="flex-1 relative z-10 overflow-auto">
+    <div className="flex-1 relative z-10 overflow-y-auto">
       <Header title={"Registro de Compras"} />
 
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
