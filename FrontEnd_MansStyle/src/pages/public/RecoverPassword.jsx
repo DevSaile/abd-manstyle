@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { solicitarRecuperacion } from "../../services/LoginService"; // Este servicio lo crearemos ahorita
+import { solicitarRecuperacion } from "../../services/LoginService";
 
 const RecoverPassword = () => {
   const [email, setEmail] = useState("");
@@ -25,30 +25,32 @@ const RecoverPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-96">
-        <h1 className="text-white text-2xl font-bold mb-6 text-center">Recuperar Contraseña</h1>
+    <div className="min-h-screen flex items-center justify-center bg-black font-[poppins]">
+      <div className="bg-[#18181b] p-10 rounded-lg shadow-lg w-full max-w-md flex flex-col items-center">
+        <h1 className="text-lg font-extrabold mb-6 bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg text-center font-[poppins]">
+          Recuperar Contraseña
+        </h1>
 
-        <form onSubmit={handleRecover}>
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full mb-4 p-2 rounded bg-gray-700 text-white focus:ring-2 focus:ring-blue-500"
-            required
-          />
+      <form onSubmit={handleRecover} className="w-full flex flex-col gap-4">
+  <input
+    type="email"
+    placeholder="Correo electrónico"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    className="w-full p-2 text-sm rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 font-[poppins] placeholder-gray-400"
+    required
+  />
 
-          {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
-          {mensaje && <p className="text-green-400 text-sm mb-4">{mensaje}</p>}
+  {error && <p className="text-red-400 text-xs -mt-2">{error}</p>}
+  {mensaje && <p className="text-green-400 text-xs -mt-2">{mensaje}</p>}
 
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded w-full transition duration-300"
-          >
-            Recuperar Contraseña
-          </button>
-        </form>
+  <button
+    type="submit"
+    className="bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 hover:from-indigo-600 hover:to-pink-600 text-white px-3 py-2 rounded-lg w-full font-semibold transition duration-300 shadow-lg font-[poppins] text-sm"
+  >
+    Enviar enlace de recuperación
+  </button>
+</form>
       </div>
     </div>
   );

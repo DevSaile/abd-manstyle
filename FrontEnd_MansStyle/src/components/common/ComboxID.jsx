@@ -78,7 +78,7 @@ const ComboBoxID = ({ name, options = [], selected, onSelect, enableSearchbar=tr
             onChange={(e) => setSearchTerm(e.target.value)}
             onClick={(e) => e.stopPropagation()}
           />)}
-          <ul className="max-h-40 overflow-y-auto custom-scrollbar mb-2">
+          <ul className=" overflow-y-auto custom-scrollbar mb-2">
             {filteredItems.length > 0 ? (
               filteredItems.map((item, index) => (
                 <li

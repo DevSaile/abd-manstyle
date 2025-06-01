@@ -35,7 +35,7 @@ const LandingPage = () => {
             data-sr
           >
             <h1
-              className="text-4xl md:text-5xl font-extrabold leading-tight mb-4 md:mb-6 md:text-left font-[poppins] bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg"
+              className="text-4xl md:text-5xl font-extrabold leading-tight mb-4 md:mb-6 md:text-left font-[poppins] standar-gradient bg-clip-text text-transparent drop-shadow-lg"
               style={{ letterSpacing: "1px" }}
             >
               Variedades Man's Style <br />

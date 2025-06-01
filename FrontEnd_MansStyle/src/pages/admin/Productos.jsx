@@ -1,15 +1,16 @@
+// src/pages/ProductsPage.jsx
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
 import {
-  obtenerProductos,
-  obtenerProductoPorID,
   eliminarProducto,
+  obtenerProductoPorID,
 } from "../../services/ProductosService";
-import { obtenerSucursales } from "../../services/SucursalService";
-import { obtenerCategoriasActivas } from "../../services/CategoriasService";
-import { obtenerMarcas } from "../../services/MarcasService";
-import useProductos from "../../hooks/useProducts";
+
+import useProducts from "../../hooks/useProducts";
+import { useSucursales } from "../../hooks/useSucursales";
+import { useCategorias } from "../../hooks/useCategorias";
+import { useMarcas } from "../../hooks/useMarcas";
+
 import Header from "../../components/common/Header";
 import ComboBox from "../../components/common/ComboBox";
 import ProductCard from "../../components/productos/ProductCard";
@@ -18,22 +19,19 @@ import { Modal } from "@rewind-ui/core";
 import ModalDetalles from "../../components/productos/ModalDetalles";
 
 const ProductsPage = () => {
+  const { productos, setProductos } = useProducts();
+  const todasSucursales = useSucursales();
+  const todasCategorias = useCategorias();
+  const todasMarcas = useMarcas();
+
   const [openDetails, setOpenDetails] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
-  const [Sucursales, setSucursales] = useState([]);
-  const [Categorias, setCategorias] = useState([]);
-  const [Marcas, setMarcas] = useState([]);
-
-  // Filtros seleccionados
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [selectedSucursal, setSelectedSucursal] = useState("Todos");
   const [selectedMarcas, setSelectedMarca] = useState("Todos");
-    const { productos, loading, error, recargar } = useProductos(); // ✅ Nuevo hook
-
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Opciones filtradas dinámicamente
   const [filteredSucursales, setFilteredSucursales] = useState([]);
   const [filteredMarcas, setFilteredMarcas] = useState([]);
   const [filteredCategorias, setFilteredCategorias] = useState([]);
@@ -41,42 +39,12 @@ const ProductsPage = () => {
   const [selectedProducto, setSelectedProduct] = useState(null);
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-  const [openAdd, setOpenAdd] = useState(false);
-
-  const userRole = localStorage.getItem("rol");
-
-  // Fetch products from the API
-  useEffect(() => {
-    obtenerProductos().then((data) => {
-      setProductos(data);
-      setFilteredProducts(data); // Initialize filtered products
-    });
-  }, []);
 
   useEffect(() => {
-    obtenerSucursales().then((data) => {
-      const opciones = data.map((sucursal) => sucursal.Nombre);
-      setSucursales(["Todos", ...opciones]);
-    });
-  }, []);
+    setFilteredProducts(productos);
+  }, [productos]);
 
   useEffect(() => {
-    obtenerMarcas().then((data) => {
-      const opciones = data.map((Marca) => Marca.Nombre);
-      setMarcas(["Todos", ...opciones]);
-    });
-  }, []);
-
-  useEffect(() => {
-    obtenerCategoriasActivas().then((data) => {
-      const opciones = data.map((Categoria) => Categoria.Nombre);
-      setCategorias(["Todos", ...opciones]);
-    });
-  }, []);
-
-  // Filtrado dinámico de opciones de Sucursal, Marca y Categoría
-  useEffect(() => {
-    // Sucursales disponibles según marca y categoría seleccionadas
     const sucursalesDisponibles = [
       "Todos",
       ...Array.from(
@@ -93,7 +61,6 @@ const ProductsPage = () => {
       ),
     ];
 
-    // Marcas disponibles según sucursal y categoría seleccionadas
     const marcasDisponibles = [
       "Todos",
       ...Array.from(
@@ -111,7 +78,6 @@ const ProductsPage = () => {
       ),
     ];
 
-    // Categorías disponibles según sucursal y marca seleccionadas
     const categoriasDisponibles = [
       "Todos",
       ...Array.from(
@@ -132,7 +98,6 @@ const ProductsPage = () => {
     setFilteredMarcas(marcasDisponibles);
     setFilteredCategorias(categoriasDisponibles);
 
-    // Si la selección actual ya no es válida, resetea a "Todos"
     if (
       selectedSucursal !== "Todos" &&
       !sucursalesDisponibles.includes(selectedSucursal)
@@ -153,7 +118,6 @@ const ProductsPage = () => {
     }
   }, [productos, selectedSucursal, selectedMarcas, selectedCategory]);
 
-  // Filtrado de productos según los filtros activos
   useEffect(() => {
     const filtered = productos.filter((product) => {
       const matchesSearchTerm = product.Nombre.toLowerCase().includes(
@@ -203,13 +167,13 @@ const ProductsPage = () => {
       );
 
       if (resultado) {
-        obtenerProductos().then((data) => {
-          setProductos(data);
-          setFilteredProducts(data);
-        });
-
+        const actualizados = await obtenerProductos();
+        setProductos(actualizados);
+        setFilteredProducts(actualizados);
         alert("Producto eliminado correctamente");
-      } else "Error al eliminar el producto";
+      } else {
+        alert("Error al eliminar el producto");
+      }
     } catch (error) {
       alert(error.response?.data?.message || "Error al eliminar el producto");
     }
@@ -220,21 +184,20 @@ const ProductsPage = () => {
       <Header title="Productos" />
 
       <main className="max-w-7xl mx-5 py-6 px-4 lg:px-8">
-        {/* Filters */}
         <motion.div
-          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5 mb-8"
+          className="flex flex-wrap gap-4 items-end mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
           <ComboBox
-            name={"Categorias"}
+            name={"Categoria"}
             options={filteredCategorias}
             onSelect={setSelectedCategory}
             selected={selectedCategory}
           />
           <ComboBox
-            name={"Sucursales"}
+            name={"Sucursal"}
             options={filteredSucursales}
             onSelect={setSelectedSucursal}
             selected={selectedSucursal}
@@ -245,72 +208,28 @@ const ProductsPage = () => {
             onSelect={setSelectedMarca}
             selected={selectedMarcas}
           />
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Buscar productos..."
-              className="bg-gray-700 text-white placeholder-gray-400 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-
-          <button
-            className=" bg-gray-700 text-white placeholder-gray-400 rounded-lg py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            disabled={!selectedProducto}
-            onClick={() => {
-              setOpenDetails(true);
-            }}
-          >
-            Detalles
-          </button>
-
-          {/* Product Cards */}
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4
-        mb-8 p-10 col-span-4 overflow-y-auto custom-scrollbar
-        bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800
-        border border-gray-700 rounded-xl shadow-lg h-5/6 min-h-[400px]"
-          >
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.ID_Producto}
-                name={product.Nombre}
-                price={product.Precio_Producto}
-                category={product.Descripcion_Categoria}
-                stock={product.Cantidad}
-                image={
-                  product.url_image
-                    ? product.url_image
-                    : "https://via.placeholder.com/150"
-                }
-                onClick={() => setSelectedProduct(product)}
-                selected={selectedProducto?.ID_Producto === product.ID_Producto}
-              />
-            ))}
-          </div>
-
-         <div className="flex flex-col gap-4">
-  <div className="grid grid-cols-2 gap-4"></div>
-  <button
-    className={`bg-transparent text-blue-600 border border-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-lg transition duration-200
-      ${!selectedProducto ? "opacity-50 cursor-not-allowed hover:bg-transparent hover:text-blue-600" : ""}`}
-    onClick={() => setOpenEdit(true)}
-    disabled={!selectedProducto}
-  >
-    Editar
-  </button>
-  <button
-    className={`bg-transparent text-red-600 border border-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg transition duration-200
-      ${!selectedProducto ? "opacity-50 cursor-not-allowed hover:bg-transparent hover:text-red-600" : ""}`}
-    onClick={() => setOpenDelete(true)}
-    disabled={!selectedProducto}
-  >
-    Eliminar
-  </button>
-</div>
+          <input
+            type="text"
+            placeholder="Buscar productos..."
+            className="bg-gray-700 text-white placeholder-gray-400 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </motion.div>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 mb-8 p-10 col-span-4 overflow-y-auto custom-scrollbar bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 border border-gray-700 rounded-xl shadow-lg h-5/6 min-h-[400px]">
+          {filteredProducts.map((product) => (
+            <ProductCard
+              product={product}
+              onEdit={() => handleEdit(product)}
+              onDelete={() => handleDelete(product)}
+            />
+          ))}
+          
+          {console.log("Filtered Products:", filteredProducts)}
+        </div>
+
+        
         <Modal
           open={openDelete}
           onClose={() => setOpenDelete(false)}
@@ -345,11 +264,10 @@ const ProductsPage = () => {
         <ModalEditar
           openEdit={openEdit}
           EditModalClose={() => setOpenEdit(false)}
-          refrescarProductos={() => {
-            obtenerProductos().then((data) => {
-              setProductos(data);
-              setFilteredProducts(data);
-            });
+          refrescarProductos={async () => {
+            const nuevos = await obtenerProductos();
+            setProductos(nuevos);
+            setFilteredProducts(nuevos);
           }}
           fetchProductoByID={obtenerProductoPorID}
           productoID={selectedProducto?.ID_Producto || null}
@@ -360,14 +278,6 @@ const ProductsPage = () => {
           DetailsModalClose={() => setOpenDetails(false)}
           product={selectedProducto}
         />
-
-        <div className="grid grid-col-1 lg:grid-cols-2 gap-8">
-          {/*       Se usara después, por esto se deja comentado
-
-          <SalesTrendChart />
-          <SellsPerCategory />
-          */}
-        </div>
       </main>
     </div>
   );

@@ -47,7 +47,7 @@ const ResetPassword = () => {
             placeholder="Nueva contraseña"
             value={nuevaContrasena}
             onChange={(e) => setNuevaContrasena(e.target.value)}
-            className="w-full p-2 rounded bg-gray-700 text-white focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 rounded bg-black text-white focus:ring-2 focus:ring-blue-500"
             required
           />
 

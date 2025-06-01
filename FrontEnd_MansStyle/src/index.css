@@ -24,3 +24,7 @@
 .custom-scrollbar::-webkit-scrollbar-track {
   background-color: #374151; /* Track color (gray-900) */
 }
+
+.standar-gradient {
+  background-image: linear-gradient(to right, #818cf8, #e879f9, #f472b6);
+}
