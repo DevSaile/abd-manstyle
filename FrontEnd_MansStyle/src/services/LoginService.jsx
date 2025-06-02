@@ -3,7 +3,7 @@ import api from "../Api"; // Configuración baseURL para tu API
 
 export const loginUsuario = async (usuario, contrasena) => {
     try {
-      const response = await api.post('/empleados/login', {
+      const response = await api.post('/Auth/login', {
         Usuario: usuario,
         Contra: contrasena,
       
@@ -18,7 +18,7 @@ export const loginUsuario = async (usuario, contrasena) => {
 // Solicitar recuperación de contraseña
 export const solicitarRecuperacion = async (email) => {
   try {
-    const response = await api.post("/empleados/solicitar-recuperacion", { email });
+    const response = await api.post("/Auth/solicitar-recuperacion", { email });
     return response.data;
   } catch (error) {
     console.error("Error solicitando recuperación:", error);
@@ -29,7 +29,7 @@ export const solicitarRecuperacion = async (email) => {
 // Resetear contraseña usando token
 export const ResetPasswordService = async (token, nuevaContrasena) => {
   try {
-    const response = await api.post("/empleados/resetear-contrasena", {
+    const response = await api.post("/Auth/resetear-contrasena", {
       token,
       nuevaContrasena,
     });
