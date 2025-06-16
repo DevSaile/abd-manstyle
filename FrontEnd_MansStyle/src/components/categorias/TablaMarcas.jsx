@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search, Plus } from "lucide-react";
 import { useToast } from "@rewind-ui/core";
-import { actualizarMarca, eliminarMarca, agregarMarca } from "../../services/MarcasService";
+import { actualizarMarca, eliminarMarca, agregarMarca } from "@/services/MarcasService";
 
 const BrandTable = ({
     brandData,

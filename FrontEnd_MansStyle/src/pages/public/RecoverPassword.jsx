@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { solicitarRecuperacion } from "../../services/LoginService";
+import { solicitarRecuperacion } from "@/services/LoginService";
 
 const RecoverPassword = () => {
   const [email, setEmail] = useState("");

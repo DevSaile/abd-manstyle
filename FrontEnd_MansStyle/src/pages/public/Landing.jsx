@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ProductSection from "../../components/public/landing/ProductSection";
+import ProductSection from "@/components/public/landing/ProductSection";
 import {
   airpods,
   labial,
@@ -7,9 +7,9 @@ import {
   perfume,
   protectoresCam,
   tripode,
-} from "../../assest/carrousel/exports";
-import Slider from "../../components/public/landing/Slider";
-import Navbar from "../../components/public/landing/Navbar";
+} from "@/assest/carrousel/exports";
+import Slider from "@/components/public/landing/Slider";
+import Navbar from "@/components/public/landing/Navbar";
 
 const LandingPage = () => {
   const Images = [airpods, labial, parlantes, perfume, protectoresCam, tripode];
@@ -27,7 +27,7 @@ const LandingPage = () => {
     <>
       <Navbar />
 
-<div className="flex flex-col md:flex-row justify-start gap-10 px-6 py-20 my-30 bg-black w-full">
+<div className="flex flex-col md:flex-row justify-start gap-10 px-6 pt-20 my-30 bg-black w-full">
           <div className="flex flex-col justify-center p-30 flex-1 text-center md:text-start">
             <h1 className="text-4xl font-extrabold leading-tight mb-4 font-[poppins] standar-gradient bg-clip-text text-transparent drop-shadow-lg md:text-5xl" style={{ letterSpacing: "1px" }}>
               Variedades Man's Style
@@ -52,12 +52,13 @@ const LandingPage = () => {
           </div>
       </div>
 
-       <input
-              className="inline-block bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-xl text-base font-semibold minwidth-[300px] max-width-[500px] w-full mt-6 mb-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300"
+     
+      <section className="pb-16 pt-2 px-5 ">
+          <input
+              className="block bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-xl text-base font-semibold w-full mb-10 mx-auto"
               placeholder="Buscar productos"
             />
 
-      <section className="px-6 py-16" data-sr>
         <ProductSection />
       </section>
 

@@ -28,23 +28,23 @@ const ParticlesBackground = ({ color }) => {
           },
           particles: {
             number: {
-              value: 50,
+              value: 100,
               density: {
                 enable: true,
-                area: 800,
+                area: 1000,
               },
             },
             color: {
               value: "#ffffff",
             },
             shape: {
-              type: "image",
+              type: "line",
             },
             opacity: {
               value: 0.4,
             },
             size: {
-              value: { min: 1, max: 5 },
+              value: { min: 5, max: 10 },
             },
             move: {
               enable: true,
@@ -56,9 +56,9 @@ const ParticlesBackground = ({ color }) => {
             },
             links: {
               enable: true,
-              distance: 130,
+              distance: 150,
               color: "#ffffff",
-              opacity: 0.4,
+              opacity: 1,
               width: 1,
             },
           },

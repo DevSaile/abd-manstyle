@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import ParticlesBackground from '../../components/public/common/ParticlesBackground';
-import tiendaImg from '../../assest/login_image.webp';
-import { loginUsuario } from '../../services/LoginService'; 
+import ParticlesBackground from '@/components/public/common/ParticlesBackground';
+import tiendaImg from '@/assest/login_image.webp';
+import { loginUsuario } from '@/services/LoginService'; 
 
 const Login = () => {
   const [usuario, setUsuario] = useState('');
@@ -37,18 +37,13 @@ const Login = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex font-[poppins] bg-black">
+    <div className="flex justify-end min-h-screen font-[poppins] bg-black">
       {/* Fondo de partículas */}
       <ParticlesBackground color="#0f0f0f" />
 
       {/* Imagen a la izquierda */}
-      <div className="hidden md:flex flex-col justify-center items-center w-1/2 bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-        <img
-          src={tiendaImg}
-          alt="Login Illustration"
-          className="max-w-[80%] max-h-[80%] object-contain drop-shadow-2xl"
-        />
-      </div>
+      
+   
 
       {/* Formulario de login a la derecha */}
       <div className="flex flex-col justify-center items-center w-full md:w-1/2 bg-[#18181b] p-10 text-center relative z-10 min-h-screen shadow-2xl">

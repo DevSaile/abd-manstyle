@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import ComboBoxID from "../common/ComboxID";
 import { Drawer } from "@rewind-ui/core";
-import { obtenerCategoriasActivas } from "../../services/CategoriasService";
-import { obtenerSucursales } from "../../services/SucursalService";
-import { agregarProducto } from "../../services/ProductosService";
-import { subirImagen } from "../../services/UploadService"; 
-import { obtenerMarcas } from "../../services/MarcasService";
+import { obtenerCategoriasActivas } from "@/services/CategoriasService";
+import { obtenerSucursales } from "@/services/SucursalService";
+import { agregarProducto } from "@/services/ProductosService";
+import { subirImagen } from "@/services/UploadService"; 
+import { obtenerMarcas } from "@/services/MarcasService";
 
 const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
   const [newProduct, setNewProduct] = useState({

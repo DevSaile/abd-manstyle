@@ -42,7 +42,7 @@ const ComboBox = ({
 
   return (
     <div
-      className="relative min-w-[200px] max-w-4 w-full"
+      className="relative w-full"
       ref={comboBoxRef}
       onClick={(e) => e.stopPropagation()}
     >

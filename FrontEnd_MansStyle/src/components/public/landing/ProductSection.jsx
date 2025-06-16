@@ -108,8 +108,8 @@ const ProductSection = () => {
   });
 
   return (
-    <section className="py-12 px-4 bg-[#141414] bg-opacity-90">
-      <div className="flex flex-wrap gap-2 mb-8 justify-center">
+    <section className="py-6 px-4 bg-[#141414] bg-opacity-90 rounded-xl">
+      <div className="flex gap-5 mb-8 justify-center rounded">
         <ComboBox
           name={"Categoria"}
           options={filteredCategories}

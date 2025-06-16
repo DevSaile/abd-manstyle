@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/public/landing/Navbar";
-import ParticlesBackground from "../components/public/common/ParticlesBackground";
+import Navbar from "@/components/public/landing/Navbar";
+import ParticlesBackground from "@/components/public/common/ParticlesBackground";
 
 function PublicLayout() {
   return (

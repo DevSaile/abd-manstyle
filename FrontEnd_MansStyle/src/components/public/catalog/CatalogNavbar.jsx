@@ -1,7 +1,7 @@
 import React from 'react';
-import { ReactComponent as FacebookIcon } from "../../../assest/facebook.svg";
-import { ReactComponent as WhatsApp } from "../../../assest/whatsapp.svg";
-import { ReactComponent as Logo } from "../../../assest/logo.svg";
+import { ReactComponent as FacebookIcon } from "@/assest/facebook.svg";
+import { ReactComponent as WhatsApp } from "@/assest/whatsapp.svg";
+import { ReactComponent as Logo } from "@/assest/logo.svg";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 const CatalogNavbar = () => {

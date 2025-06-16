@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ResetPasswordService } from "../../services/LoginService"; // Lo creamos ahorita
+import { ResetPasswordService } from "@/services/LoginService"; // Lo creamos ahorita
 
 const ResetPassword = () => {
   const { token } = useParams(); // Capturamos el token de la URL

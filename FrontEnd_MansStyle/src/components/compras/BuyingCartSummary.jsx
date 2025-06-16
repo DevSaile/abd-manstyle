@@ -1,6 +1,6 @@
 import React from "react";
 
-import { obtenerProductos } from "../../services/ProductosService";
+import { obtenerProductos } from "@/services/ProductosService";
 
 
 const CartSummaryBuying = ({
