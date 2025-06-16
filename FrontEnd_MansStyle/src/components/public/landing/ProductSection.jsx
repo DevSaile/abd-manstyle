@@ -6,7 +6,7 @@ import  useProductos  from "../../../hooks/useProducts";
 
 const ProductSection = () => {
   // Use hooks as in Productos.jsx
-  const productos = useProductos();
+  const { productos, setProductos } = useProductos();
 
   // Selected filters
   const [selectedCategory, setSelectedCategory] = useState("Todos");

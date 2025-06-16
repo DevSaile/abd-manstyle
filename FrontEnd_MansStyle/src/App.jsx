@@ -1,26 +1,14 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
-import AdminLayout from "./layouts/AdminLayout";
-import PublicLayout from "./layouts/PublicLayout";
-import BuyingPage from "./pages/admin/Compras";
-import LandingPage from "./pages/public/Landing";
-import OverviewPage from "./pages/admin/PanelInicial";
-import ProductsPage from "./pages/admin/Productos";
-import ClientsPage from "./pages/admin/Clientes";
-import CashierPage from "./pages/admin/Ventas";
-import UsersPage from "./pages/admin/Usuarios";
-import CategoryPage from "./pages/admin/Categorizacion";
-import RegistrosVenta from "./pages/admin/RegistrosVentas";
-import RegistroCompra from "./pages/admin/RegistrosCompra";
-import Login from "./pages/public/Login";
-import RecoverPassword from "./pages/public/RecoverPassword";
-import ResetPassword from "./pages/public/ResetPassword";
-import ProtectedRoute from "./components/public/auth/ProtectedRoute";
-import Error404 from "./pages/public/Error404";
+import { AdminLayout, PublicLayout } from "./layouts";
+import { BuyingPage, OverviewPage, ProductsPage, ClientsPage, CashierPage, UsersPage, CategoryPage, RegistrosVenta, RegistroCompra } from "./pages/admin";
+import { LandingPage, Login, RecoverPassword, ResetPassword, Error404 } from "./pages/public";
+import { ProtectedRoute } from "./components/public/auth";
+
 
 function App() {
   return (
-    
+
     <Routes>
 
       {/* Public Routes */}
@@ -75,7 +63,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-             <Route
+        <Route
           path="/compra"
           element={
             <ProtectedRoute requiredRole="Administrador">
