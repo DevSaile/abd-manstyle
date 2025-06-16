@@ -29,7 +29,6 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/recuperar-contrasena" element={<RecoverPassword />} />
         <Route path="/resetear-contrasena/:token" element={<ResetPassword />} />
-        <Route path="/catalogo" element={<Catalog />} />
       </Route>
 
       {/* Admin Routes */}

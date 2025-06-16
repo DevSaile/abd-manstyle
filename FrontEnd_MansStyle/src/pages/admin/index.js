@@ -1,0 +1,9 @@
+export { default as BuyingPage } from "./Compras";
+export { default as OverviewPage } from "./PanelInicial";
+export { default as ProductsPage } from "./Productos";
+export { default as ClientsPage } from "./Clientes";
+export { default as CashierPage } from "./Ventas";
+export { default as UsersPage } from "./Usuarios";
+export { default as CategoryPage } from "./Categorizacion";
+export { default as RegistrosVenta } from "./RegistrosVentas";
+export { default as RegistroCompra } from "./RegistrosCompra";
