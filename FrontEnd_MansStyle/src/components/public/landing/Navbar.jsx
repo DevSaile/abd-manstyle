@@ -10,8 +10,6 @@ const Navbar = ({filters}) => {
       <div className="flex items-center gap-8">
         <Logo className="h-6" />
         
-          {filters}
-
       </div>
       <div className="flex items-center gap-8">
         

@@ -6,10 +6,7 @@ import {
   obtenerProductoPorID,
 } from "../../services/ProductosService";
 
-import useProducts from "../../hooks/useProducts";
-import { useSucursales } from "../../hooks/useSucursales";
-import { useCategorias } from "../../hooks/useCategorias";
-import { useMarcas } from "../../hooks/useMarcas";
+import useProductos from "../../hooks/useProducts";
 
 import Header from "../../components/common/Header";
 import ComboBox from "../../components/common/ComboBox";
@@ -19,10 +16,7 @@ import { Modal } from "@rewind-ui/core";
 import ModalDetalles from "../../components/productos/ModalDetalles";
 
 const ProductsPage = () => {
-  const { productos, setProductos } = useProducts();
-  const todasSucursales = useSucursales();
-  const todasCategorias = useCategorias();
-  const todasMarcas = useMarcas();
+  const { productos, setProductos } = useProductos();
 
   const [openDetails, setOpenDetails] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState([]);

@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
 import CatalogProductCard from "../catalog/CatalogProductCard";
 import ComboBox from "../../common/ComboBox";
-import { obtenerProductos } from "../../../services/ProductosService";
-import { obtenerCategoriasActivas } from "../../../services/CategoriasService";
-import { obtenerMarcas } from "../../../services/MarcasService";
-import { obtenerSucursales } from "../../../services/SucursalService";
+import  useProductos  from "../../../hooks/useProducts";
+
 
 const ProductSection = () => {
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [brands, setBrands] = useState([]);
-  const [sucursales, setSucursales] = useState([]);
+  // Use hooks as in Productos.jsx
+  const productos = useProductos();
 
   // Selected filters
   const [selectedCategory, setSelectedCategory] = useState("Todos");
@@ -22,36 +18,13 @@ const ProductSection = () => {
   const [filteredBrands, setFilteredBrands] = useState([]);
   const [filteredSucursales, setFilteredSucursales] = useState([]);
 
-  // Fetch categories, brands, and sucursales
-  useEffect(() => {
-    obtenerCategoriasActivas().then((data) => {
-      const opciones = data.map((Categoria) => Categoria.Descripcion_Categoria);
-      setCategories(["Todos", ...opciones]);
-    });
-    obtenerMarcas().then((data) => {
-      const opciones = data.map((Marca) => Marca.Nombre);
-      setBrands(["Todos", ...opciones]);
-    });
-    obtenerSucursales().then((data) => {
-      const opciones = data.map((Sucursal) => Sucursal.Nombre);
-      setSucursales(["Todos", ...opciones]);
-    });
-  }, []);
-
-  // Fetch products
-  useEffect(() => {
-    obtenerProductos().then((data) => {
-      setProducts(data);
-    });
-  }, []);
-
   // Dynamic filtering of options
   useEffect(() => {
     const sucursalesDisponibles = [
       "Todos",
       ...Array.from(
         new Set(
-          products
+          productos
             .filter(
               (p) =>
                 (selectedBrand === "Todos" || p.Marca === selectedBrand) &&
@@ -68,7 +41,7 @@ const ProductSection = () => {
       "Todos",
       ...Array.from(
         new Set(
-          products
+          productos
             .filter(
               (p) =>
                 (selectedSucursal === "Todos" ||
@@ -86,7 +59,7 @@ const ProductSection = () => {
       "Todos",
       ...Array.from(
         new Set(
-          products
+          productos
             .filter(
               (p) =>
                 (selectedSucursal === "Todos" ||
@@ -119,10 +92,10 @@ const ProductSection = () => {
     ) {
       setSelectedCategory("Todos");
     }
-  }, [products, selectedSucursal, selectedBrand, selectedCategory]);
+  }, [productos, selectedSucursal, selectedBrand, selectedCategory]);
 
   // Filter products according to active filters
-  const filteredProducts = products.filter((p) => {
+  const filteredProducts = productos.filter((p) => {
     const matchCategory =
       selectedCategory === "Todos" ||
       p.Descripcion_Categoria === selectedCategory;
@@ -142,30 +115,18 @@ const ProductSection = () => {
           options={filteredCategories}
           onSelect={setSelectedCategory}
           selected={selectedCategory}
-          bgColor="bg-[#0f0f0f]"
-          dropdownBgColor="bg-neutral-900"
-          inputBgColor="bg-neutral-900"
-          hoverBgColor="hover:bg-[#0f0f0f]"
         />
         <ComboBox
           name={"Marca"}
           options={filteredBrands}
           onSelect={setSelectedBrand}
           selected={selectedBrand}
-          bgColor="bg-[#0f0f0f]"
-          dropdownBgColor="bg-neutral-900"
-          inputBgColor="bg-neutral-900"
-          hoverBgColor="hover:bg-[#0f0f0f]"
         />
         <ComboBox
           name={"Sucursal"}
           options={filteredSucursales}
           onSelect={setSelectedSucursal}
           selected={selectedSucursal}
-          bgColor="bg-[#0f0f0f]"
-          dropdownBgColor="bg-neutral-900"
-          inputBgColor="bg-neutral-900"
-          hoverBgColor="hover:bg-[#0f0f0f]"
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mx-5 max-h-[660px] overflow-y-auto">

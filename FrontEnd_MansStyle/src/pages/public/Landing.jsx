@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import ProductSection from "../../components/public/landing/ProductSection";
 import {
   airpods,
@@ -10,6 +10,7 @@ import {
 } from "../../assest/carrousel/exports";
 import Slider from "../../components/public/landing/Slider";
 import Navbar from "../../components/public/landing/Navbar";
+
 const LandingPage = () => {
   const Images = [airpods, labial, parlantes, perfume, protectoresCam, tripode];
 
@@ -17,34 +18,24 @@ const LandingPage = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const result = products.filter((product) =>
+    products.filter((product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  },[searchTerm, products]);
+  }, [searchTerm, products]);
 
   return (
     <>
-            <Navbar />
+      <Navbar />
 
-      {/* Main */}
-      <div className="pointer-events-none fixed top-0 left-0 w-full h-32 z-20 bg-gradient-to-b from-black via-black/80 to-transparent" />
-      <main className="min-h-screen flex flex-col justify-start items-center px-6 md:px-20 pt-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-10 w-full max-w-7xl">
-          <div
-            className=" md:flex md:flex-col md:justify-center md:h-full"
-            data-sr
-          >
-            <h1
-              className="text-4xl md:text-5xl font-extrabold leading-tight mb-4 md:mb-6 md:text-left font-[poppins] standar-gradient bg-clip-text text-transparent drop-shadow-lg"
-              style={{ letterSpacing: "1px" }}
-            >
-              Variedades Man's Style <br />
+<div className="flex flex-col md:flex-row justify-start gap-10 px-6 py-20 my-30 bg-black w-full">
+          <div className="flex flex-col justify-center p-30 flex-1 text-center md:text-start">
+            <h1 className="text-4xl font-extrabold leading-tight mb-4 font-[poppins] standar-gradient bg-clip-text text-transparent drop-shadow-lg md:text-5xl" style={{ letterSpacing: "1px" }}>
+              Variedades Man's Style
             </h1>
-            <p className="text-lg md:text-xl mb-3 md:mb-4 md:text-left font-[poppins] text-gray-200">
+            <p className="text-sm md:text-xl mb-3 md:mb-4 md:text-left font-[poppins] text-gray-200">
               Somos una tienda de variedades, aquí podrás encontrar&nbsp;
               <span className="underline decoration-indigo-400 font-[poppins] underline-offset-4">
-                accesorios para celulares, artículos electrónicos, LED's,
-                perfumes, covers personalizados
+                accesorios para celulares, artículos electrónicos, LED's, perfumes, covers personalizados
               </span>
               &nbsp;y más.
             </p>
@@ -54,49 +45,35 @@ const LandingPage = () => {
               </span>{" "}
               ¡Visítenos!
             </p>
-            <input
-              href="#"
-              className="inline-block bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-xl text-base font-semibold
-              "
-              placeholder="Buscar productos"
-            />
+           
           </div>
-          <div
-            className="bg-transparent border-white/20 rounded-2xl shadow-2xl p-4 flex items-center justify-center"
-            data-sr
-          >
+          <div className="bg-transparent border-white/20 rounded-2xl shadow-2xl p-4 flex items-center justify-center flex-1">
             <Slider images={Images} />
           </div>
-        </div>
-      </main>
+      </div>
 
-      {/* Secciones */}
-      <section className="px-6 bg-[#141414]" data-sr>
+       <input
+              className="inline-block bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-xl text-base font-semibold minwidth-[300px] max-width-[500px] w-full mt-6 mb-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300"
+              placeholder="Buscar productos"
+            />
+
+      <section className="px-6 py-16" data-sr>
         <ProductSection />
       </section>
 
-      <section className="py-20 px-6 bg-[#1c1c1c]">
+      <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto" data-sr>
           <h2 className="text-center text-3xl md:text-4xl font-bold mb-12">
             Variedad en un solo lugar
           </h2>
-          {/* Carrusel de iconos */}
-          <div className="w-full flex justify-center mb-12">
-            <div className="relative w-full max-w-full overflow-hidden">
-       
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8"></div>
         </div>
       </section>
 
-      <section className="py-20 px-6 bg-[#141414]" data-sr>
+      <section className="py-20 px-6" data-sr>
         <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-4xl font-bold mb-10 mt-6z">
+          <h1 className="text-4xl font-bold mb-10 mt-6">
             Nuestras Sucursales!
           </h1>
-
           <h2 className="text-3xl font-bold mb-6">
             Sucursal Unidad de Proposito
           </h2>
@@ -111,7 +88,6 @@ const LandingPage = () => {
             ></iframe>
           </div>
           <h2 className="text-3xl font-bold mb-6 mt-6">Sucursal Americas 2</h2>
-
           <div className="w-full h-96 rounded-lg overflow-hidden shadow-lg">
             <iframe
               className="w-full h-full"
