@@ -50,25 +50,24 @@ const LandingPage = () => {
       </section>
 
       {/* Styled "Variedad en un solo lugar" Section */}
-      <section className="flex flex-col md:flex-row items-center py-16 px-4 mt-8 bg-[#23272f] rounded-xl shadow-lg max-w-7xl mx-auto gap-8">
-        {/* Imagen del local */}
-        <div className="w-full md:w-1/2 flex justify-center items-center mb-8 md:mb-0">
-          <div className="w-72 h-72 bg-gray-900 rounded-xl overflow-hidden flex items-center justify-center shadow-lg">
-            {/* Reemplaza la URL por la foto real de tu local si la tienes */}
-            <img
-              src="https://images.unsplash.com/photo-1515168833906-d2a3b82b302b?auto=format&fit=crop&w=400&q=80"
-              alt="Foto del local"
-              className="object-cover w-full h-full"
-              onError={e => { e.target.style.display = 'none'; }}
-            />
+      <section className="flex flex-col md:flex-row items-center py-16 px-4 mt-8 bg-[#23272f] rounded-xl shadow-lg max-w-7xl mx-auto text-align">
+          <div className="w-full md:w-1/2 flex justify-center items-center mb-8 md:mb-0 ">
+            <div className="w-80 h-80 bg-gray-900 rounded-xl overflow-hidden shadow-lg">
+              {/* Reemplaza la URL por la foto real de tu local si la tienes */}
+              <img
+                src="https://images.unsplash.com/photo-1515168833906-d2a3b82b302b?auto=format&fit=crop&w=400&q=80"
+                alt="Foto del local"
+                className="object-cover w-full h-full scale-110"
+                onError={e => { e.target.style.display = 'none'; }}
+              />
+            </div>
           </div>
-        </div>
-        {/* Texto a la derecha */}
-        <div className="w-full md:w-1/2 flex flex-col justify-center">
-          <h2 className="text-left text-4xl md:text-5xl font-bold mb-8 text-[#a78bfa] font-[poppins]">
+          {/* Texto a la derecha */}
+        <div className="w-full md:w-1/2 flex flex-col justify-center text-center min-h-72">
+          <h2 className=" text-4xl md:text-5xl font-bold mb-8 text-[#a78bfa] font-[poppins]">
             Variedad en un solo lugar
           </h2>
-          <p className="text-lg md:text-xl text-gray-200 font-[Montserrat]">
+          <p className="text-lg md:text-xl text-gray-200 font-[Montserrat] px-10">
             La sección de productos está actualizada en tiempo real. ¡Todo se encuentra disponible! 
             Abajo podrá ver las ubicaciones y la dirección de nuestras dos sucursales.
           </p>
