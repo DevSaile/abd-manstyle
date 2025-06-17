@@ -47,7 +47,7 @@ const ComboBox = ({
       onClick={(e) => e.stopPropagation()}
     >
       <button
-        className={`${bgColor} text-gray-400 font-bold py-2 px-4 rounded-lg inline-flex items-center w-full overflow-y-auto`}
+        className={`${bgColor} text-gray-400 font-bold py-2 px-4 rounded-lg inline-flex items-center w-full overflow-y-auto md:text-base text-xs`}
         onClick={(e) => {
           e.stopPropagation();
           e.preventDefault();

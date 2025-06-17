@@ -6,9 +6,7 @@ import { actualizarCategoria, eliminarCategoria, agregarCategoria } from "@/serv
 
 const CategoryTable = ({
     categoryData,
-    openEdit,
     openDelete,
-    openCreate, // This can be removed if not needed
     selectedCategory,
     setSelectedCategory,
     refreshCategories // Función para refrescar las categorías después de una operación CRUD

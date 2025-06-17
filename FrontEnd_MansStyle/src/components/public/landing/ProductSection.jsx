@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import CatalogProductCard from "../catalog/CatalogProductCard";
 import ComboBox from "../../common/ComboBox";
-import  useProductos  from "../../../hooks/useProducts";
-
+import useProductos from "../../../hooks/useProducts";
 
 const ProductSection = () => {
-  // Use hooks as in Productos.jsx
-  const { productos, setProductos } = useProductos();
+  const  {productos}  = useProductos();
+
 
   // Selected filters
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [selectedBrand, setSelectedBrand] = useState("Todos");
   const [selectedSucursal, setSelectedSucursal] = useState("Todos");
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Dynamically filtered options
   const [filteredCategories, setFilteredCategories] = useState([]);
@@ -94,7 +94,7 @@ const ProductSection = () => {
     }
   }, [productos, selectedSucursal, selectedBrand, selectedCategory]);
 
-  // Filter products according to active filters
+  // Filter products according to active filters and search term
   const filteredProducts = productos.filter((p) => {
     const matchCategory =
       selectedCategory === "Todos" ||
@@ -104,42 +104,63 @@ const ProductSection = () => {
       (p.Marca && p.Marca.toLowerCase() === selectedBrand.toLowerCase());
     const matchSucursal =
       selectedSucursal === "Todos" || p.Descripcion_Sucursal === selectedSucursal;
-    return matchCategory && matchBrand && matchSucursal;
+    const matchSearch =
+      !searchTerm ||
+      (p.Nombre && p.Nombre.toLowerCase().includes(searchTerm.toLowerCase()));
+    return matchCategory && matchBrand && matchSucursal && matchSearch;
   });
 
+  // Color palette for dark interface
+  const comboBoxProps = {
+    bgColor: "bg-[#23272f]",
+    dropdownBgColor: "bg-[#23272f]",
+    inputBgColor: "bg-[#18181b]",
+    hoverBgColor: "hover:bg-[#2563eb]/30",
+  };
+  console.log(`filterd produc ${filteredProducts}`);
+
   return (
-    <section className="py-6 px-4 bg-[#141414] bg-opacity-90 rounded-xl">
-      <div className="flex gap-5 mb-8 justify-center rounded">
-        <ComboBox
-          name={"Categoria"}
-          options={filteredCategories}
-          onSelect={setSelectedCategory}
-          selected={selectedCategory}
+    <section className="py-6 px-4 bg-[#18181b] rounded-xl">
+      <div className="flex flex-col gap-4 mb-8">
+        <input
+          type="text"
+          className="w-full bg-[#23272f] text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#2563eb] placeholder-gray-400"
+          placeholder="Buscar productos"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <ComboBox
-          name={"Marca"}
-          options={filteredBrands}
-          onSelect={setSelectedBrand}
-          selected={selectedBrand}
-        />
-        <ComboBox
-          name={"Sucursal"}
-          options={filteredSucursales}
-          onSelect={setSelectedSucursal}
-          selected={selectedSucursal}
-        />
+        <div className="flex gap-5 justify-center rounded">
+          <ComboBox
+            name={"Categoria"}
+            options={filteredCategories}
+            onSelect={setSelectedCategory}
+            selected={selectedCategory}
+            {...comboBoxProps}
+          />
+          <ComboBox
+            name={"Marca"}
+            options={filteredBrands}
+            onSelect={setSelectedBrand}
+            selected={selectedBrand}
+            {...comboBoxProps}
+          />
+          <ComboBox
+            name={"Sucursal"}
+            options={filteredSucursales}
+            onSelect={setSelectedSucursal}
+            selected={selectedSucursal}
+            {...comboBoxProps}
+          />
+        </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mx-5 max-h-[660px] overflow-y-auto">
-        {filteredProducts.map((product) => (
+        {
+        
+        filteredProducts.map((product) => (
+        
           <CatalogProductCard
-            key={product.ID_Producto}
-            name={product.Nombre}
-            price={product.Precio_Producto}
-            image={
-              product.url_image
-                ? product.url_image
-                : "https://via.placeholder.com/150"
-            }
+           
+            producto={product}
           />
         ))}
       </div>

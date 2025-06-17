@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 const Navbar = ({filters}) => {
   return (
-    <header className="w-full px-6 py-4 bg-[#0f0f0f] flex items-center justify-between shadow-md fixed z-40">
+    <header className="w-full px-6 py-4 bg-[#18181b] flex items-center justify-between shadow-md fixed z-40">
       <div className="flex items-center gap-8">
         <Logo className="h-6" />
         
