@@ -10,12 +10,12 @@ const StoreToggleCard = ({ isPrimary, toggleStore }) => {
 	return (
 		<motion.div
 			onClick={toggleStore}
-			className='cursor-pointer bg-gray-800 bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-700 hover:shadow-2xl transition-shadow'
+			className='cursor-pointer bg-white overflow-hidden shadow-lg rounded-xl border border-gray-700 hover:shadow-2xl transition-shadow'
 			whileHover={{ y: -5 }}
 		>
 			<div className='flex flex-col items-center justify-center px-4 py-10'>
 				<Icon size={40} style={{ color: iconColor }} />
-				<span className='mt-4 text-lg font-semibold text-gray-100'>{label}</span>
+				<span className='mt-4 text-lg font-semibold text-black'>{label}</span>
 			</div>
 		</motion.div>
 	);

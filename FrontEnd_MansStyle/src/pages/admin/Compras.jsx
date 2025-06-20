@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import Header from "../../components/common/Header";
-import ProductCardSales from "../../components/ventas/ProductCardSales";
+import ProductCardSales from "@/components/ventas/ProductCardSales";
 import { Plus, CheckCircle } from "lucide-react";
-import CartSummaryBuying from "../../components/compras/BuyingCartSummary";
-import NewProduct from "../../components/compras/NewProductModal";
-import { ExtraerInfoCompra } from "../../services/ProductosService";
-import { agregarCompraProducto } from "../../services/CompraHitorialService";
-import {ShowToast} from "../../components/common/ShowToast";
+import CartSummaryBuying from "@/components/compras/BuyingCartSummary";
+import NewProduct from "@/components/compras/NewProductModal";
+import { ExtraerInfoCompra } from "@/services/ProductosService";
+import { agregarCompraProducto } from "@/services/CompraHitorialService";
+import { ShowToast } from "@/components/common/ShowToast";
+import { useOutletContext } from "react-router-dom";
 
 const BuyingPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -16,24 +16,22 @@ const BuyingPage = () => {
   const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [products, setProducts] = useState([]);
   const [tipoPago, setTipoPago] = useState("contado");
-const [showToast, setShowToast] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   // Obtener productos al cargar el componente
 
   const fetchProducts = async () => {
-      try {
-        const productos = await ExtraerInfoCompra();
-        setProducts(productos);
-      } catch (error) {
-        console.error("Error al cargar productos:", error);
-        setProducts([]);
-      }
-    };
+    try {
+      const productos = await ExtraerInfoCompra();
+      setProducts(productos);
+    } catch (error) {
+      console.error("Error al cargar productos:", error);
+      setProducts([]);
+    }
+  };
   useEffect(() => {
     fetchProducts();
   }, []);
-
-
 
   // Filtrar productos
   const filteredProducts = products.filter((product) =>
@@ -127,9 +125,6 @@ const [showToast, setShowToast] = useState(false);
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1 }}
     >
-
-      <Header title="Compra" />
-
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
         <div className="mb-4 flex gap-4">
           {/* Buscador */}
@@ -186,25 +181,24 @@ const [showToast, setShowToast] = useState(false);
           </div>
         </div>
 
-       <NewProduct
-  openAdd={showAddProductModal}
-  AddModalClose={() => setShowAddProductModal(false)}
-  onProductAdded={() => {
-    fetchProducts();
-    setShowToast(true); // Activa el toast
-    // Activa el toast usando localStorage y ShowToastOnReload
-  }}
-/>
-<ShowToast
-  show={showToast}
-  onClose={() => setShowToast(false)}
-  message="Producto agregado correctamente"
-  iconType="success"
-  shadowColor="green"
-  tone="solid"
-  position="bottom-right"
-/>
-
+        <NewProduct
+          openAdd={showAddProductModal}
+          AddModalClose={() => setShowAddProductModal(false)}
+          onProductAdded={() => {
+            fetchProducts();
+            setShowToast(true); // Activa el toast
+            // Activa el toast usando localStorage y ShowToastOnReload
+          }}
+        />
+        <ShowToast
+          show={showToast}
+          onClose={() => setShowToast(false)}
+          message="Producto agregado correctamente"
+          iconType="success"
+          shadowColor="green"
+          tone="solid"
+          position="bottom-right"
+        />
       </main>
     </motion.div>
   );

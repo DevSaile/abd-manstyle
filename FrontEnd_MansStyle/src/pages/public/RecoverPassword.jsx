@@ -31,26 +31,26 @@ const RecoverPassword = () => {
           Recuperar Contraseña
         </h1>
 
-      <form onSubmit={handleRecover} className="w-full flex flex-col gap-4">
-  <input
-    type="email"
-    placeholder="Correo electrónico"
-    value={email}
-    onChange={(e) => setEmail(e.target.value)}
-    className="w-full p-2 text-sm rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 font-[poppins] placeholder-gray-400"
-    required
-  />
+        <form onSubmit={handleRecover} className="w-full flex flex-col gap-4">
+          <input
+            type="email"
+            placeholder="Correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-2 text-sm rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 font-[poppins] placeholder-gray-400"
+            required
+          />
 
-  {error && <p className="text-red-400 text-xs -mt-2">{error}</p>}
-  {mensaje && <p className="text-green-400 text-xs -mt-2">{mensaje}</p>}
+          {error && <p className="text-red-400 text-xs -mt-2">{error}</p>}
+          {mensaje && <p className="text-green-400 text-xs -mt-2">{mensaje}</p>}
 
-  <button
-    type="submit"
-    className="bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 hover:from-indigo-600 hover:to-pink-600 text-white px-3 py-2 rounded-lg w-full font-semibold transition duration-300 shadow-lg font-[poppins] text-sm"
-  >
-    Enviar enlace de recuperación
-  </button>
-</form>
+          <button
+            type="submit"
+            className="bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 hover:from-indigo-600 hover:to-pink-600 text-white px-3 py-2 rounded-lg w-full font-semibold transition duration-300 shadow-lg font-[poppins] text-sm"
+          >
+            Enviar enlace de recuperación
+          </button>
+        </form>
       </div>
     </div>
   );

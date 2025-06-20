@@ -1,10 +1,17 @@
 import { useState, useEffect } from "react";
-import { Clock, DollarSign, ShoppingBag, TrendingUp, ArrowDown, ArrowUp } from "lucide-react";
+import {
+  Clock,
+  DollarSign,
+  ShoppingBag,
+  TrendingUp,
+  ArrowDown,
+  ArrowUp,
+} from "lucide-react";
 import { motion } from "framer-motion";
-import Header from "../../components/common/Header";
-import StatCard from "../../components/common/StatCard";
-import BoughtCard from "../../components/registroscompra/BoughtCard";
-import { obtenerRegistroCompras } from "../../services/CompraHitorialService";
+import Header from "@/components/common/Header";
+import StatCard from "@/components/common/StatCard";
+import BoughtCard from "@/components/registroscompra/BoughtCard";
+import { obtenerRegistroCompras } from "@/services/CompraHitorialService";
 
 const RegistroCompra = () => {
   const [compras, setCompras] = useState([]);
@@ -50,18 +57,24 @@ const RegistroCompra = () => {
 
         // Calcular estadísticas
         const totalCompras = resultado.length;
-        const comprasActivas = resultado.filter(c => c.Estado === 1).length;
+        const comprasActivas = resultado.filter((c) => c.Estado === 1).length;
 
         const inversionTotal = resultado.reduce((total, compra) => {
-          return total + (compra.DetallesCompra?.reduce((sum, detalle) => {
-            return sum + (detalle.Precio_Compra * detalle.Cantidad);
-          }, 0) || 0);
+          return (
+            total +
+            (compra.DetallesCompra?.reduce((sum, detalle) => {
+              return sum + detalle.Precio_Compra * detalle.Cantidad;
+            }, 0) || 0)
+          );
         }, 0);
 
         const totalProductos = resultado.reduce((total, compra) => {
-          return total + (compra.DetallesCompra?.reduce((sum, detalle) => {
-            return sum + detalle.Cantidad;
-          }, 0) || 0);
+          return (
+            total +
+            (compra.DetallesCompra?.reduce((sum, detalle) => {
+              return sum + detalle.Cantidad;
+            }, 0) || 0)
+          );
         }, 0);
 
         setStats({
@@ -72,7 +85,6 @@ const RegistroCompra = () => {
           promedioCompra: totalCompras > 0 ? inversionTotal / totalCompras : 0,
           totalProductos,
         });
-
       } catch (error) {
         console.error("Error cargando compras:", error);
         setError(error.message);
@@ -94,23 +106,34 @@ const RegistroCompra = () => {
     const beforeEnd = !endDate || compraDateStr <= endDate;
 
     // Número de productos
-    const numProducts = Array.isArray(compra.DetallesCompra) ? compra.DetallesCompra.length : 0;
+    const numProducts = Array.isArray(compra.DetallesCompra)
+      ? compra.DetallesCompra.length
+      : 0;
     const meetsMinProducts = !minProducts || numProducts >= Number(minProducts);
 
     // Total de la compra
-    const totalCompra = compra.DetallesCompra?.reduce((total, detalle) => {
-      return total + (detalle.Precio_Compra * detalle.Cantidad);
-    }, 0) || 0;
+    const totalCompra =
+      compra.DetallesCompra?.reduce((total, detalle) => {
+        return total + detalle.Precio_Compra * detalle.Cantidad;
+      }, 0) || 0;
     const meetsMinTotal = !minTotal || totalCompra >= Number(minTotal);
 
     // Sucursal
-    const meetsSucursal = !sucursal || (compra.Nombre_Sucursal === sucursal);
+    const meetsSucursal = !sucursal || compra.Nombre_Sucursal === sucursal;
 
-    return afterStart && beforeEnd && meetsMinProducts && meetsMinTotal && meetsSucursal;
+    return (
+      afterStart &&
+      beforeEnd &&
+      meetsMinProducts &&
+      meetsMinTotal &&
+      meetsSucursal
+    );
   });
 
   // Ordenar según el estado
-  const comprasOrdenadas = orderAsc ? comprasFiltradas : comprasFiltradas.toReversed();
+  const comprasOrdenadas = orderAsc
+    ? comprasFiltradas
+    : comprasFiltradas.toReversed();
 
   if (loading) {
     return (
@@ -128,9 +151,7 @@ const RegistroCompra = () => {
       <div className="flex-1 relative z-10 overflow-y-auto">
         <Header title={"Registro de Compras"} />
         <div className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
-          <div className="text-center py-10 text-red-500">
-            Error: {error}
-          </div>
+          <div className="text-center py-10 text-red-500">Error: {error}</div>
         </div>
       </div>
     );
@@ -148,13 +169,13 @@ const RegistroCompra = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <StatCard 
-            name="Total Compras" 
-            icon={ShoppingBag} 
-            value={stats.totalCompras} 
-            color="#6366F1" 
+          <StatCard
+            name="Total Compras"
+            icon={ShoppingBag}
+            value={stats.totalCompras}
+            color="#6366F1"
           />
-        
+
           <StatCard
             name="Inversión Total"
             icon={DollarSign}
@@ -182,7 +203,7 @@ const RegistroCompra = () => {
             <input
               type="date"
               value={startDate}
-              onChange={e => setStartDate(e.target.value)}
+              onChange={(e) => setStartDate(e.target.value)}
               className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -191,7 +212,7 @@ const RegistroCompra = () => {
             <input
               type="date"
               value={endDate}
-              onChange={e => setEndDate(e.target.value)}
+              onChange={(e) => setEndDate(e.target.value)}
               className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -201,18 +222,20 @@ const RegistroCompra = () => {
               type="number"
               min={1}
               value={minProducts}
-              onChange={e => setMinProducts(e.target.value)}
+              onChange={(e) => setMinProducts(e.target.value)}
               placeholder="Ej: 2"
               className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div className="flex flex-col w-36">
-            <label className="text-gray-300 text-sm mb-1">Mín. inversión (C$)</label>
+            <label className="text-gray-300 text-sm mb-1">
+              Mín. inversión (C$)
+            </label>
             <input
               type="number"
               min={0}
               value={minTotal}
-              onChange={e => setMinTotal(e.target.value)}
+              onChange={(e) => setMinTotal(e.target.value)}
               placeholder="Ej: 100"
               className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -221,12 +244,14 @@ const RegistroCompra = () => {
             <label className="text-gray-300 text-sm mb-1">Sucursal</label>
             <select
               value={sucursal}
-              onChange={e => setSucursal(e.target.value)}
+              onChange={(e) => setSucursal(e.target.value)}
               className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Todas</option>
               {sucursales.map((suc) => (
-                <option key={suc} value={suc}>{suc}</option>
+                <option key={suc} value={suc}>
+                  {suc}
+                </option>
               ))}
             </select>
           </div>
@@ -238,7 +263,9 @@ const RegistroCompra = () => {
             title={orderAsc ? "Orden ascendente" : "Orden descendente"}
           >
             {orderAsc ? <ArrowUp size={20} /> : <ArrowDown size={20} />}
-            <span className="ml-2">{orderAsc ? "Ascendente" : "Descendente"}</span>
+            <span className="ml-2">
+              {orderAsc ? "Ascendente" : "Descendente"}
+            </span>
           </button>
         </div>
 
@@ -246,14 +273,16 @@ const RegistroCompra = () => {
         <div className="grid grid-cols-2 gap-6">
           {comprasOrdenadas.map((compra) => {
             // Calcular total de la compra sumando todos los detalles
-            const totalCompra = compra.DetallesCompra?.reduce((total, detalle) => {
-              return total + (detalle.Precio_Compra * detalle.Cantidad);
-            }, 0) || 0;
+            const totalCompra =
+              compra.DetallesCompra?.reduce((total, detalle) => {
+                return total + detalle.Precio_Compra * detalle.Cantidad;
+              }, 0) || 0;
 
             // Calcular cantidad total de productos en la compra
-            const cantidadTotal = compra.DetallesCompra?.reduce((total, detalle) => {
-              return total + detalle.Cantidad;
-            }, 0) || 0;
+            const cantidadTotal =
+              compra.DetallesCompra?.reduce((total, detalle) => {
+                return total + detalle.Cantidad;
+              }, 0) || 0;
 
             return (
               <BoughtCard
@@ -265,11 +294,13 @@ const RegistroCompra = () => {
                 status={compra.Estado === 1 ? "Completada" : "Cancelada"}
                 amount={compra.DetallesCompra?.length || 0}
                 total={totalCompra}
-                products={compra.DetallesCompra?.map(d => ({
-                  name: d.NombreProducto,
-                  unitPrice: d.Precio_Compra,
-                  quantity: d.Cantidad,
-                })) || []}
+                products={
+                  compra.DetallesCompra?.map((d) => ({
+                    name: d.NombreProducto,
+                    unitPrice: d.Precio_Compra,
+                    quantity: d.Cantidad,
+                  })) || []
+                }
               />
             );
           })}

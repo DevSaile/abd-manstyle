@@ -7,22 +7,14 @@
   /* Gradient mask for fading effect */
 
  /* filepath: c:\Users\Admin\Documents\FrontEnd_MansStyle\src\index.css */
-.custom-scrollbar {
-  scrollbar-width: thin; /* For Firefox */
-  scrollbar-color: #1f2937 #374151; /* Thumb color (gray-700) and track color (gray-900) */
-}
+.scrollbar-hidden {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px; /* Width of the scrollbar */
+  /* Chrome, Safari and Opera */
 }
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #374151; /* Thumb color (gray-700) */
-  border-radius: 4px; /* Rounded corners */
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background-color: #374151; /* Track color (gray-900) */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
 }
 
 .standar-gradient {

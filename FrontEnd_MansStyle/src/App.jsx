@@ -1,17 +1,30 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import { AdminLayout, PublicLayout } from "./layouts";
-import { BuyingPage, OverviewPage, ProductsPage, ClientsPage, CashierPage, UsersPage, CategoryPage, RegistrosVenta, RegistroCompra } from "./pages/admin";
-import { LandingPage, Login, RecoverPassword, ResetPassword, Error404 } from "./pages/public";
+import {
+  BuyingPage,
+  OverviewPage,
+  ProductsPage,
+  ClientsPage,
+  CashierPage,
+  UsersPage,
+  CategoryPage,
+  RegistrosVenta,
+  RegistroCompra
+} from "./pages/admin";
+import {
+  LandingPage,
+  Login,
+  RecoverPassword,
+  ResetPassword,
+  Error404
+} from "./pages/public";
 import { ProtectedRoute } from "./components/public/auth";
-
 
 function App() {
   return (
-
     <Routes>
-
-      {/* Public Routes */}
+      {/* Rutas públicas */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
@@ -19,12 +32,11 @@ function App() {
         <Route path="/resetear-contrasena/:token" element={<ResetPassword />} />
       </Route>
 
-      {/* Admin Routes */}
-      <Route element={<AdminLayout />}>
-        <Route path="/inicio" element={<OverviewPage />} />
-
+      {/* Rutas del panel admin bajo /admin */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route path="inicio" element={<OverviewPage />} />
         <Route
-          path="/productos"
+          path="productos"
           element={
             <ProtectedRoute>
               <ProductsPage />
@@ -32,7 +44,7 @@ function App() {
           }
         />
         <Route
-          path="/clientes"
+          path="clientes"
           element={
             <ProtectedRoute requiredRole="Administrador">
               <ClientsPage />
@@ -40,7 +52,7 @@ function App() {
           }
         />
         <Route
-          path="/venta"
+          path="venta"
           element={
             <ProtectedRoute>
               <CashierPage />
@@ -48,7 +60,7 @@ function App() {
           }
         />
         <Route
-          path="/registrosventas"
+          path="registrosventas"
           element={
             <ProtectedRoute requiredRole="Administrador">
               <RegistrosVenta />
@@ -56,7 +68,7 @@ function App() {
           }
         />
         <Route
-          path="/registroscompras"
+          path="registroscompras"
           element={
             <ProtectedRoute requiredRole="Administrador">
               <RegistroCompra />
@@ -64,7 +76,7 @@ function App() {
           }
         />
         <Route
-          path="/compra"
+          path="compra"
           element={
             <ProtectedRoute requiredRole="Administrador">
               <BuyingPage />
@@ -72,16 +84,15 @@ function App() {
           }
         />
         <Route
-          path="/categorias"
+          path="categorias"
           element={
             <ProtectedRoute requiredRole="Administrador">
               <CategoryPage />
             </ProtectedRoute>
           }
         />
-
         <Route
-          path="/usuarios"
+          path="usuarios"
           element={
             <ProtectedRoute requiredRole="Administrador">
               <UsersPage />
@@ -90,6 +101,7 @@ function App() {
         />
       </Route>
 
+      {/* Ruta de error 404 */}
       <Route path="/404" element={<Error404 />} />
       <Route path="*" element={<Navigate to="/404" replace />} />
     </Routes>

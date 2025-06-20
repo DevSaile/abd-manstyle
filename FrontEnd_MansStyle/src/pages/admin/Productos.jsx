@@ -4,16 +4,15 @@ import { motion } from "framer-motion";
 import {
   eliminarProducto,
   obtenerProductoPorID,
-} from "../../services/ProductosService";
+} from "@/services/ProductosService";
 
-import useProductos from "../../hooks/useProducts";
-
-import Header from "../../components/common/Header";
-import ComboBox from "../../components/common/ComboBox";
-import ProductCard from "../../components/productos/ProductCard";
-import ModalEditar from "../../components/productos/ModalEditar";
+import useProductos from "@/hooks/useProducts";
+import ComboBox from "@/components/common/ComboBox";
+import ProductCard from "@/components/productos/ProductCard";
+import ModalEditar from "@/components/productos/ModalEditar";
 import { Modal } from "@rewind-ui/core";
-import ModalDetalles from "../../components/productos/ModalDetalles";
+import ModalDetalles from "@/components/productos/ModalDetalles";
+import { useOutletContext } from "react-router-dom";
 
 const ProductsPage = () => {
   const { productos, setProductos } = useProductos();
@@ -174,12 +173,12 @@ const ProductsPage = () => {
   };
 
   return (
-    <div className="flex-1 overflow-auto relative z-10">
+    <div className="flex-column relative z-10">
       <Header title="Productos" />
 
-      <main className="max-w-7xl mx-5 py-6 px-4 lg:px-8">
+      <main className="max-w-7xl mx-5 py-6 px-4">
         <motion.div
-          className="flex flex-wrap gap-4 items-end mb-8"
+          className="flex flex-row gap-4 items-end mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
@@ -219,11 +218,10 @@ const ProductsPage = () => {
               onDelete={() => handleDelete(product)}
             />
           ))}
-          
+
           {console.log("Filtered Products:", filteredProducts)}
         </div>
 
-        
         <Modal
           open={openDelete}
           onClose={() => setOpenDelete(false)}

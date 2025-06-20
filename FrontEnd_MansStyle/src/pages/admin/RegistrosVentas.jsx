@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
-import { CheckCircle, Clock, DollarSign, ShoppingBag, ArrowDown, ArrowUp } from "lucide-react";
+import {
+  CheckCircle,
+  Clock,
+  DollarSign,
+  ShoppingBag,
+  ArrowDown,
+  ArrowUp,
+} from "lucide-react";
 import { motion } from "framer-motion";
+import { useOutletContext } from "react-router-dom";
 
-import Header from "../../components/common/Header";
-import StatCard from "../../components/common/StatCard";
-import SaleCard from "../../components/registrosventa/SalesCard";
+import StatCard from "@/components/common/StatCard";
+import SaleCard from "@/components/registrosventa/SalesCard";
 
-import { obtenerTodasLasVentas } from "../../services/VentasService";
+import { obtenerTodasLasVentas } from "@/services/VentasService";
 
 const RegistrosVenta = () => {
   const [ventas, setVentas] = useState([]);
@@ -59,25 +66,33 @@ const RegistrosVenta = () => {
     const beforeEnd = !endDate || ventaDateStr <= endDate;
 
     // Number of products filter
-    const numProducts = Array.isArray(venta.Detalles) ? venta.Detalles.length : 0;
+    const numProducts = Array.isArray(venta.Detalles)
+      ? venta.Detalles.length
+      : 0;
     const meetsMinProducts = !minProducts || numProducts >= Number(minProducts);
 
     // Total income filter
     const meetsMinTotal = !minTotal || (venta.Total || 0) >= Number(minTotal);
 
     // Sucursal filter
-    const meetsSucursal = !sucursal || (venta.NombreSucursal === sucursal);
+    const meetsSucursal = !sucursal || venta.NombreSucursal === sucursal;
 
-    return afterStart && beforeEnd && meetsMinProducts && meetsMinTotal && meetsSucursal;
+    return (
+      afterStart &&
+      beforeEnd &&
+      meetsMinProducts &&
+      meetsMinTotal &&
+      meetsSucursal
+    );
   });
 
   // Ordenar según el estado
-  const ventasOrdenadas = orderAsc ? filteredVentas : filteredVentas.toReversed();
+  const ventasOrdenadas = orderAsc
+    ? filteredVentas
+    : filteredVentas.toReversed();
 
   return (
     <div className="flex-1 relative z-10 overflow-auto">
-      <Header title={"Registro de Ventas"} />
-
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
         <motion.div
           className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8"
@@ -112,7 +127,7 @@ const RegistrosVenta = () => {
             <input
               type="date"
               value={startDate}
-              onChange={e => setStartDate(e.target.value)}
+              onChange={(e) => setStartDate(e.target.value)}
               className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -121,7 +136,7 @@ const RegistrosVenta = () => {
             <input
               type="date"
               value={endDate}
-              onChange={e => setEndDate(e.target.value)}
+              onChange={(e) => setEndDate(e.target.value)}
               className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -131,18 +146,20 @@ const RegistrosVenta = () => {
               type="number"
               min={1}
               value={minProducts}
-              onChange={e => setMinProducts(e.target.value)}
+              onChange={(e) => setMinProducts(e.target.value)}
               placeholder="Ej: 2"
               className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div className="flex flex-col w-36">
-            <label className="text-gray-300 text-sm mb-1">Mín. ingreso ($)</label>
+            <label className="text-gray-300 text-sm mb-1">
+              Mín. ingreso ($)
+            </label>
             <input
               type="number"
               min={0}
               value={minTotal}
-              onChange={e => setMinTotal(e.target.value)}
+              onChange={(e) => setMinTotal(e.target.value)}
               placeholder="Ej: 100"
               className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -151,12 +168,14 @@ const RegistrosVenta = () => {
             <label className="text-gray-300 text-sm mb-1">Sucursal</label>
             <select
               value={sucursal}
-              onChange={e => setSucursal(e.target.value)}
+              onChange={(e) => setSucursal(e.target.value)}
               className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Todas</option>
               {sucursales.map((suc) => (
-                <option key={suc} value={suc}>{suc}</option>
+                <option key={suc} value={suc}>
+                  {suc}
+                </option>
               ))}
             </select>
           </div>
@@ -168,7 +187,9 @@ const RegistrosVenta = () => {
             title={orderAsc ? "Orden ascendente" : "Orden descendente"}
           >
             {orderAsc ? <ArrowUp size={20} /> : <ArrowDown size={20} />}
-            <span className="ml-2">{orderAsc ? "Ascendente" : "Descendente"}</span>
+            <span className="ml-2">
+              {orderAsc ? "Ascendente" : "Descendente"}
+            </span>
           </button>
         </div>
 

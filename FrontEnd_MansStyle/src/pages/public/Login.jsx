@@ -1,34 +1,34 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
-import ParticlesBackground from '@/components/public/common/ParticlesBackground';
-import tiendaImg from '@/assest/login_image.webp';
-import { loginUsuario } from '@/services/LoginService'; 
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ParticlesBackground from "@/components/public/common/ParticlesBackground";
+import tiendaImg from "@/assest/login_image.webp";
+import { loginUsuario } from "@/services/LoginService";
 
 const Login = () => {
-  const [usuario, setUsuario] = useState('');
-  const [contrasena, setContrasena] = useState('');
-  const [error, setError] = useState('');
-  const navigate = useNavigate(); 
+  const [usuario, setUsuario] = useState("");
+  const [contrasena, setContrasena] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     try {
       const response = await loginUsuario(usuario, contrasena);
-      if (response && response.ID_Empleado) { 
+      if (response && response.ID_Empleado) {
         const userRole = response.NombreRol;
         const idSucursal = response.ID_Sucursal;
-        localStorage.setItem('usuario', JSON.stringify(response)); 
-        localStorage.setItem('rol', userRole);
-        localStorage.setItem('idSucursal', idSucursal);
-        localStorage.setItem('isAuthenticated', 'true');
-        navigate('/inicio'); 
+        localStorage.setItem("usuario", JSON.stringify(response));
+        localStorage.setItem("rol", userRole);
+        localStorage.setItem("idSucursal", idSucursal);
+        localStorage.setItem("isAuthenticated", "true");
+        navigate("/admin/inicio");
       } else {
-        setError('Credenciales incorrectas');
+        setError("Credenciales incorrectas");
       }
     } catch (err) {
-      setError('Credenciales incorrectas o error en el servidor');
+      setError("Credenciales incorrectas o error en el servidor");
     }
   };
 
@@ -42,16 +42,19 @@ const Login = () => {
       <ParticlesBackground color="#0f0f0f" />
 
       {/* Imagen a la izquierda */}
-      
-   
 
       {/* Formulario de login a la derecha */}
       <div className="flex flex-col justify-center items-center w-full md:w-1/2 bg-[#18181b] p-10 text-center relative z-10 min-h-screen shadow-2xl">
         <h1 className="text-4xl md:text-5xl font-extrabold mb-2 bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg font-[poppins] tracking-wide">
           Variedades Man's Style
         </h1>
-        <h2 className="text-xl md:text-2xl mb-10 text-gray-200 font-semibold font-[poppins]">Iniciar Sesión</h2>
-        <form onSubmit={handleLogin} className="w-full max-w-sm mx-auto flex flex-col gap-7">
+        <h2 className="text-xl md:text-2xl mb-10 text-gray-200 font-semibold font-[poppins]">
+          Iniciar Sesión
+        </h2>
+        <form
+          onSubmit={handleLogin}
+          className="w-full max-w-sm mx-auto flex flex-col gap-7"
+        >
           <div>
             <input
               type="text"
