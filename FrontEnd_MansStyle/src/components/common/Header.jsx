@@ -14,15 +14,18 @@ const Header = ({ isSidebarOpen, setIsSidebarOpen, title }) => {
       }}
     >
       {/* Sidebar Toggle Button */}
-      <button
-        className="mr-4 p-2 rounded-full hover:bg-gray-700 transition-colors text-black"
-        onClick={() => setIsSidebarOpen((open) => !open)}
-        aria-label={isSidebarOpen ? "Cerrar menú" : "Abrir menú"}
-      >
-        <Menu size={28} />
-      </button>
-      <h1 className="text-2xl font-semibold text-black flex-1">{title}</h1>
-      {/* User Dropdown */}
+        <button
+          className="mr-4 p-2 rounded-full text-slate-900 transition-colors duration-300 hover:text-white hover:bg-blue-600"
+          onClick={() => setIsSidebarOpen((open) => !open)}
+          aria-label={isSidebarOpen ? "Cerrar menú" : "Abrir menú"}
+          style={{
+            transitionDelay: "10ms",
+          }}
+        >
+          <Menu size={28} />
+        </button>
+        <h1 className="text-2xl font-semibold text-black flex-1">{title}</h1>
+        {/* User Dropdown */}
       <div className="relative">
         <h3
           onClick={() => setDropdownOpen(!dropdownOpen)}

@@ -1,4 +1,12 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { ObtenerVentasPorDiaSemana } from "../../services/SucursalService";
@@ -13,13 +21,13 @@ const SalesOverviewChart = ({ idSucursal }) => {
       try {
         setLoading(true);
         const data = await ObtenerVentasPorDiaSemana(idSucursal);
-        
+
         // Mapear los datos al formato que esperan los recharts
-        const formattedData = data.map(item => ({
-          name: item.Name, 
-          sales: item.Sales
+        const formattedData = data.map((item) => ({
+          name: item.Name,
+          sales: item.Sales,
         }));
-        
+
         setSalesData(formattedData);
       } catch (err) {
         console.error("Error fetching sales data:", err);
@@ -58,7 +66,7 @@ const SalesOverviewChart = ({ idSucursal }) => {
 
   return (
     <motion.div
-      className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700"
+      className="bg-gradient-to-br from-white to-blue-50 shadow-custom rounded-xl p-6 border "
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
@@ -69,24 +77,17 @@ const SalesOverviewChart = ({ idSucursal }) => {
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={salesData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#4B5563" />
-            <XAxis 
-              dataKey="name" 
-              stroke="#9ca3af"
-              tick={{ fill: '#9ca3af' }}
-            />
-            <YAxis 
-              stroke="#9ca3af"
-              tick={{ fill: '#9ca3af' }}
-            />
+            <XAxis dataKey="name" stroke="#9ca3af" tick={{ fill: "#9ca3af" }} />
+            <YAxis stroke="#9ca3af" tick={{ fill: "#9ca3af" }} />
             <Tooltip
               contentStyle={{
-                backgroundColor: "rgba(31, 41, 55, 0.9)",
-                borderColor: "#4B5563",
+                backgroundColor: "#ffffff",
+                borderColor: "#cbd5e1",
                 borderRadius: "0.5rem",
               }}
               itemStyle={{ color: "#E5E7EB" }}
-              formatter={(value) => [`$${value}`, 'Ventas']}
-              labelStyle={{ fontWeight: 'bold', color: '#6366F1' }}
+              formatter={(value) => [`$${value}`, "Ventas"]}
+              labelStyle={{ fontWeight: "bold", color: "#6366F1" }}
             />
             <Line
               type="monotone"

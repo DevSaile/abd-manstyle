@@ -6,6 +6,7 @@ import CartSummary from "@/components/ventas/CartSummary";
 import { CheckCircle } from "lucide-react";
 import { obtenerProductosPorSucursal } from "@/services/ProductosService";
 import { agregarVenta } from "@/services/VentasService";
+import { filter } from "framer-motion/client";
 
 const CashierPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -102,9 +103,10 @@ const CashierPage = () => {
 
   const filteredProducts = products.filter(
     (product) =>
-      product.Nombre.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      product.Cantidad > 0
+      product.Nombre.toLowerCase().includes(searchTerm.toLowerCase())
+  
   );
+
 
   return (
     <motion.div

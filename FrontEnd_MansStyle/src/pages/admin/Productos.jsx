@@ -174,7 +174,6 @@ const ProductsPage = () => {
 
   return (
     <div className="flex-column relative z-10">
-      <Header title="Productos" />
 
       <main className="max-w-7xl mx-5 py-6 px-4">
         <motion.div

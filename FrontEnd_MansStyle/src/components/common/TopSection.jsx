@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 
 const TopSection = ({children}) => {
   return (
-    <motion.div className='flex justify-center bg-blue-700 align-middle pt-7 md:visible px-7'>
+    <motion.div className='flex justify-evenly bg-[#475DCD] align-middle pt-7 md:visible '>
         {children}
         
     </motion.div>

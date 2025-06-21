@@ -16,34 +16,41 @@ const SIDEBAR_ITEMS = [
   {
     name: "Panel Inicial",
     icon: BarChart2,
-    color: "#6366f1",
     href: "/admin/inicio",
   },
   {
     name: "Productos",
     icon: ShoppingBag,
-    color: "#8B5CF6",
     href: "/admin/productos",
   },
-  { name: "Compras", icon: ShoppingCart, color: "#EC4899", href: "/admin/compra" },
-  { name: "Ventas", icon: DollarSign, color: "#10B981", href: "/admin/venta" },
-  { name: "Usuarios", icon: CircleUser, color: "#3B82F6", href: "/admin/usuarios" },
+  {
+    name: "Compras",
+    icon: ShoppingCart,
+    href: "/admin/compra",
+  },
+  {
+    name: "Ventas",
+    icon: DollarSign,
+    href: "/admin/venta",
+  },
+  {
+    name: "Usuarios",
+    icon: CircleUser,
+    href: "/admin/usuarios",
+  },
   {
     name: "Registros de Ventas",
     icon: NotebookPen,
-    color: "#6EE7B7",
     href: "/admin/registrosventas",
   },
   {
     name: "Registros de Compras",
     icon: BaggageClaim,
-    color: "#6E08B9",
     href: "/admin/registroscompras",
   },
   {
     name: "Categorias",
     icon: TableProperties,
-    color: "#FBBF24",
     href: "/admin/categorias",
   },
 ];
@@ -82,14 +89,17 @@ const Sidebar = ({ isSidebarOpen }) => {
         <motion.div
           key="sidebar"
           initial={{ width: 0, opacity: 0 }}
-          animate={{         width: window.innerWidth < 768 ? "100vw" : 224,
- opacity: 1 }}
+          animate={{
+            width: window.innerWidth < 768 ? "100vw" : 224,
+            opacity: 1,
+          }}
           exit={{ width: 0, opacity: 0 }}
           transition={{
             width: { type: "spring", stiffness: 400, damping: 30 },
             opacity: { duration: 0.15 },
           }}
-          className="h-full bg-[#18181b] p-3 flex flex-col border-r-4 border-[#6366f1] overflow-hidden"
+          className="h-full bg-gradient-to-br from-[#F8FAFC] to-[#E0F2FE] // slate-50 to blue-100
+ p-3 flex flex-col border-r-4 border-blue-700 overflow-hidden"
           style={{
             minWidth: 0,
             maxWidth: 224,
@@ -97,30 +107,53 @@ const Sidebar = ({ isSidebarOpen }) => {
             zIndex: 20,
           }}
         >
-          <div className="flex items-center mb-8">
-            <span className="text-xl font-bold text-white tracking-wide whitespace-nowrap">
-              Man's Style
-            </span>
+          <div
+            className="flex items-center mb-8 text-xl font-bold text-slate-900 tracking-wide whitespace-nowrap"
+            style={{
+              boxShadow: "-3px 3px 1px rgba(0, 0, 0, 0.3)",
+              padding: "0.25rem 0.5rem", // optional for visual spacing
+              borderRadius: "0.5rem", // optional for softer look
+              backgroundColor: "white", // optional if you want it to pop more
+            }}
+          >
+            Man's Style
           </div>
+
           <nav className="flex-grow">
             {filteredSidebarItems.map((item) => (
               <Link key={item.href} to={item.href}>
                 <motion.div
-                  className="flex items-center p-3 text-sm font-medium rounded-lg hover:bg-[#6366f1]/20 transition-colors mb-2"
+                  className="group flex items-center p-3 text-sm font-medium rounded-lg hover:bg-[#6366f1] transition-colors mb-2"
+                  whileHover={{
+                    scale: 1.03,
+                    y: -6,
+                    x: 6,
+                    boxShadow: "-6px 6px 2px rgba(0, 0, 0, 0.3)",
+                    transition: {
+                      duration: 0.15,
+                      ease: "easeOut",
+                    },
+                  }}
                   style={{
-                    boxShadow: `0 0 8px 0 ${item.color}33`,
+                    boxShadow: "-3px 3px 1px rgba(0, 0, 0, 0.3)",
                   }}
                 >
                   <span
-                    className="flex items-center justify-center w-9 h-9 rounded-lg mr-3 transition-all"
+                    className={`flex items-center justify-center w-9 h-9 rounded-lg mr-3 transition-all
+            group-hover:bg-[#6366f1] group-hover:!text-white`}
                     style={{
                       background: `${item.color}22`,
-                      color: item.color,
+                      color: "#475DCD",
                     }}
                   >
                     <item.icon size={20} />
                   </span>
-                  <span className="whitespace-nowrap">{item.name}</span>
+                  <span
+                    className="whitespace-nowrap transition-colors group-hover:!text-white"
+                    style={{ color: "#475DCD" }}
+                  >
+                    {item.name}
+                  </span>
                 </motion.div>
               </Link>
             ))}

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import {
   BarChart2,
   ShoppingBag,
-  Users,
+  DollarSign,
   ChartNoAxesCombined,
   Contact,
   User,
@@ -80,29 +80,29 @@ const OverviewPage = () => {
               name="Clientes"
               icon={User}
               value={activeTotals ? activeTotals.Clientes : "Cargando..."}
-              color="#6366F1"
+              color="#d9c252"
             />
             <StatCard
               name="Productos"
               icon={ShoppingBag}
               value={activeTotals ? activeTotals.Productos : "Cargando..."}
-              color="#EC4899"
+              color="#b572f7"
             />
             <StatCard
               name="Ventas"
               icon={ChartNoAxesCombined}
               value={activeTotals ? activeTotals.Ventas : "Cargando..."}
-              color="#10B981"
+              color="#e04fa4"
             />
             <StatCard
               name="Ganancia Neta"
-              icon={Contact}
+              icon={DollarSign}
               value={
                 activeTotals
                   ? `$${activeTotals.GananciasTotales}`
                   : "Cargando..."
               }
-              color="#8B5CF6"
+              color="#42CF65"
             />
             <StatCard
               name="Marcas"
@@ -112,9 +112,9 @@ const OverviewPage = () => {
             />
           </div>
         </TopSection>
-
+              
         {/* CHARTS */}
-        <section className="p-20">
+        <section className="px-20 py-14">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <SalesOverviewChart idSucursal={currentStoreId} />
             <SellsPerCategory idSucursal={currentStoreId} />
