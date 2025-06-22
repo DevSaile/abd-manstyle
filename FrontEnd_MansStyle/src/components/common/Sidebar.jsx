@@ -98,8 +98,7 @@ const Sidebar = ({ isSidebarOpen }) => {
             width: { type: "spring", stiffness: 400, damping: 30 },
             opacity: { duration: 0.15 },
           }}
-          className="h-full bg-gradient-to-br from-[#F8FAFC] to-[#E0F2FE] // slate-50 to blue-100
- p-3 flex flex-col border-r-4 border-blue-700 overflow-hidden"
+          className="mr-5m h-full bg-gradient-to-br from-white to-[#E0F2FE] p-3 flex flex-col border-r-4 border-blue-700 overflow-hidden"
           style={{
             minWidth: 0,
             maxWidth: 224,
@@ -108,7 +107,7 @@ const Sidebar = ({ isSidebarOpen }) => {
           }}
         >
           <div
-            className="flex items-center mb-8 text-xl font-bold text-slate-900 tracking-wide whitespace-nowrap"
+            className="mb-8 text-xl font-bold text-slate-900 text-center"
             style={{
               boxShadow: "-3px 3px 1px rgba(0, 0, 0, 0.3)",
               padding: "0.25rem 0.5rem", // optional for visual spacing
@@ -123,7 +122,7 @@ const Sidebar = ({ isSidebarOpen }) => {
             {filteredSidebarItems.map((item) => (
               <Link key={item.href} to={item.href}>
                 <motion.div
-                  className="group flex items-center p-3 text-sm font-medium rounded-lg hover:bg-[#6366f1] transition-colors mb-2"
+                  className="group flex items-center p-3 text-sm font-medium rounded-lg bg-white border border-slate-50 hover:bg-[#6366f1] transition-colors mb-2"
                   whileHover={{
                     scale: 1.03,
                     y: -6,
@@ -158,11 +157,31 @@ const Sidebar = ({ isSidebarOpen }) => {
               </Link>
             ))}
             <button onClick={handleLogout} className="w-full text-left">
-              <motion.div className="flex items-center p-3 text-sm font-medium rounded-lg hover:bg-[#6366f1]/20 transition-colors mb-2 mt-12">
-                <span className="flex items-center justify-center w-9 h-9 rounded-lg mr-3 bg-[#6366f1] text-[#23272f]">
+              <motion.div
+                className="group flex items-center p-3 text-sm font-medium rounded-lg bg-white border border-slate-50 hover:bg-red-500 transition-colors mb-2 mt-6"
+                whileHover={{
+                  scale: 1.03,
+                  y: -6,
+                  x: 6,
+                  boxShadow: "-6px 6px 2px rgba(0, 0, 0, 0.3)",
+                  transition: { duration: 0.15, ease: "easeOut" },
+                }}
+                style={{
+                  boxShadow: "-3px 3px 1px rgba(0, 0, 0, 0.3)",
+                }}
+              >
+                <span
+                  className="flex items-center justify-center w-9 h-9 rounded-lg mr-3 transition-all group-hover:bg-white group-hover:text-red-500"
+                  style={{
+                    background: "#ef4444", // rojo Tailwind
+                    color: "white",
+                  }}
+                >
                   <LogOut size={20} />
                 </span>
-                <span className="whitespace-nowrap">Cerrar Sesión</span>
+                <span className="whitespace-nowrap transition-colors group-hover:text-white text-[#ef4444]">
+                  Cerrar Sesión
+                </span>
               </motion.div>
             </button>
           </nav>

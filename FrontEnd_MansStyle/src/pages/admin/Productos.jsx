@@ -13,6 +13,7 @@ import ModalEditar from "@/components/productos/ModalEditar";
 import { Modal } from "@rewind-ui/core";
 import ModalDetalles from "@/components/productos/ModalDetalles";
 import { useOutletContext } from "react-router-dom";
+import TopSection from "../../components/common/TopSection";
 
 const ProductsPage = () => {
   const { productos, setProductos } = useProductos();
@@ -175,41 +176,47 @@ const ProductsPage = () => {
   return (
     <div className="flex-column relative z-10">
 
-      <main className="max-w-7xl mx-5 py-6 px-4">
-        <motion.div
-          className="flex flex-row gap-4 items-end mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          <ComboBox
-            name={"Categoria"}
-            options={filteredCategorias}
-            onSelect={setSelectedCategory}
-            selected={selectedCategory}
-          />
-          <ComboBox
-            name={"Sucursal"}
-            options={filteredSucursales}
-            onSelect={setSelectedSucursal}
-            selected={selectedSucursal}
-          />
-          <ComboBox
-            name={"Marca"}
-            options={filteredMarcas}
-            onSelect={setSelectedMarca}
-            selected={selectedMarcas}
-          />
-          <input
-            type="text"
-            placeholder="Buscar productos..."
-            className="bg-gray-700 text-white placeholder-gray-400 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </motion.div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 mb-8 p-10 col-span-4 overflow-y-auto custom-scrollbar bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 border border-gray-700 rounded-xl shadow-lg h-5/6 min-h-[400px]">
+      <main>
+       <TopSection>
+  <ComboBox
+    name={"Categoria"}
+    options={filteredCategorias}
+    onSelect={setSelectedCategory}
+    selected={selectedCategory}
+    bgColor="bg-white"
+    dropdownBgColor="bg-white"
+    inputBgColor="bg-white"
+    hoverBgColor="hover:bg-blue-100"
+  />
+  <ComboBox
+    name={"Sucursal"}
+    options={filteredSucursales}
+    onSelect={setSelectedSucursal}
+    selected={selectedSucursal}
+    bgColor="bg-white"
+    dropdownBgColor="bg-white"
+    inputBgColor="bg-white"
+    hoverBgColor="hover:bg-blue-100"
+  />
+  <ComboBox
+    name={"Marca"}
+    options={filteredMarcas}
+    onSelect={setSelectedMarca}
+    selected={selectedMarcas}
+    bgColor="bg-white"
+    dropdownBgColor="bg-white"
+    inputBgColor="bg-white"
+    hoverBgColor="hover:bg-blue-100"
+  />
+  <input
+    type="text"
+    placeholder="Buscar productos..."
+    className="bg-white text-white placeholder-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+  />
+</TopSection>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-7 mb-8 p-10 col-span-4 overflow-y-auto h-5/6 min-h-[400px]">
           {filteredProducts.map((product) => (
             <ProductCard
               product={product}
