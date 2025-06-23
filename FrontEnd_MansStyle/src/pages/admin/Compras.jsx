@@ -16,11 +16,11 @@ const BuyingPage = () => {
   const [products, setProducts] = useState([]);
   const [showToast, setShowToast] = useState(false);
 
-   const { setTitle } = useOutletContext();
-    useEffect(() => {
-      setTitle("Comprad");
-    }, [setTitle]);
-  
+  const { setTitle } = useOutletContext();
+  useEffect(() => {
+    setTitle("Compras");
+  }, [setTitle]);
+
   const fetchProducts = async () => {
     try {
       const productos = await ExtraerInfoCompra();
@@ -134,7 +134,8 @@ const BuyingPage = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Buscar productos..."
-className="w-8/12 bg-white text-blue-900 placeholder-blue-400 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"          />
+            className="w-8/12 bg-white text-blue-900 placeholder-blue-400 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
 
           <button
             onClick={() => setShowAddProductModal(true)}
@@ -160,8 +161,7 @@ className="w-8/12 bg-white text-blue-900 placeholder-blue-400 rounded-lg px-4 py
           </div>
 
           {/* Resumen del carrito */}
-          <div 
-className="w-full lg:w-1/3 bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 shadow-md p-6"          >
+          <div className="w-full lg:w-1/3 bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 shadow-md p-6">
             <h2 className="text-xl font-semibold text-gray-100 mb-4">
               Carrito
             </h2>
@@ -173,7 +173,8 @@ className="w-full lg:w-1/3 bg-white rounded-xl border border-slate-300 ring-1 ri
             />
             <button
               onClick={handleCompletePurchase}
-className="mt-6 bg-blue-700 hover:bg-blue-800 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center w-full transition-colors"              disabled={cartItems.length === 0}
+              className="mt-6 bg-blue-700 hover:bg-blue-800 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center w-full transition-colors"
+              disabled={cartItems.length === 0}
             >
               <CheckCircle className="mr-2" size={18} />
               Completar Compra

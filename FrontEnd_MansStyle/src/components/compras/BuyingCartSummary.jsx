@@ -2,7 +2,6 @@ import React from "react";
 
 import { obtenerProductos } from "@/services/ProductosService";
 
-
 const CartSummaryBuying = ({
   cartItems,
   updateCartItemQuantity,
@@ -15,27 +14,27 @@ const CartSummaryBuying = ({
   );
 
   return (
-    <div className="space-y-4 overflow-y-auto">
+    <div className="space-y-4 overflow-y-auto bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 shadow-md p-8 w-full">
       {cartItems.map((item) => (
         <div
           key={item.ID_Producto}
-          className="flex items-center justify-between bg-gray-700 p-4 rounded-lg"
+          className="flex items-center justify-between bg-blue-50 p-4 rounded-lg border border-blue-100"
         >
           {/* Product Image */}
-          <div className="w-16 h-16 flex-shrink-0">
+          <div className="w-20 h-20 flex-shrink-0">
             <img
               src={item.url_image || "https://via.placeholder.com/150"}
               alt={item.Nombre}
-              className="w-full h-full object-cover rounded-lg"
+              className="w-full h-full object-cover rounded-lg border border-blue-200 bg-gray-100"
             />
           </div>
 
           {/* Product Details */}
-          <div className="flex-1 px-4">
-            <h3 className="text-sm font-medium text-gray-100 truncate">
+          <div className="flex-1 px-6">
+            <h3 className="text-base font-semibold text-blue-900 truncate">
               {item.Nombre}
             </h3>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-blue-700">
               Precio de compra: $
               <input
                 type="number"
@@ -44,7 +43,7 @@ const CartSummaryBuying = ({
                   const newPrice = parseFloat(e.target.value) || 0;
                   updateCartItemPrice(item.ID_Producto, newPrice);
                 }}
-                className="w-20 bg-gray-800 text-gray-100 border border-gray-600 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-20 bg-white text-blue-900 border border-blue-200 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 ml-2"
                 placeholder="Precio"
               />
             </p>
@@ -53,7 +52,7 @@ const CartSummaryBuying = ({
           {/* Quantity Selector */}
           <div className="flex items-center">
             <button
-              className="bg-gray-600 text-gray-300 px-2 py-1 rounded-l-lg hover:bg-gray-500"
+              className="bg-blue-100 text-blue-700 px-2 py-1 rounded-l-lg hover:bg-blue-200 border border-blue-200"
               onClick={() =>
                 updateCartItemQuantity(
                   item.ID_Producto,
@@ -82,11 +81,11 @@ const CartSummaryBuying = ({
                   updateCartItemQuantity(item.ID_Producto, 1);
                 }
               }}
-              className="w-12 text-center bg-gray-800 text-gray-100 border border-gray-600 focus:outline-none"
+              className="w-14 text-center bg-white text-blue-900 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
               min="1"
             />
             <button
-              className="bg-gray-600 text-gray-300 px-2 py-1 rounded-r-lg hover:bg-gray-500"
+              className="bg-blue-100 text-blue-700 px-2 py-1 rounded-r-lg hover:bg-blue-200 border border-blue-200"
               onClick={() =>
                 updateCartItemQuantity(
                   item.ID_Producto,
@@ -100,16 +99,16 @@ const CartSummaryBuying = ({
 
           {/* Remove Button */}
           <button
-            className="text-red-500 hover:text-red-700 ml-4"
+            className="text-red-500 hover:text-red-700 ml-6 text-lg"
             onClick={() => removeFromCart(item.ID_Producto)}
           >
-            x
+            ×
           </button>
         </div>
       ))}
 
       {/* Total */}
-      <div className="border-t border-gray-600 pt-4 flex justify-between text-gray-100 font-semibold">
+      <div className="border-t border-blue-200 pt-4 flex justify-between text-blue-900 font-semibold text-lg">
         <span>Total:</span>
         <span>${total.toFixed(2)}</span>
       </div>

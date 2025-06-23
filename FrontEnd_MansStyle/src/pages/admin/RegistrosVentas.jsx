@@ -58,6 +58,7 @@ const RegistrosVenta = () => {
         pendingOrders: 0,
         totalRevenue,
       });
+      console.log(data)
     });
   }, []);
 
@@ -199,7 +200,7 @@ const RegistrosVenta = () => {
         </div>
 
         <motion.div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8"
+          className="flex flex-col gap-8 mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}

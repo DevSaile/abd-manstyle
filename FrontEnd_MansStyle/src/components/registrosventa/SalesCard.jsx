@@ -22,56 +22,71 @@ const SaleCard = ({
 
   return (
     <motion.div
-      className='bg-gray-800 bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-700'
-      whileHover={{ y: -3, boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.4)" }}
+      className="bg-white overflow-hidden shadow-md rounded-xl border border-slate-300 ring-1 ring-blue-500/30"
+      whileHover={{ y: -3, boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.10)" }}
     >
-      <div className='relative px-4 pt-6 pb-2 sm:p-6'>
-        {/* Top Corners */}
-        <div className='grid grid-cols-2 gap-4'>
-          <div className='flex items-center text-sm text-gray-400'>
-            <User className='mr-2 text-blue-400' size={18} />
-            <span>Empleado: {employee || "N/A"}</span>
+      <div className="relative px-4 pt-6 pb-2 sm:p-6">
+        {/* Row layout for main info */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          {/* Empleado y Sucursal */}
+          <div className="flex flex-row gap-6 flex-1">
+            <div className="flex items-center text-sm text-blue-700">
+              <User className="mr-2 text-blue-400" size={18} />
+              <span>Empleado: {employee || "N/A"}</span>
+            </div>
+            <div className="flex items-center text-sm text-blue-700">
+              <UserCircle className="mr-2 text-green-400" size={18} />
+              <span>Sucursal: {client || "N/A"}</span>
+            </div>
           </div>
-          <div className='flex items-center justify-end text-sm text-gray-400'>
-            <UserCircle className='mr-2 text-green-400' size={18} />
-            <span>Sucursal: {client || "N/A"}</span>
-          </div>
-        </div>
-
-        {/* Bottom Corners */}
-        <div className='grid grid-cols-2 gap-4 mt-2'>
-          <div className='flex items-center text-sm text-gray-400'>
-            <Calendar className='mr-2 text-yellow-400' size={18} />
-            <span>Fecha: {date || "Sin fecha"}</span>
-          </div>
-          <div className='flex items-center justify-end text-sm text-gray-400'>
-            <DollarSign className='mr-2 text-purple-400' size={18} />
-            <span>Total: C${parseFloat(total || 0).toFixed(2)}</span>
+          {/* Fecha y Total */}
+          <div className="flex flex-row gap-6 flex-1 md:justify-end">
+            <div className="flex items-center text-sm text-blue-700">
+              <Calendar className="mr-2 text-yellow-400" size={18} />
+              <span>Fecha: {date || "Sin fecha"}</span>
+            </div>
+            <div className="flex items-center text-sm text-blue-700">
+              <DollarSign className="mr-2 text-purple-400" size={18} />
+              <span>Total: C${parseFloat(total || 0).toFixed(2)}</span>
+            </div>
           </div>
         </div>
 
         {/* Expand Button */}
-        <div className='flex justify-center mt-4'>
-          <button onClick={() => setExpanded(!expanded)} className='text-gray-400 hover:text-gray-200 transition'>
-            {expanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+        <div className="flex justify-center mt-4">
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="text-blue-500 hover:text-blue-700 transition flex items-center"
+          >
+            {expanded ? (
+              <>
+                <ChevronUp size={20} className="mr-1" />
+                <span>Menos detalles</span>
+              </>
+            ) : (
+              <>
+                <ChevronDown size={20} className="mr-1" />
+                <span>Más detalles</span>
+              </>
+            )}
           </button>
         </div>
       </div>
 
       {/* Expanded Content */}
       <AnimatePresence initial={false}>
-      {expanded && (
+        {expanded && (
           <motion.div
-            className='px-4 pb-6'
+            className="px-4 pb-6"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
           >
-            <table className='w-full text-sm text-left text-gray-300 mt-2'>
-              <thead className='text-xs uppercase text-gray-400 border-b border-gray-600'>
+            <table className="w-full text-sm text-left text-blue-900 mt-2">
+              <thead className="text-xs uppercase text-blue-700 border-b border-blue-200">
                 <tr>
-                  <th className='py-2'>Producto</th>
+                  <th className="py-2">Producto</th>
                   <th>Precio Unidad</th>
                   <th>Cantidad</th>
                   <th>Total</th>
@@ -79,19 +94,31 @@ const SaleCard = ({
               </thead>
               <tbody>
                 {products.map((p, i) => (
-                  <tr key={i} className='border-b border-gray-700'>
-                    <td className='py-2'>{p.name || "N/A"}</td>
+                  <tr key={i} className="border-b border-blue-100 hover:bg-blue-50/60">
+                    <td className="py-2">{p.name || "N/A"}</td>
                     <td>C${parseFloat(p.unitPrice || 0).toFixed(2)}</td>
                     <td>{p.quantity || 0}</td>
-                    <td>C${(parseFloat(p.unitPrice || 0) * parseInt(p.quantity || 0)).toFixed(2)}</td>
+                    <td>
+                      C${(parseFloat(p.unitPrice || 0) * parseInt(p.quantity || 0)).toFixed(2)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
 
-            <div className='mt-4 text-sm text-gray-300'>
-              <p>Cantidad Recibida: <span className='text-gray-100'>C${parseFloat(amountGiven || 0).toFixed(2)}</span></p>
-              <p>Cambio: <span className='text-gray-100'>C${parseFloat(exchange || 0).toFixed(2)}</span></p>
+            <div className="mt-4 text-sm text-blue-900">
+              <p>
+                Cantidad Recibida:{" "}
+                <span className="text-blue-700">
+                  C${parseFloat(amountGiven || 0).toFixed(2)}
+                </span>
+              </p>
+              <p>
+                Cambio:{" "}
+                <span className="text-blue-700">
+                  C${parseFloat(exchange || 0).toFixed(2)}
+                </span>
+              </p>
             </div>
           </motion.div>
         )}
