@@ -14,27 +14,27 @@ const CartSummary = ({
   const exchange = Math.max((parseFloat(amountGiven) || 0) - total, 0);
 
   return (
-    <div className="space-y-4 overflow-y-auto">
+    <div className="space-y-4 overflow-y-auto bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 shadow-md p-8 w-full max-w-2xl mx-auto">
       {cartItems.map((item) => (
         <div
           key={item.ID_Producto}
-          className="flex items-center justify-between bg-gray-700 p-4 rounded-lg"
+          className="flex items-center justify-between bg-blue-50 p-4 rounded-lg border border-blue-100"
         >
           {/* Imagen del producto */}
-          <div className="w-16 h-16 flex-shrink-0">
+          <div className="w-20 h-20 flex-shrink-0">
             <img
               src={item.url_image || "https://via.placeholder.com/150"}
               alt={item.Nombre}
-              className="w-full h-full object-cover rounded-lg"
+              className="w-full h-full object-cover rounded-lg border border-blue-200 bg-gray-100"
             />
           </div>
 
           {/* Detalles del producto */}
-          <div className="flex-1 px-4">
-            <h3 className="text-sm font-medium text-gray-100 truncate">
+          <div className="flex-1 px-6">
+            <h3 className="text-base font-semibold text-blue-900 truncate">
               {item.Nombre}
             </h3>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-blue-700">
               ${item.Precio_Producto?.toFixed(2)}
             </p>
           </div>
@@ -42,7 +42,7 @@ const CartSummary = ({
           {/* Selector de cantidad */}
           <div className="flex items-center">
             <button
-              className="bg-gray-600 text-gray-300 px-2 py-1 rounded-l-lg hover:bg-gray-500"
+              className="bg-blue-100 text-blue-700 px-2 py-1 rounded-l-lg hover:bg-blue-200 border border-blue-200"
               onClick={() =>
                 updateCartItemQuantity(
                   item.ID_Producto,
@@ -61,27 +61,25 @@ const CartSummary = ({
                 if (
                   newQuantity === "" ||
                   (!isNaN(newQuantity) &&
-                    newQuantity >= 0 ) // Ensure quantity is within the stock limit
+                    newQuantity >= 0 )
                 ) {
                   updateCartItemQuantity(item.ID_Producto, newQuantity);
                 }
               }}
               onBlur={() => {
-                // Ensure the quantity is at least 1 when the input loses focus
                 if (!item.quantity || item.quantity < 1) {
                   updateCartItemQuantity(item.ID_Producto, 1);
                 }
                 if(item.quantity > item.Cantidad){
                   updateCartItemQuantity(item.ID_Producto, item.Cantidad);
                 }
-
               }}
-              className="w-12 text-center bg-gray-800 text-gray-100 border border-gray-600 focus:outline-none"
+              className="w-14 text-center bg-white text-blue-900 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
               min="1"
               max={item.Cantidad}
             />
             <button
-              className="bg-gray-600 text-gray-300 px-2 py-1 rounded-r-lg hover:bg-gray-500"
+              className="bg-blue-100 text-blue-700 px-2 py-1 rounded-r-lg hover:bg-blue-200 border border-blue-200"
               onClick={() =>
                 updateCartItemQuantity(
                   item.ID_Producto,
@@ -95,16 +93,16 @@ const CartSummary = ({
 
           {/* Botón eliminar */}
           <button
-            className="text-red-500 hover:text-red-700 ml-4"
+            className="text-red-500 hover:text-red-700 ml-6 text-lg"
             onClick={() => removeFromCart(item.ID_Producto)}
           >
-            x
+            ×
           </button>
         </div>
       ))}
 
       {/* Total */}
-      <div className="border-t border-gray-600 pt-4 flex justify-between text-gray-100 font-semibold">
+      <div className="border-t border-blue-200 pt-4 flex justify-between text-blue-900 font-semibold text-lg">
         <span>Total:</span>
         <span>${total.toFixed(2)}</span>
       </div>
@@ -113,7 +111,7 @@ const CartSummary = ({
       <div className="mt-4">
         <label
           htmlFor="amountGiven"
-          className="block text-gray-100 font-medium mb-2"
+          className="block text-blue-900 font-medium mb-2"
         >
           Monto recibido:
         </label>
@@ -122,13 +120,13 @@ const CartSummary = ({
           id="amountGiven"
           value={amountGiven}
           onChange={(e) => setAmountGiven(e.target.value)}
-          className="w-full bg-gray-800 text-gray-100 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full bg-white text-blue-900 border border-blue-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           placeholder="Ingrese el monto entregado por el cliente"
         />
       </div>
 
       {/* Cambio */}
-      <div className="mt-4 flex justify-between text-gray-100 font-semibold">
+      <div className="mt-4 flex justify-between text-blue-900 font-semibold text-lg">
         <span>Cambio:</span>
         <span>${exchange.toFixed(2)}</span>
       </div>

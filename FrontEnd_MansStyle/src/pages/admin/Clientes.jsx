@@ -4,14 +4,12 @@ import StatCard from "@/components/common/StatCard";
 import ClientsTable from "@/components/clientes/TablaClientes";
 import { useOutletContext } from "react-router-dom";
 
-const userStats = {
-  totalUsers: 152845,
-  newUsersToday: 243,
-  activeUsers: 98520,
-  churnRate: "2.4%",
-};
-
 const ClientsPage = () => {
+   const { setTitle } = useOutletContext();
+    useEffect(() => {
+      setTitle("Dashboard");
+    }, [setTitle]);
+  
   return (
     <div className="flex-1 overflow-auto relative z-10">
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">

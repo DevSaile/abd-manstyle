@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Header from "@/components/common/Header";
 import CategoryTable from "@/components/categorias/TablaCategorias";
 import DeleteModal from "@/components/common/DeleteModal";
 import BrandTable from "@/components/categorias/TablaMarcas";

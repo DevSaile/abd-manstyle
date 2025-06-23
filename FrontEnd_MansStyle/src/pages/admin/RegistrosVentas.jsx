@@ -32,6 +32,11 @@ const RegistrosVenta = () => {
   const [sucursal, setSucursal] = useState("");
   const [sucursales, setSucursales] = useState([]);
   const [orderAsc, setOrderAsc] = useState(false); // Nuevo estado para el orden
+   const { setTitle } = useOutletContext();
+    useEffect(() => {
+      setTitle("Registro de Ventas");
+    }, [setTitle]);
+  
 
   useEffect(() => {
     obtenerTodasLasVentas().then((data) => {

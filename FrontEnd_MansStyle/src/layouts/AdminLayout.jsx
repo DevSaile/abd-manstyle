@@ -29,7 +29,7 @@ function AdminLayout() {
       {/* Main content */}
       <motion.div
         animate={{
-          marginLeft: isSidebarOpen ? 224 : 0, // 224px = 14rem
+          marginLeft: isSidebarOpen ? 208 : 0, // 224px = 14rem
         }}
         transition={{
           type: "spring",
@@ -44,7 +44,7 @@ function AdminLayout() {
           title={title}
         />
 
-        <div className="flex-1 relative z-10 overflow-y-auto text-black">
+        <div className="flex-1 relative z-10 overflow-y-auto text-black scrollbar-hidden">
           <Outlet context={{ setTitle }} />
         </div>
       </motion.div>

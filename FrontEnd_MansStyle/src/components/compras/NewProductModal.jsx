@@ -57,7 +57,7 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
       } else if (esURLValida(newProduct.url_image)) {
         urlFinal = newProduct.url_image;
       } else {
-        throw new Error("No se proporcionó una imagen válida");
+  urlFinal = ""; // No image provided, leave empty or set a default if needed
       }
   
       const productoDTO = {

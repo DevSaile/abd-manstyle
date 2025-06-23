@@ -12,14 +12,15 @@ import { useOutletContext } from "react-router-dom";
 const BuyingPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedProveedor, setSelectedProveedor] = useState(null);
   const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [products, setProducts] = useState([]);
-  const [tipoPago, setTipoPago] = useState("contado");
   const [showToast, setShowToast] = useState(false);
 
-  // Obtener productos al cargar el componente
-
+   const { setTitle } = useOutletContext();
+    useEffect(() => {
+      setTitle("Comprad");
+    }, [setTitle]);
+  
   const fetchProducts = async () => {
     try {
       const productos = await ExtraerInfoCompra();
@@ -125,7 +126,7 @@ const BuyingPage = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1 }}
     >
-      <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
+      <main className="max-w-7xl mx-auto py-6 lg:px-8">
         <div className="mb-4 flex gap-4">
           {/* Buscador */}
           <input
@@ -133,8 +134,7 @@ const BuyingPage = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Buscar productos..."
-            className="w-8/12 bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+className="w-8/12 bg-white text-blue-900 placeholder-blue-400 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"          />
 
           <button
             onClick={() => setShowAddProductModal(true)}
@@ -160,7 +160,8 @@ const BuyingPage = () => {
           </div>
 
           {/* Resumen del carrito */}
-          <div className="w-full lg:w-1/3 bg-gray-800 p-6 rounded-lg shadow-lg">
+          <div 
+className="w-full lg:w-1/3 bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 shadow-md p-6"          >
             <h2 className="text-xl font-semibold text-gray-100 mb-4">
               Carrito
             </h2>
@@ -172,8 +173,7 @@ const BuyingPage = () => {
             />
             <button
               onClick={handleCompletePurchase}
-              className="mt-6 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center w-full"
-              disabled={cartItems.length === 0}
+className="mt-6 bg-blue-700 hover:bg-blue-800 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center w-full transition-colors"              disabled={cartItems.length === 0}
             >
               <CheckCircle className="mr-2" size={18} />
               Completar Compra

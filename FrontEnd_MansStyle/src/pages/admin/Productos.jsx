@@ -34,6 +34,12 @@ const ProductsPage = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
 
+   const { setTitle } = useOutletContext();
+    useEffect(() => {
+      setTitle("Productos");
+    }, [setTitle]);
+  
+
   useEffect(() => {
     setFilteredProducts(productos);
   }, [productos]);
@@ -175,47 +181,46 @@ const ProductsPage = () => {
 
   return (
     <div className="flex-column relative z-10">
-
       <main>
-       <TopSection>
-  <ComboBox
-    name={"Categoria"}
-    options={filteredCategorias}
-    onSelect={setSelectedCategory}
-    selected={selectedCategory}
-    bgColor="bg-white"
-    dropdownBgColor="bg-white"
-    inputBgColor="bg-white"
-    hoverBgColor="hover:bg-blue-100"
-  />
-  <ComboBox
-    name={"Sucursal"}
-    options={filteredSucursales}
-    onSelect={setSelectedSucursal}
-    selected={selectedSucursal}
-    bgColor="bg-white"
-    dropdownBgColor="bg-white"
-    inputBgColor="bg-white"
-    hoverBgColor="hover:bg-blue-100"
-  />
-  <ComboBox
-    name={"Marca"}
-    options={filteredMarcas}
-    onSelect={setSelectedMarca}
-    selected={selectedMarcas}
-    bgColor="bg-white"
-    dropdownBgColor="bg-white"
-    inputBgColor="bg-white"
-    hoverBgColor="hover:bg-blue-100"
-  />
-  <input
-    type="text"
-    placeholder="Buscar productos..."
-    className="bg-white text-white placeholder-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-  />
-</TopSection>
+        <TopSection>
+          <ComboBox
+            name={"Categoria"}
+            options={filteredCategorias}
+            onSelect={setSelectedCategory}
+            selected={selectedCategory}
+            bgColor="bg-white"
+            dropdownBgColor="bg-white"
+            inputBgColor="bg-white"
+            hoverBgColor="hover:bg-blue-100"
+          />
+          <ComboBox
+            name={"Sucursal"}
+            options={filteredSucursales}
+            onSelect={setSelectedSucursal}
+            selected={selectedSucursal}
+            bgColor="bg-white"
+            dropdownBgColor="bg-white"
+            inputBgColor="bg-white"
+            hoverBgColor="hover:bg-blue-100"
+          />
+          <ComboBox
+            name={"Marca"}
+            options={filteredMarcas}
+            onSelect={setSelectedMarca}
+            selected={selectedMarcas}
+            bgColor="bg-white"
+            dropdownBgColor="bg-white"
+            inputBgColor="bg-white"
+            hoverBgColor="hover:bg-blue-100"
+          />
+          <input
+            type="text"
+            placeholder="Buscar productos..."
+            className="bg-white text-white placeholder-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </TopSection>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-7 mb-8 p-10 col-span-4 overflow-y-auto h-5/6 min-h-[400px]">
           {filteredProducts.map((product) => (
             <ProductCard

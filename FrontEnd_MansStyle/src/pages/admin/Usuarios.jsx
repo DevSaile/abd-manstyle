@@ -22,6 +22,12 @@ const UsersPage = () => {
     cargarUsuarios();
   }, []);
 
+   const { setTitle } = useOutletContext();
+    useEffect(() => {
+      setTitle("Usuarios");
+    }, [setTitle]);
+  
+
   const cargarUsuarios = async () => {
     try {
       const empleadosActivos = await obtenerEmpleadosActivos();

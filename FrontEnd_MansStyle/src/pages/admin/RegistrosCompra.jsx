@@ -8,10 +8,11 @@ import {
   ArrowUp,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import Header from "@/components/common/Header";
 import StatCard from "@/components/common/StatCard";
 import BoughtCard from "@/components/registroscompra/BoughtCard";
 import { obtenerRegistroCompras } from "@/services/CompraHitorialService";
+import { useOutletContext } from "react-router-dom";
+
 
 const RegistroCompra = () => {
   const [compras, setCompras] = useState([]);
@@ -34,6 +35,11 @@ const RegistroCompra = () => {
   const [sucursal, setSucursal] = useState("");
   const [sucursales, setSucursales] = useState([]);
   const [orderAsc, setOrderAsc] = useState(false);
+   const { setTitle } = useOutletContext();
+  useEffect(() => {
+    setTitle("Registro de Compras");
+  }, [setTitle]);
+
 
   useEffect(() => {
     const cargarDatos = async () => {
@@ -138,7 +144,6 @@ const RegistroCompra = () => {
   if (loading) {
     return (
       <div className="flex-1 relative z-10 overflow-y-auto">
-        <Header title={"Registro de Compras"} />
         <div className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
           <div className="text-center py-10">Cargando compras...</div>
         </div>
@@ -149,7 +154,6 @@ const RegistroCompra = () => {
   if (error) {
     return (
       <div className="flex-1 relative z-10 overflow-y-auto">
-        <Header title={"Registro de Compras"} />
         <div className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
           <div className="text-center py-10 text-red-500">Error: {error}</div>
         </div>
@@ -159,8 +163,7 @@ const RegistroCompra = () => {
 
   return (
     <div className="flex-1 relative z-10 overflow-y-auto">
-      <Header title={"Registro de Compras"} />
-
+\
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
         {/* Estadísticas */}
         <motion.div
@@ -270,7 +273,7 @@ const RegistroCompra = () => {
         </div>
 
         {/* Listado de Compras */}
-        <div className="grid grid-cols-2 gap-6">
+        <div className="flex flex-col gap-6">
           {comprasOrdenadas.map((compra) => {
             // Calcular total de la compra sumando todos los detalles
             const totalCompra =

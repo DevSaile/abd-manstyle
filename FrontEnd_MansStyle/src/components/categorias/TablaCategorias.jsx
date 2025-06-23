@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search, Plus } from "lucide-react";
-import { useToast } from "@rewind-ui/core";
 import { actualizarCategoria, eliminarCategoria, agregarCategoria } from "@/services/CategoriasService";
 
 const CategoryTable = ({
@@ -9,7 +8,7 @@ const CategoryTable = ({
     openDelete,
     selectedCategory,
     setSelectedCategory,
-    refreshCategories // Función para refrescar las categorías después de una operación CRUD
+    refreshCategories
 }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredCategory, setFilteredCategory] = useState([]);
@@ -22,12 +21,8 @@ const CategoryTable = ({
     const newInputRef = useRef(null);
 
     useEffect(() => {
-        if (editingId && inputRef.current) {
-            inputRef.current.focus();
-        }
-        if (isCreating && newInputRef.current) {
-            newInputRef.current.focus();
-        }
+        if (editingId && inputRef.current) inputRef.current.focus();
+        if (isCreating && newInputRef.current) newInputRef.current.focus();
     }, [editingId, isCreating]);
 
     useEffect(() => {
@@ -52,12 +47,11 @@ const CategoryTable = ({
         const updatedCategory = {
             ID_Categoria: category.ID_Categoria,
             Nombre: editedName,
-            Estado: 1 // Asumiendo que 1 es el estado activo
+            Estado: 1
         };
-
         const result = await actualizarCategoria(updatedCategory);
         if (result) {
-            refreshCategories(); // Refrescar las categorías después de la actualización
+            refreshCategories();
             setEditingId(null);
         } else {
             alert("Error al actualizar la categoría");
@@ -76,15 +70,13 @@ const CategoryTable = ({
 
     const handleCreateSave = async () => {
         if (!newCategoryName.trim()) return;
-
         const newCategory = {
             Nombre: newCategoryName,
-            Estado: 1 // Asumiendo que 1 es el estado activo
+            Estado: 1
         };
-
         const result = await agregarCategoria(newCategory);
         if (result) {
-            refreshCategories(); // Refrescar las categorías después de la creación
+            refreshCategories();
             setIsCreating(false);
             setNewCategoryName("");
         } else {
@@ -97,21 +89,18 @@ const CategoryTable = ({
         setNewCategoryName("");
     };
 
-
-    const toast = useToast();
-
     return (
         <motion.div
-            className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700"
+            className="bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 shadow-md p-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
         >
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-semibold text-gray-100">Categorías</h2>
+                <h2 className="text-xl font-semibold text-blue-700">Categorías</h2>
                 <div className="flex items-center space-x-4">
                     <button
-                        className="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg flex items-center"
+                        className="bg-blue-700 hover:bg-blue-800 text-white font-medium py-2 px-4 rounded-lg flex items-center"
                         onClick={handleAddClick}
                         disabled={isCreating}
                     >
@@ -122,12 +111,12 @@ const CategoryTable = ({
                         <input
                             type="text"
                             placeholder="Buscar categorías..."
-                            className="bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="bg-blue-50 text-blue-900 placeholder-blue-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             value={searchTerm}
                             onChange={handleSearch}
                         />
                         <Search
-                            className="absolute left-3 top-2.5 text-gray-400"
+                            className="absolute left-3 top-2.5 text-blue-400"
                             size={18}
                         />
                     </div>
@@ -135,18 +124,18 @@ const CategoryTable = ({
             </div>
 
             <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-700">
-                    <thead>
+                <table className="min-w-full divide-y divide-blue-100">
+                    <thead className="bg-blue-50">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            <th className="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">
                                 Nombre
                             </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            <th className="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">
                                 Acciones
                             </th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-700">
+                    <tbody className="divide-y divide-blue-100">
                         {isCreating && (
                             <tr>
                                 <td className="px-6 py-4 whitespace-nowrap">
@@ -155,18 +144,18 @@ const CategoryTable = ({
                                         type="text"
                                         value={newCategoryName}
                                         onChange={(e) => setNewCategoryName(e.target.value)}
-                                        className="w-full bg-transparent border rounded-md px-2 py-1 text-white border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full bg-transparent border rounded-md px-2 py-1 text-blue-900 border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-700">
                                     <button
-                                        className="text-green-400 hover:text-green-300 mr-2"
+                                        className="text-green-700 hover:text-green-500 mr-2"
                                         onClick={handleCreateSave}
                                     >
                                         Guardar
                                     </button>
                                     <button
-                                        className="text-yellow-400 hover:text-yellow-300"
+                                        className="text-yellow-700 hover:text-yellow-500"
                                         onClick={handleCreateCancel}
                                     >
                                         Cancelar
@@ -182,6 +171,7 @@ const CategoryTable = ({
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ duration: 0.3 }}
+                                    className="hover:bg-blue-50 transition"
                                 >
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <input
@@ -190,24 +180,24 @@ const CategoryTable = ({
                                             value={isEditing ? editedName : category.Nombre}
                                             onChange={(e) => setEditedName(e.target.value)}
                                             disabled={!isEditing}
-                                            className={`w-full bg-transparent border rounded-md px-2 py-1 text-white ${
+                                            className={`w-full bg-transparent border rounded-md px-2 py-1 text-blue-900 ${
                                                 isEditing
                                                     ? "border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                     : "border-transparent"
                                             }`}
                                         />
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-700">
                                         {isEditing ? (
                                             <>
                                                 <button
-                                                    className="text-green-400 hover:text-green-300 mr-2"
+                                                    className="text-green-700 hover:text-green-500 mr-2"
                                                     onClick={() => handleSaveClick(category)}
                                                 >
                                                     Guardar
                                                 </button>
                                                 <button
-                                                    className="text-yellow-400 hover:text-yellow-300"
+                                                    className="text-yellow-700 hover:text-yellow-500"
                                                     onClick={handleCancelClick}
                                                 >
                                                     Cancelar
@@ -216,13 +206,13 @@ const CategoryTable = ({
                                         ) : (
                                             <>
                                                 <button
-                                                    className="text-indigo-400 hover:text-indigo-300 mr-2"
+                                                    className="text-indigo-700 hover:text-indigo-500 mr-2"
                                                     onClick={() => handleEditClick(category)}
                                                 >
                                                     Editar
                                                 </button>
                                                 <button
-                                                    className="text-red-400 hover:text-red-300"
+                                                    className="text-red-700 hover:text-red-500"
                                                     onClick={() => {
                                                         setSelectedCategory(category);
                                                         openDelete();

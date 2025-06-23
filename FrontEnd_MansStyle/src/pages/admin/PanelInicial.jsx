@@ -25,7 +25,7 @@ import TopSection from "@/components/common/TopSection";
 const OverviewPage = () => {
   const { setTitle } = useOutletContext();
   useEffect(() => {
-    setTitle("Dashboard");
+    setTitle("Panel Inicial");
   }, [setTitle]);
 
   const [totalesPrincipal, setTotalesPrincipal] = useState(null);
