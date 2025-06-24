@@ -25,6 +25,7 @@ const Login = () => {
         localStorage.setItem("idSucursal", idSucursal);
         localStorage.setItem("isAuthenticated", "true");
         console.log(response);
+        
         navigate("/admin/inicio");
       } else {
         setError("Credenciales incorrectas");

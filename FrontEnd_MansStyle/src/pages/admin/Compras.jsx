@@ -32,6 +32,7 @@ const BuyingPage = () => {
   };
   useEffect(() => {
     fetchProducts();
+    console.log(typeof localStorage.getItem("idSucursal"));
   }, []);
 
   // Filtrar productos
@@ -92,7 +93,7 @@ const BuyingPage = () => {
           ID_Producto: item.ID_Producto,
           Cantidad: item.quantity,
           Precio_Compra: item.buyingPrice || item.Precio_Producto,
-          ID_Sucursal: products.ID_Sucursal, // Ajusta según tu lógica
+      ID_Sucursal: localStorage.getItem("idSucursal"), // Use Sucursal ID from localStorage
         })),
         Precio_Compra: cartItems.reduce(
           (total, item) =>
@@ -122,9 +123,9 @@ const BuyingPage = () => {
   return (
     <motion.div
       className="flex-1 overflow-auto relative z-10"
-      initial={{ opacity: 0, y: 20 }}
+    initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1 }}
+      transition={{ delay: 0.2 }}
     >
       <main className="max-w-7xl mx-auto py-6 lg:px-8">
         <div className="mb-4 flex gap-4">
@@ -162,7 +163,7 @@ const BuyingPage = () => {
 
           {/* Resumen del carrito */}
           <div className="w-full lg:w-1/3 bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 shadow-md p-6">
-            <h2 className="text-xl font-semibold text-gray-100 mb-4">
+            <h2 className="text-xl font-semibold text-slate-900 mb-4">
               Carrito
             </h2>
             <CartSummaryBuying

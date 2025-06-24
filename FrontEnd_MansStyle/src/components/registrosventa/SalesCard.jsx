@@ -23,6 +23,9 @@ const SaleCard = ({
   return (
     <motion.div
       className="bg-white overflow-hidden shadow-md rounded-xl border border-slate-300 ring-1 ring-blue-500/30"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 }}
       whileHover={{ y: -3, boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.10)" }}
     >
       <div className="relative px-4 pt-6 pb-2 sm:p-6">

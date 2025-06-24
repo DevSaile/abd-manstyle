@@ -9,10 +9,9 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useOutletContext } from "react-router-dom";
-
 import StatCard from "@/components/common/StatCard";
 import SaleCard from "@/components/registrosventa/SalesCard";
-
+import TopSection from "../../components/common/TopSection";
 import { obtenerTodasLasVentas } from "@/services/VentasService";
 
 const RegistrosVenta = () => {
@@ -98,14 +97,8 @@ const RegistrosVenta = () => {
     : filteredVentas.toReversed();
 
   return (
-    <div className="flex-1 relative z-10 overflow-auto">
-      <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
-        <motion.div
-          className="flex justify-between gap-8 mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
+    <div className="flex-1 relative z-10">
+        <TopSection>
           <StatCard
             name="Total Ventas"
             icon={ShoppingBag}
@@ -124,18 +117,20 @@ const RegistrosVenta = () => {
             value={`$${stats.totalRevenue.toFixed(2)}`}
             color="#EF4444"
           />
-        </motion.div>
-
+</TopSection>
         {/* Filter Bar */}
         {/* Filter Bar */}
-        <div className="flex flex-wrap justify-evenly mb-6 items-end">
+        <motion.div className="flex flex-wrap justify-evenly my-6 items-end"
+        initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 }}>
           <div className="flex flex-col">
             <label className="text-blue-900 text-sm mb-1">Desde</label>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="bg-white text-blue-900 placeholder-blue-400 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input-filter"
             />
           </div>
           <div className="flex flex-col">
@@ -144,7 +139,7 @@ const RegistrosVenta = () => {
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="bg-white text-blue-900 placeholder-blue-400 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input-filter"
             />
           </div>
           <div className="flex flex-col w-32">
@@ -155,7 +150,7 @@ const RegistrosVenta = () => {
               value={minProducts}
               onChange={(e) => setMinProducts(e.target.value)}
               placeholder="Ej: 2"
-              className="bg-white text-blue-900 placeholder-blue-400 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input-filter"
             />
           </div>
           <div className="flex flex-col w-36">
@@ -168,7 +163,7 @@ const RegistrosVenta = () => {
               value={minTotal}
               onChange={(e) => setMinTotal(e.target.value)}
               placeholder="Ej: 100"
-              className="bg-white text-blue-900 placeholder-blue-400 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input-filter"
             />
           </div>
           <div className="flex flex-col w-44">
@@ -176,7 +171,7 @@ const RegistrosVenta = () => {
             <select
               value={sucursal}
               onChange={(e) => setSucursal(e.target.value)}
-              className="bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input-filter"
             >
               <option value="">Todas</option>
               {sucursales.map((suc) => (
@@ -198,10 +193,10 @@ const RegistrosVenta = () => {
               {orderAsc ? "Ascendente" : "Descendente"}
             </span>
           </button>
-        </div>
+        </motion.div>
 
         <motion.div
-          className="flex flex-col gap-8 mb-8"
+          className="flex flex-col gap-8 mb-8 mx-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -227,7 +222,6 @@ const RegistrosVenta = () => {
             <p className="text-gray-400">No hay ventas registradas aún.</p>
           )}
         </motion.div>
-      </main>
     </div>
   );
 };
