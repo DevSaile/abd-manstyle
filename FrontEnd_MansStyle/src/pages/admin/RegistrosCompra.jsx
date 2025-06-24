@@ -200,8 +200,8 @@ const RegistroCompra = () => {
         </motion.div>
 
         {/* Filtros */}
-        <div className="flex flex-wrap gap-4 mb-6 items-end">
-          <div className="flex flex-col">
+        <div className="flex justify-evenly mb-6 gap-4 text-center items-end">
+          <div className="flex-1 flex flex-col">
             <label className="text-gray-300 text-sm mb-1">Desde</label>
             <input
               type="date"
@@ -210,7 +210,7 @@ const RegistroCompra = () => {
               className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div className="flex flex-col">
+          <div className="flex-1 flex flex-col">
             <label className="text-gray-300 text-sm mb-1">Hasta</label>
             <input
               type="date"
@@ -219,7 +219,7 @@ const RegistroCompra = () => {
               className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div className="flex flex-col w-32">
+          <div className="flex-1 flex flex-col">
             <label className="text-gray-300 text-sm mb-1">Mín. productos</label>
             <input
               type="number"
@@ -230,7 +230,7 @@ const RegistroCompra = () => {
               className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div className="flex flex-col w-36">
+          <div className="flex-1 flex flex-col">
             <label className="text-gray-300 text-sm mb-1">
               Mín. inversión (C$)
             </label>
@@ -243,7 +243,7 @@ const RegistroCompra = () => {
               className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div className="flex flex-col w-44">
+          <div className="flex-1 flex flex-col">
             <label className="text-gray-300 text-sm mb-1">Sucursal</label>
             <select
               value={sucursal}

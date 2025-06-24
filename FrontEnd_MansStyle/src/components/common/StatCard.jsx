@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 const StatCard = ({ name, icon: Icon, value, color }) => {
     return (
      <motion.div
-  className="bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 transition-transform flex flex-col justify-between max-h-32"
+  className="bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 transition-transform flex flex-col justify-between w-full max-h-32"
   initial={{
     boxShadow: "-6px 6px 2px rgba(0, 0, 0, 0.3)",
   }}
