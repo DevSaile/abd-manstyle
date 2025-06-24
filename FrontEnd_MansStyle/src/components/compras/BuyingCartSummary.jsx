@@ -18,23 +18,23 @@ const CartSummaryBuying = ({
       {cartItems.map((item) => (
         <div
           key={item.ID_Producto}
-          className="flex items-center justify-between bg-blue-50 p-4 rounded-lg border border-blue-100"
+          className="flex items-center justify-between bg-blue-50 p-2 rounded-lg border border-blue-100 gap-2"
         >
-          {/* Product Image */}
-          <div className="w-20 h-20 flex-shrink-0">
+          {/* Product Image (smaller) */}
+          <div className="w-12 h-12 flex-shrink-0">
             <img
-              src={item.url_image || "https://via.placeholder.com/150"}
+              src={item.url_image || "https://via.placeholder.com/100"}
               alt={item.Nombre}
-              className="w-full h-full object-cover rounded-lg border border-blue-200 bg-gray-100"
+              className="w-full h-full object-cover rounded-md border border-blue-200 bg-gray-100"
             />
           </div>
 
-          {/* Product Details */}
-          <div className="flex-1 px-6">
-            <h3 className="text-base font-semibold text-blue-900 truncate">
+          {/* Product Details (smaller font) */}
+          <div className="flex-1 px-2 min-w-0">
+            <h3 className="text-xs font-semibold text-blue-900 truncate">
               {item.Nombre}
             </h3>
-            <p className="text-sm text-blue-700">
+            <p className="text-xs text-blue-700 flex items-center">
               Precio de compra: $
               <input
                 type="number"
@@ -43,16 +43,16 @@ const CartSummaryBuying = ({
                   const newPrice = parseFloat(e.target.value) || 0;
                   updateCartItemPrice(item.ID_Producto, newPrice);
                 }}
-                className="w-20 bg-white text-blue-900 border border-blue-200 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 ml-2"
+                className="w-14 bg-white text-blue-900 border border-blue-200 rounded-lg px-1 py-0.5 focus:outline-none focus:ring-2 focus:ring-blue-500 ml-1 text-xs"
                 placeholder="Precio"
               />
             </p>
           </div>
 
-          {/* Quantity Selector */}
+          {/* Quantity Selector (smaller buttons/input) */}
           <div className="flex items-center">
             <button
-              className="bg-blue-100 text-blue-700 px-2 py-1 rounded-l-lg hover:bg-blue-200 border border-blue-200"
+              className="bg-blue-100 text-blue-700 px-1 py-0.5 rounded-l hover:bg-blue-200 border border-blue-200 text-sm"
               onClick={() =>
                 updateCartItemQuantity(
                   item.ID_Producto,
@@ -81,11 +81,11 @@ const CartSummaryBuying = ({
                   updateCartItemQuantity(item.ID_Producto, 1);
                 }
               }}
-              className="w-14 text-center bg-white text-blue-900 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-10 text-center bg-white text-blue-900 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 text-xs"
               min="1"
             />
             <button
-              className="bg-blue-100 text-blue-700 px-2 py-1 rounded-r-lg hover:bg-blue-200 border border-blue-200"
+              className="bg-blue-100 text-blue-700 px-1 py-0.5 rounded-r hover:bg-blue-200 border border-blue-200 text-sm"
               onClick={() =>
                 updateCartItemQuantity(
                   item.ID_Producto,
@@ -97,9 +97,9 @@ const CartSummaryBuying = ({
             </button>
           </div>
 
-          {/* Remove Button */}
+          {/* Remove Button (smaller, less margin) */}
           <button
-            className="text-red-500 hover:text-red-700 ml-6 text-lg"
+            className="text-red-500 hover:text-red-700 ml-2 text-base"
             onClick={() => removeFromCart(item.ID_Producto)}
           >
             ×

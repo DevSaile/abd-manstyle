@@ -10,6 +10,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
@@ -23,6 +24,7 @@ const Login = () => {
         localStorage.setItem("rol", userRole);
         localStorage.setItem("idSucursal", idSucursal);
         localStorage.setItem("isAuthenticated", "true");
+        console.log(response);
         navigate("/admin/inicio");
       } else {
         setError("Credenciales incorrectas");

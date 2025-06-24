@@ -80,6 +80,7 @@ const CashierPage = () => {
       Estado: 1,
       ID_Cliente: 1,
       ID_Sucursal: localStorage.getItem("idSucursal"), // Use Sucursal ID from localStorage
+      ID_Vendedor : JSON.parse(localStorage.getItem("usuario")).ID_Empleado,
       Fecha_Venta: new Date(),
       Subtotal: total,
       Total: total,
@@ -126,7 +127,7 @@ const CashierPage = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Buscar productos..."
-            className="w-8/12 bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+            className="w-8/12 bg-white text-blue-900 placeholder-blue-400 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -146,7 +147,7 @@ const CashierPage = () => {
           </div>
 
           {/* Cart Summary */}
-          <div className="w-full lg:w-1/3 bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 shadow-md p-6">
+          <div className="w-full lg:w-1/3 bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 shadow-md p-3">
             <h2 className="text-xl font-semibold  text-slate-900 mb-4">
               Carrito
             </h2>

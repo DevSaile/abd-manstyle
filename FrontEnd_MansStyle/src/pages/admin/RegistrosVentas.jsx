@@ -127,38 +127,39 @@ const RegistrosVenta = () => {
         </motion.div>
 
         {/* Filter Bar */}
-        <div className="flex flex-wrap gap-4 mb-6 items-end">
+        {/* Filter Bar */}
+        <div className="flex flex-wrap justify-evenly mb-6 items-end">
           <div className="flex flex-col">
-            <label className="text-gray-300 text-sm mb-1">Desde</label>
+            <label className="text-blue-900 text-sm mb-1">Desde</label>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-white text-blue-900 placeholder-blue-400 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div className="flex flex-col">
-            <label className="text-gray-300 text-sm mb-1">Hasta</label>
+            <label className="text-blue-900 text-sm mb-1">Hasta</label>
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-white text-blue-900 placeholder-blue-400 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div className="flex flex-col w-32">
-            <label className="text-gray-300 text-sm mb-1">Mín. productos</label>
+            <label className="text-blue-900 text-sm mb-1">Mín. productos</label>
             <input
               type="number"
               min={1}
               value={minProducts}
               onChange={(e) => setMinProducts(e.target.value)}
               placeholder="Ej: 2"
-              className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-white text-blue-900 placeholder-blue-400 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div className="flex flex-col w-36">
-            <label className="text-gray-300 text-sm mb-1">
+            <label className="text-blue-900 text-sm mb-1">
               Mín. ingreso ($)
             </label>
             <input
@@ -167,15 +168,15 @@ const RegistrosVenta = () => {
               value={minTotal}
               onChange={(e) => setMinTotal(e.target.value)}
               placeholder="Ej: 100"
-              className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-white text-blue-900 placeholder-blue-400 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div className="flex flex-col w-44">
-            <label className="text-gray-300 text-sm mb-1">Sucursal</label>
+            <label className="text-blue-900 text-sm mb-1">Sucursal</label>
             <select
               value={sucursal}
               onChange={(e) => setSucursal(e.target.value)}
-              className="bg-gray-700 text-gray-100 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Todas</option>
               {sucursales.map((suc) => (
@@ -189,7 +190,7 @@ const RegistrosVenta = () => {
           <button
             type="button"
             onClick={() => setOrderAsc((prev) => !prev)}
-            className="flex items-center bg-gray-700 text-gray-100 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            className="flex items-center bg-blue-100 text-blue-700 rounded-lg px-3 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             title={orderAsc ? "Orden ascendente" : "Orden descendente"}
           >
             {orderAsc ? <ArrowUp size={20} /> : <ArrowDown size={20} />}
