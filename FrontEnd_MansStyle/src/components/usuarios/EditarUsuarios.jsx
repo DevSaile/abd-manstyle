@@ -275,7 +275,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                 : await agregarEmpleado(datosEmpleado);
 
             if (resultado) {
-      if (OnUserComplete) OnUserComplete(); // <-- refresca productos
+                if (OnUserComplete) OnUserComplete();
                 onClose(true);
             } else {
                 throw new Error("No se recibió respuesta del servidor");
@@ -292,25 +292,25 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
             onClose={() => onClose(false)}
             position="right"
             size="xl"
-            className="bg-gray-900 text-gray-100 border-l border-gray-700 shadow-2xl"
+            className="bg-white text-blue-900 border-l border-blue-200 shadow-2xl"
         >
             <div className="flex flex-col h-full">
-                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-blue-200 bg-white">
                     <h2 className="text-xl font-semibold">
                         {userData ? "Editar Usuario" : "Agregar Usuario"}
                     </h2>
                     <button
                         onClick={() => onClose(false)}
-                        className="text-gray-400 hover:text-gray-200 text-2xl font-bold"
+                        className="text-blue-400 hover:text-blue-700 text-2xl font-bold"
                         aria-label="Cerrar"
                     >
                         ×
                     </button>
                 </div>
-                <form className="flex-1 overflow-y-auto px-6 py-4 grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-6">
+                <form className="flex-1 overflow-y-auto px-6 py-4 grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-6 bg-white">
                     {/* Nombre */}
                     <div className="relative">
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Nombre*</label>
+                        <label className="block text-sm font-medium text-blue-900 mb-1">Nombre*</label>
                         <input
                             type="text"
                             name="Nombre"
@@ -318,7 +318,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                             onChange={handleChange}
                             onFocus={() => handleFocus("Nombre")}
                             onBlur={() => handleBlur("Nombre")}
-                            className={`w-full bg-gray-800 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
+                            className={`w-full bg-white text-blue-900 rounded-lg px-4 py-2 transition-colors duration-200 border border-blue-200
                                 ${isInvalid("Nombre") ? "border-2 border-red-500" : ""}
                                 focus:border-blue-500`}
                             required
@@ -332,7 +332,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
 
                     {/* Cedula */}
                     <div className="relative">
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Cédula*</label>
+                        <label className="block text-sm font-medium text-blue-900 mb-1">Cédula*</label>
                         <input
                             type="text"
                             name="Cedula"
@@ -340,7 +340,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                             onChange={handleChange}
                             onFocus={() => handleFocus("Cedula")}
                             onBlur={() => handleBlur("Cedula")}
-                            className={`w-full bg-gray-800 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
+                            className={`w-full bg-white text-blue-900 rounded-lg px-4 py-2 transition-colors duration-200 border border-blue-200
                                 ${isInvalid("Cedula") ? "border-2 border-red-500" : ""}
                                 focus:border-blue-500`}
                             placeholder="###-######-####X"
@@ -355,31 +355,31 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
 
                     {/* Edad */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Edad</label>
+                        <label className="block text-sm font-medium text-blue-900 mb-1">Edad</label>
                         <input
                             type="number"
                             name="Edad"
                             value={formData.Edad}
                             readOnly
-                            className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2"
+                            className="w-full bg-blue-50 text-blue-900 rounded-lg px-4 py-2 border border-blue-200"
                         />
                     </div>
 
                     {/* Fecha de Nacimiento */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Fecha de Nacimiento</label>
+                        <label className="block text-sm font-medium text-blue-900 mb-1">Fecha de Nacimiento</label>
                         <input
                             type="date"
                             name="FechaDeNacimiento"
                             value={formData.FechaDeNacimiento}
                             onChange={handleChange}
-                            className="w-full bg-gray-800 text-gray-100 rounded-lg px-4 py-2"
+                            className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200"
                         />
                     </div>
 
                     {/* Nombre de Usuario */}
                     <div className="relative">
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Nombre de Usuario</label>
+                        <label className="block text-sm font-medium text-blue-900 mb-1">Nombre de Usuario</label>
                         <input
                             type="text"
                             name="NombreDeUsuario"
@@ -387,7 +387,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                             onChange={handleChange}
                             onFocus={() => handleFocus("NombreDeUsuario")}
                             onBlur={() => handleBlur("NombreDeUsuario")}
-                            className={`w-full bg-gray-800 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
+                            className={`w-full bg-white text-blue-900 rounded-lg px-4 py-2 transition-colors duration-200 border border-blue-200
                                 ${isInvalid("NombreDeUsuario") ? "border-2 border-red-500" : ""}
                                 focus:border-blue-500`}
                         />
@@ -400,19 +400,19 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
 
                     {/* Contraseña */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Contraseña</label>
+                        <label className="block text-sm font-medium text-blue-900 mb-1">Contraseña</label>
                         <input
                             type="password"
                             name="Contraseña"
                             value={formData.Contraseña}
                             onChange={handleChange}
-                            className="w-full bg-gray-800 text-gray-100 rounded-lg px-4 py-2"
+                            className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200"
                         />
                     </div>
 
                     {/* Sucursal */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Sucursal</label>
+                        <label className="block text-sm font-medium text-blue-900 mb-1">Sucursal</label>
                         <ComboBoxID
                             name="Sucursal"
                             options={sucursales}
@@ -423,12 +423,16 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                             onSelect={(sucursal) =>
                                 setFormData(prev => ({ ...prev, Sucursal: sucursal.value }))
                             }
+                            className="w-full bg-white text-blue-900 rounded-lg border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            dropdownClassName="bg-white border border-blue-200 rounded-lg"
+                            optionClassName="hover:bg-blue-100 text-blue-900"
+                            inputClassName="bg-white text-blue-900"
                         />
                     </div>
 
                     {/* Rol */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Rol</label>
+                        <label className="block text-sm font-medium text-blue-900 mb-1">Rol</label>
                         <ComboBoxID
                             name="Rol"
                             options={roles}
@@ -439,12 +443,16 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                             onSelect={(rol) =>
                                 setFormData(prev => ({ ...prev, Rol: rol.value }))
                             }
+                            className="w-full bg-white text-blue-900 rounded-lg border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            dropdownClassName="bg-white border border-blue-200 rounded-lg"
+                            optionClassName="hover:bg-blue-100 text-blue-900"
+                            inputClassName="bg-white text-blue-900"
                         />
                     </div>
 
                     {/* Email */}
                     <div className="relative">
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Email*</label>
+                        <label className="block text-sm font-medium text-blue-900 mb-1">Email*</label>
                         <input
                             type="email"
                             name="Email"
@@ -452,7 +460,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                             onChange={handleChange}
                             onFocus={() => handleFocus("Email")}
                             onBlur={() => handleBlur("Email")}
-                            className={`w-full bg-gray-800 text-gray-100 rounded-lg px-4 py-2 transition-colors duration-200
+                            className={`w-full bg-white text-blue-900 rounded-lg px-4 py-2 transition-colors duration-200 border border-blue-200
                                 ${isInvalid("Email") ? "border-2 border-red-500" : ""}
                                 focus:border-blue-500`}
                             required
@@ -464,18 +472,18 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                         )}
                     </div>
                 </form>
-                <div className="flex justify-end gap-4 px-6 py-4 border-t border-gray-700">
+                <div className="flex justify-end gap-4 px-6 py-4 border-t border-blue-200 bg-white">
                     <button
                         type="button"
                         onClick={() => onClose(false)}
-                        className="bg-gray-700 text-gray-300 hover:bg-gray-600 px-6 py-2 rounded-lg transition duration-200"
+                        className="bg-blue-100 text-blue-700 hover:bg-blue-200 px-6 py-2 rounded-lg transition duration-200 border border-blue-200"
                     >
                         Cancelar
                     </button>
                     <button
                         type="button"
                         onClick={handleSave}
-                        className="bg-blue-600 text-gray-100 hover:bg-blue-500 px-6 py-2 rounded-lg transition duration-200"
+                        className="bg-blue-700 text-white hover:bg-blue-800 px-6 py-2 rounded-lg transition duration-200"
                     >
                         Guardar
                     </button>

@@ -32,7 +32,7 @@ const BuyingPage = () => {
   };
   useEffect(() => {
     fetchProducts();
-    console.log(typeof localStorage.getItem("idSucursal"));
+    console.log(localStorage.getItem("idSucursal"));
   }, []);
 
   // Filtrar productos
@@ -84,20 +84,21 @@ const BuyingPage = () => {
       alert("El carrito está vacío");
       return;
     }
+      console.log(cartItems);
 
     try {
       const compraData = {
         Estado: 1,
-        Fecha_Compra: new Date().toISOString(),
+        Fecha_Compra: new Date().toISOString(), // UseW Sucursal ID from localStorage as int
         DetallesCompra: cartItems.map((item) => ({
           ID_Producto: item.ID_Producto,
           Cantidad: item.quantity,
           Precio_Compra: item.buyingPrice || item.Precio_Producto,
-      ID_Sucursal: localStorage.getItem("idSucursal"), // Use Sucursal ID from localStorage
+          ID_Sucursal: item.ID_Sucursal
         })),
         Precio_Compra: cartItems.reduce(
           (total, item) =>
-            total + (item.buyingPrice || item.Precio_Producto) * item.quantity,
+        total + (item.buyingPrice || item.Precio_Producto) * item.quantity,
           0
         ),
         CantidadCompra: cartItems.reduce(
@@ -119,11 +120,10 @@ const BuyingPage = () => {
       alert("Ocurrió un error al procesar la compra");
     }
   };
-
   return (
     <motion.div
       className="flex-1 overflow-auto relative z-10"
-    initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
     >

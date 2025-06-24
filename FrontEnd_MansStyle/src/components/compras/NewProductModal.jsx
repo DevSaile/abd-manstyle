@@ -4,7 +4,7 @@ import { Drawer } from "@rewind-ui/core";
 import { obtenerCategoriasActivas } from "@/services/CategoriasService";
 import { obtenerSucursales } from "@/services/SucursalService";
 import { agregarProducto } from "@/services/ProductosService";
-import { subirImagen } from "@/services/UploadService"; 
+import { subirImagen } from "@/services/UploadService";
 import { obtenerMarcas } from "@/services/MarcasService";
 
 const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
@@ -24,8 +24,6 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
   const [categorias, setCategorias] = useState([]);
   const [sucursales, setSucursales] = useState([]);
   const [Marcas, setMarcas] = useState([]);
-  
-  
 
   useEffect(() => {
     Promise.all([obtenerCategoriasActivas(), obtenerSucursales(), obtenerMarcas()]).then(
@@ -41,9 +39,9 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     let urlFinal = "";
-  
+
     try {
       if (newProduct.archivoImagen) {
         const resultado = await subirImagen(newProduct.archivoImagen);
@@ -57,9 +55,9 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
       } else if (esURLValida(newProduct.url_image)) {
         urlFinal = newProduct.url_image;
       } else {
-  urlFinal = ""; // No image provided, leave empty or set a default if needed
+        urlFinal = "";
       }
-  
+
       const productoDTO = {
         Nombre: newProduct.Nombre,
         ID_Marca: newProduct.ID_Marca,
@@ -72,91 +70,79 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
         Estado: 1,
         url_image: urlFinal,
       };
-  
-         const response = await agregarProducto(productoDTO);
+
+      const response = await agregarProducto(productoDTO);
       if (!response?.ID_Producto) {
         alert("Error al agregar el producto");
         return;
       }
-      if (onProductAdded) onProductAdded(); // <-- refresca productos
+      if (onProductAdded) onProductAdded();
       AddModalClose();
       setNewProduct({
-  Nombre: "",
-  Precio_Compra: "",
-  Precio_Venta: "",
-  ID_Marca: "",
-  Detalles: "",
-  ID_Sucursal: "",
-  ID_Categoria: "",
-  url_image: "",
-  Cantidad: "",
-  archivoImagen: null,
-});
-
-       
-        
+        Nombre: "",
+        Precio_Compra: "",
+        Precio_Venta: "",
+        ID_Marca: "",
+        Detalles: "",
+        ID_Sucursal: "",
+        ID_Categoria: "",
+        url_image: "",
+        Cantidad: "",
+        archivoImagen: null,
+      });
     } catch (error) {
       alert("Ocurrió un error: " + error.message);
     }
   };
 
   return (
-    
     <Drawer
       open={openAdd}
       onClose={AddModalClose}
       position="right"
       size="xl"
-      className="bg-gray-900 text-gray-100 border-l border-gray-700 shadow-2xl"
+      className="bg-white text-blue-900 border-l border-blue-200 shadow-2xl"
       overlayCloseOnClick={false}
     >
-
       <div className="flex flex-col h-full">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700">
-          <h2 className="text-xl font-semibold">Agregar Producto</h2>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-blue-200 bg-white">
+          <h2 className="text-xl font-semibold text-blue-900">Agregar Producto</h2>
           <button
             onClick={AddModalClose}
-            className="text-gray-400 hover:text-gray-200 text-2xl font-bold"
+            className="text-blue-400 hover:text-blue-700 text-2xl font-bold"
             aria-label="Cerrar"
           >
             ×
           </button>
         </div>
-        <form className="flex-1 overflow-y-auto px-6 py-4 space-y-6" onSubmit={handleSubmit}>
-          {/* Vista previa */}
-          
+        <form className="flex-1 overflow-y-auto px-6 py-4 space-y-6 bg-white" onSubmit={handleSubmit}>
           {/* Datos básicos */}
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div className="col-span-3">
-              <label className="block text-sm font-medium text-gray-300 mb-1">Nombre</label>
+              <label className="block text-sm font-medium text-blue-900 mb-1">Nombre</label>
               <input
                 type="text"
                 value={newProduct.Nombre}
                 onChange={(e) => setNewProduct({ ...newProduct, Nombre: e.target.value })}
-                className="w-full bg-gray-800 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
-              <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-300 mb-1">Precio de Venta(C$)</label>
+            <div className="col-span-2">
+              <label className="block text-sm font-medium text-blue-900 mb-1">Precio de Venta (C$)</label>
               <input
                 type="number"
                 value={newProduct.Precio_Venta}
                 onChange={(e) => setNewProduct({ ...newProduct, Precio_Venta: e.target.value })}
-                className="w-full bg-gray-800 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
-           
-          </div>
+            </div>
           </div>
 
-          {/* Precios y Marca */}
-          
-
-          {/* Sucursal y Categoria */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">Sucursal</label>
+              <label className="block text-sm font-medium text-blue-900 mb-1">Sucursal</label>
               <ComboBoxID
                 name="Seleccionar Sucursal"
                 enableSearchbar={false}
@@ -175,7 +161,7 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">Categoría</label>
+              <label className="block text-sm font-medium text-blue-900 mb-1">Categoría</label>
               <ComboBoxID
                 name="Seleccionar Categoria"
                 options={categorias}
@@ -192,8 +178,8 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
                 }
               />
             </div>
-             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">Marca</label>
+            <div>
+              <label className="block text-sm font-medium text-blue-900 mb-1">Marca</label>
               <ComboBoxID
                 name="Seleccionar Marca"
                 options={Marcas}
@@ -212,22 +198,21 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
             </div>
           </div>
 
-          {/* Descripción */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">Descripción</label>
+            <label className="block text-sm font-medium text-blue-900 mb-1">Descripción</label>
             <textarea
               value={newProduct.Detalles || ""}
               onChange={(e) => setNewProduct({ ...newProduct, Detalles: e.target.value })}
-              className="w-full bg-gray-800 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows="4"
               placeholder="Añadir descripción del producto..."
             />
           </div>
-          
+
           <div className="grid grid-cols-3 gap-6 items-start">
             <div className="flex flex-col items-center space-y-2">
-              <label className="text-sm font-medium text-gray-300">Vista Previa</label>
-              <div className="w-40 h-40 rounded-xl overflow-hidden border border-gray-600">
+              <label className="text-sm font-medium text-blue-900">Vista Previa</label>
+              <div className="w-40 h-40 rounded-xl overflow-hidden border border-blue-200 bg-gray-100">
                 <img
                   src={
                     newProduct.archivoImagen
@@ -239,9 +224,9 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
                 />
               </div>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 col-span-2">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-blue-900 mb-1">
                   Subir Imagen (opcional)
                 </label>
                 <input
@@ -257,11 +242,11 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
                       });
                     }
                   }}
-                  className="text-gray-300"
+                  className="text-blue-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-blue-900 mb-1">
                   O ingresa una URL de imagen
                 </label>
                 <input
@@ -274,26 +259,24 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
                       archivoImagen: null,
                     })
                   }
-                  className="w-full bg-gray-700 text-gray-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="https://..."
                 />
               </div>
             </div>
           </div>
 
-
-          {/* Botones */}
-          <div className="flex justify-end gap-4 pt-4 border-t border-gray-700">
+          <div className="flex justify-end gap-4 pt-4 border-t border-blue-200">
             <button
               type="button"
               onClick={AddModalClose}
-              className="bg-gray-700 text-gray-300 hover:bg-gray-600 px-6 py-2 rounded-lg transition duration-200"
+              className="bg-blue-100 text-blue-700 hover:bg-blue-200 px-6 py-2 rounded-lg transition duration-200 border border-blue-200"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="bg-blue-600 text-white hover:bg-blue-500 px-6 py-2 rounded-lg transition duration-200"
+              className="bg-blue-700 text-white hover:bg-blue-800 px-6 py-2 rounded-lg transition duration-200"
             >
               Agregar Producto
             </button>

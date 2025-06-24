@@ -49,7 +49,6 @@ const RegistroCompra = () => {
         }
 
         setCompras(resultado);
-        console.log(resultado);
 
         const uniqueSucursales = [...new Set(resultado.map(c => c.Nombre_Sucursal || ""))].filter(Boolean);
         setSucursales(uniqueSucursales);
@@ -102,6 +101,8 @@ const RegistroCompra = () => {
   });
 
   const comprasOrdenadas = orderAsc ? comprasFiltradas : comprasFiltradas.toReversed();
+    console.log("Compras del registro:", compras);
+
 
   if (loading || error) {
     return (

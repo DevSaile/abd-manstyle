@@ -221,7 +221,11 @@ const ProductsPage = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </TopSection>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-7 mb-8 p-10 col-span-4 overflow-y-auto h-5/6 min-h-[400px]">
+        <motion.div 
+         initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 }}
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-7 mb-8 p-10 col-span-4 overflow-y-auto h-5/6 min-h-[400px]">
           {filteredProducts.map((product) => (
             <ProductCard
               product={product}
@@ -231,7 +235,7 @@ const ProductsPage = () => {
           ))}
 
           {console.log("Filtered Products:", filteredProducts)}
-        </div>
+        </motion.div>
 
         <Modal
           open={openDelete}
