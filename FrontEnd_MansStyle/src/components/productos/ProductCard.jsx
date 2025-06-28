@@ -22,8 +22,10 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
     <>
       <motion.div
         layoutId={`card-${name}`}
-        onClick={handleCardClick}
-        className="bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 shadow-md transition-transform cursor-pointer flex flex-col h-full"
+        onClick={()=>{
+          handleCardClick();
+        }}
+  className="bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 shadow-md transition-transform cursor-pointer flex flex-col h-full"
         initial={{
           boxShadow: "-6px 6px 1px rgba(0, 0, 0, 0.15)",
         }}
@@ -41,13 +43,15 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
         }}
         style={{ transformStyle: "preserve-3d", perspective: 1000 }}
       >
-        <img
-          src={image}
-          alt={name}
-          className="w-full h-36 object-cover rounded-lg border border-blue-100 mb-3 bg-gray-100"
-        />
-        <div className="flex-1 flex flex-col justify-between px-4 pb-4">
-          <div>
+  <div className="w-full h-[60%] aspect-square max-h-[60%] rounded-lg overflow-hidden border border-blue-100 mb-3 bg-gray-100 self-center">
+  <img
+    src={image}
+    alt={name}
+    className="w-full h-full object-cover"
+  />
+</div>
+  <div className="flex-1 flex flex-col justify-between px-4 pb-4">
+            <div>
             <h3 className="text-base font-semibold text-slate-800">{name}</h3>
             <p className="text-xs text-blue-600 font-medium">{category}</p>
           </div>
@@ -64,11 +68,10 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
             layoutId={`card-${name}`}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
             onClick={handleClose}
-           
           >
             <motion.div
               onClick={(e) => e.stopPropagation()}
-              className="bg-white text-slate-900 border border-blue-200 rounded-2xl shadow-2xl max-w-3xl w-full p-8 grid grid-cols-1 md:grid-cols-2 gap-8 mx-4 relative"
+              className="bg-white text-slate-900 border border-blue-200 rounded-2xl shadow-2xl max-w-md w-full p-6 flex flex-col md:flex-row gap-6 mx-4 relative"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
@@ -81,89 +84,71 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
                 ✕
               </button>
 
-              {/* Image (left) */}
-              <div className="flex flex-col items-center">
-                {image ? (
-                  <img
-                    src={image}
-                    alt={name}
-                    className="rounded-xl object-contain max-h-96 w-full bg-gray-100 border border-blue-100 mb-4"
-                  />
-                ) : (
-                  <p className="bg-gray-100 text-gray-500 rounded-lg px-4 py-2">
-                    No hay imagen disponible
-                  </p>
-                )}
-                <div className="flex flex-col gap-1 mt-2 w-full">
-                  <span className="text-xs text-blue-700 font-semibold">
-                    <span className="font-bold">Marca:</span> {brand}
-                  </span>
-                  <span className="text-xs text-blue-700 font-semibold">
-                    <span className="font-bold">Sucursal:</span> {sucursal}
-                  </span>
-                  <span className="text-xs text-blue-700 font-semibold">
-                    <span className="font-bold">Categoría:</span> {category}
-                  </span>
+              {/* Left: Image + info */}
+              <div className="flex-1 flex flex-col items-center">
+                <div className="w-full aspect-square bg-gray-100 flex items-center justify-center rounded-xl overflow-hidden mb-4">
+                  {image ? (
+                    <img
+                      src={image}
+                      alt={name}
+                      className="object-cover w-full h-full"
+                      style={{ aspectRatio: "1 / 1" }}
+                    />
+                  ) : (
+                    <p className="text-gray-500">No hay imagen disponible</p>
+                  )}
+                </div>
+                <div className="w-full flex flex-col gap-2">
+                  <div className="flex flex-wrap gap-2 justify-between">
+                    <span className="text-gray-400">Marca:</span>
+                    <span className="font-semibold text-blue-700">{brand}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2 justify-between">
+                    <span className="text-gray-400">Sucursal:</span>
+                    <span className="font-semibold text-blue-700">{sucursal}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2 justify-between">
+                    <span className="text-gray-400">Categoría:</span>
+                    <span className="font-semibold text-blue-700">{category}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2 justify-between">
+                    <span className="text-gray-400">Stock:</span>
+                    <span className="font-semibold text-blue-700">{stock}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2 justify-between">
+                    <span className="text-gray-400">Precio:</span>
+                    <span className="font-semibold text-blue-700">${price}</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Info (right) */}
-              <div className="flex flex-col gap-4 justify-center">
-                <div>
-                  <span className="block text-xs text-gray-400 font-semibold mb-1">
-                    Nombre del producto
-                  </span>
-                  <span className="block bg-blue-50 rounded-lg px-4 py-2 font-bold text-base text-blue-900 border border-blue-100">
-                    {name}
-                  </span>
+              {/* Right: Product name + description + actions */}
+              <div className="flex-1 flex flex-col justify-start">
+                <div className="mb-4">
+                  <span className="block text-2xl font-bold text-blue-700 mb-2">{name}</span>
                 </div>
-                <div>
-                  <span className="block text-xs text-gray-400 font-semibold mb-1">
-                    Precio de Venta
-                  </span>
-                  <span className="block bg-blue-50 rounded-lg px-4 py-2 font-semibold text-blue-700 border border-blue-100">
-                    ${price}
-                  </span>
+                <div className="bg-blue-50 rounded-xl p-4 mb-4 border border-blue-100">
+                  <span className="block text-slate-900 text-base whitespace-pre-line">{descripcion}</span>
                 </div>
-                <div>
-                  <span className="block text-xs text-gray-400 font-semibold mb-1">
-                    Stock disponible
-                  </span>
-                  <span className="block bg-blue-50 rounded-lg px-4 py-2 text-blue-900 border border-blue-100">
-                    {stock}
-                  </span>
-                </div>
-                <div>
-                  <span className="block text-xs text-gray-400 font-semibold mb-1">
-                    Descripción
-                  </span>
-                  <span className="block bg-blue-50 rounded-lg px-4 py-2 text-sm text-blue-900 max-h-40 overflow-y-auto whitespace-pre-line border border-blue-100">
-                    {descripcion}
-                  </span>
-                </div>
-                {/* Action buttons */}
-                <div className="flex flex-col gap-2 pt-4">
-                  <button
-                    onClick={() => {
-                      onEdit?.();
-                      handleClose();
-                    }}
-                    className="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-lg text-white font-semibold transition"
-                  >
-                    Editar producto
-                  </button>
-                  <button
-                    onClick={() => {
-                      onDelete?.();
-                      handleClose();
-                    }}
-                    className="bg-white hover:bg-blue-100 px-4 py-2 rounded-lg text-blue-700 font-semibold border border-blue-700 transition"
-                  >
-                    Eliminar producto
-                  </button>
-                  <span className="text-xs text-gray-400 pt-2 text-center">
-                    * Puedes editar o eliminar este producto desde aquí.
-                  </span>
+                <div className="flex flex-col gap-2 pt-2">
+        <button
+  onClick={() => {
+    onEdit?.(product);
+    handleClose();
+  }}
+  className="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-lg text-white font-semibold transition"
+>
+  Editar producto
+</button>
+<button
+  onClick={() => {
+    onDelete?.(product);
+    handleClose();
+  }}
+  className="bg-white hover:bg-blue-100 px-4 py-2 rounded-lg text-blue-700 font-semibold border border-blue-700 transition"
+>
+  Eliminar producto
+</button>
                 </div>
               </div>
             </motion.div>

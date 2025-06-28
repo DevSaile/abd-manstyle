@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import {
   eliminarProducto,
   obtenerProductoPorID,
+  obtenerProductos
 } from "@/services/ProductosService";
 
 import useProductos from "@/hooks/useProducts";
@@ -16,7 +17,7 @@ import { useOutletContext } from "react-router-dom";
 import TopSection from "../../components/common/TopSection";
 
 const ProductsPage = () => {
-  const { productos, setProductos } = useProductos();
+const { productos, recargar } = useProductos(); // ✅ Correcto
 
   const [openDetails, setOpenDetails] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -33,12 +34,19 @@ const ProductsPage = () => {
   const [selectedProducto, setSelectedProduct] = useState(null);
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+  const handleEdit = (product) => {
+    setSelectedProduct(product);
+    setOpenEdit(true);
+  };
 
-   const { setTitle } = useOutletContext();
-    useEffect(() => {
-      setTitle("Productos");
-    }, [setTitle]);
-  
+  const handleDelete = (product) => {
+    setSelectedProduct(product);
+    setOpenDelete(true);
+  };
+  const { setTitle } = useOutletContext();
+  useEffect(() => {
+    setTitle("Productos");
+  }, [setTitle]);
 
   useEffect(() => {
     setFilteredProducts(productos);
@@ -150,34 +158,30 @@ const ProductsPage = () => {
   ]);
 
   const deletefuncion = async () => {
-    if (!selectedProducto?.ID_Producto) {
-      alert("No se ha seleccionado ningún producto para eliminar.");
-      return;
-    }
+  if (!selectedProducto?.ID_Producto) {
+    alert("No se ha seleccionado ningún producto para eliminar.");
+    return;
+  }
 
-    try {
-      const productoEliminado = {
-        ID_Producto: selectedProducto.ID_Producto,
-        Estado: 0,
-      };
+  try {
+    const productoEliminado = {
+      ID_Producto: selectedProducto.ID_Producto,
+      Estado: 0,
+    };
 
-      const resultado = await eliminarProducto(
-        selectedProducto.ID_Producto,
-        productoEliminado
-      );
+     await eliminarProducto(
+      selectedProducto.ID_Producto,
+      productoEliminado
+    );
 
-      if (resultado) {
-        const actualizados = await obtenerProductos();
-        setProductos(actualizados);
-        setFilteredProducts(actualizados);
-        alert("Producto eliminado correctamente");
-      } else {
-        alert("Error al eliminar el producto");
-      }
-    } catch (error) {
-      alert(error.response?.data?.message || "Error al eliminar el producto");
-    }
-  };
+  } catch (error) {
+    alert(error.response?.data?.message || "Error al eliminar el producto");
+  } finally {
+    // SIEMPRE refresca la lista, aunque haya error
+    await recargar(); // ✅ Refresca productos desde el hook
+
+  }
+};
 
   return (
     <div className="flex-column relative z-10">
@@ -221,20 +225,21 @@ const ProductsPage = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </TopSection>
-        <motion.div 
-         initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2 }}
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-7 mb-8 p-10 col-span-4 overflow-y-auto h-5/6 min-h-[400px]">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-7 mb-8 p-10 col-span-4 mx-9 overflow-y-auto h-5/6 min-h-[400px]"
+        >
           {filteredProducts.map((product) => (
             <ProductCard
+              key={product.ID_Producto}
               product={product}
               onEdit={() => handleEdit(product)}
               onDelete={() => handleDelete(product)}
             />
           ))}
 
-          {console.log("Filtered Products:", filteredProducts)}
         </motion.div>
 
         <Modal
@@ -256,26 +261,26 @@ const ProductsPage = () => {
             >
               Cancel
             </button>
-            <button
-              onClick={() => {
-                deletefuncion();
-                setOpenDelete(false);
-              }}
-              className="bg-red-600 text-gray-100 hover:bg-red-500 px-6 py-2 rounded-lg transition duration-200"
-            >
-              Delete
-            </button>
+         <button
+   onClick={async () => {
+      await deletefuncion();
+    
+      setOpenDelete(false);
+      recargar(); // ✅ recargar productos después de eliminar
+    
+  }}
+  className="bg-red-600 text-gray-100 hover:bg-red-500 px-6 py-2 rounded-lg transition duration-200"
+>
+  Delete
+</button>
           </div>
         </Modal>
 
         <ModalEditar
           openEdit={openEdit}
           EditModalClose={() => setOpenEdit(false)}
-          refrescarProductos={async () => {
-            const nuevos = await obtenerProductos();
-            setProductos(nuevos);
-            setFilteredProducts(nuevos);
-          }}
+       refrescarProductos={recargar} // ✅ recargar viene del hook useProductos
+
           fetchProductoByID={obtenerProductoPorID}
           productoID={selectedProducto?.ID_Producto || null}
         />
