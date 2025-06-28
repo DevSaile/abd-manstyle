@@ -322,6 +322,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                                 ${isInvalid("Nombre") ? "border-2 border-red-500" : ""}
                                 focus:border-blue-500`}
                             required
+                            placeholder="..."
                         />
                         {isInvalid("Nombre") && touchedFields["Nombre"] && (
                             <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">
@@ -361,6 +362,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                             name="Edad"
                             value={formData.Edad}
                             readOnly
+                            
                             className="w-full bg-blue-50 text-blue-900 rounded-lg px-4 py-2 border border-blue-200"
                         />
                     </div>
@@ -390,6 +392,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                             className={`w-full bg-white text-blue-900 rounded-lg px-4 py-2 transition-colors duration-200 border border-blue-200
                                 ${isInvalid("NombreDeUsuario") ? "border-2 border-red-500" : ""}
                                 focus:border-blue-500`}
+                            placeholder="ej: usuario123"
                         />
                         {isInvalid("NombreDeUsuario") && touchedFields["NombreDeUsuario"] && (
                             <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">
@@ -464,6 +467,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                                 ${isInvalid("Email") ? "border-2 border-red-500" : ""}
                                 focus:border-blue-500`}
                             required
+                            placeholder="nombre@email.com"
                         />
                         {isInvalid("Email") && touchedFields["Email"] && (
                             <div className="absolute left-0 mt-1 bg-red-600 text-white text-xs rounded px-2 py-1 z-10 shadow-lg">

@@ -26,19 +26,42 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
   const [Marcas, setMarcas] = useState([]);
 
   useEffect(() => {
-    Promise.all([obtenerCategoriasActivas(), obtenerSucursales(), obtenerMarcas()]).then(
-      ([categoriasData, sucursalesData, MarcasData]) => {
-        setCategorias(categoriasData.map(c => ({ label: c.Nombre, value: c.ID_Categoria })));
-        setSucursales(sucursalesData.map(s => ({ label: s.Nombre, value: s.ID_Sucursal })));
-        setMarcas(MarcasData.map(s => ({ label: s.Nombre, value: s.ID_Marca })));
-      }
-    );
+    Promise.all([
+      obtenerCategoriasActivas(),
+      obtenerSucursales(),
+      obtenerMarcas(),
+    ]).then(([categoriasData, sucursalesData, MarcasData]) => {
+      setCategorias(
+        categoriasData.map((c) => ({ label: c.Nombre, value: c.ID_Categoria }))
+      );
+      setSucursales(
+        sucursalesData.map((s) => ({ label: s.Nombre, value: s.ID_Sucursal }))
+      );
+      setMarcas(
+        MarcasData.map((s) => ({ label: s.Nombre, value: s.ID_Marca }))
+      );
+    });
   }, []);
 
-  const esURLValida = (url) => typeof url === "string" && url.startsWith("http");
+  const esURLValida = (url) =>
+    typeof url === "string" && url.startsWith("http");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validación: todos obligatorios menos imagen
+    if (
+      !newProduct.Nombre.trim() ||
+      !newProduct.Precio_Compra ||
+      !newProduct.Precio_Venta ||
+      !newProduct.ID_Marca ||
+      !newProduct.ID_Sucursal ||
+      !newProduct.ID_Categoria ||
+      !newProduct.Detalles.trim()
+    ) {
+      alert("Por favor, completa todos los campos obligatorios.");
+      return;
+    }
 
     let urlFinal = "";
 
@@ -47,7 +70,11 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
         const resultado = await subirImagen(newProduct.archivoImagen);
         if (typeof resultado === "string") {
           urlFinal = resultado;
-        } else if (resultado && typeof resultado === "object" && resultado.url) {
+        } else if (
+          resultado &&
+          typeof resultado === "object" &&
+          resultado.url
+        ) {
           urlFinal = resultado.url;
         } else {
           throw new Error("La imagen subida no devolvió una URL válida");
@@ -106,7 +133,9 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
     >
       <div className="flex flex-col h-full">
         <div className="flex items-center justify-between px-6 py-4 border-b border-blue-200 bg-white">
-          <h2 className="text-xl font-semibold text-blue-900">Agregar Producto</h2>
+          <h2 className="text-xl font-semibold text-blue-900">
+            Agregar Producto
+          </h2>
           <button
             onClick={AddModalClose}
             className="text-blue-400 hover:text-blue-700 text-2xl font-bold"
@@ -115,25 +144,36 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
             ×
           </button>
         </div>
-        <form className="flex-1 overflow-y-auto px-6 py-4 space-y-6 bg-white" onSubmit={handleSubmit}>
+        <form
+          className="flex-1 overflow-y-auto px-6 py-4 space-y-6 bg-white"
+          onSubmit={handleSubmit}
+        >
           {/* Datos básicos */}
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div className="col-span-3">
-              <label className="block text-sm font-medium text-blue-900 mb-1">Nombre</label>
+              <label className="block text-sm font-medium text-blue-900 mb-1">
+                Nombre
+              </label>
               <input
                 type="text"
                 value={newProduct.Nombre}
-                onChange={(e) => setNewProduct({ ...newProduct, Nombre: e.target.value })}
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, Nombre: e.target.value })
+                }
                 className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-blue-900 mb-1">Precio de Venta (C$)</label>
+              <label className="block text-sm font-medium text-blue-900 mb-1">
+                Precio de Venta (C$)
+              </label>
               <input
                 type="number"
                 value={newProduct.Precio_Venta}
-                onChange={(e) => setNewProduct({ ...newProduct, Precio_Venta: e.target.value })}
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, Precio_Venta: e.target.value })
+                }
                 className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
@@ -142,7 +182,9 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-blue-900 mb-1">Sucursal</label>
+              <label className="block text-sm font-medium text-blue-900 mb-1">
+                Sucursal
+              </label>
               <ComboBoxID
                 name="Seleccionar Sucursal"
                 enableSearchbar={false}
@@ -161,7 +203,9 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-blue-900 mb-1">Categoría</label>
+              <label className="block text-sm font-medium text-blue-900 mb-1">
+                Categoría
+              </label>
               <ComboBoxID
                 name="Seleccionar Categoria"
                 options={categorias}
@@ -179,7 +223,9 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-blue-900 mb-1">Marca</label>
+              <label className="block text-sm font-medium text-blue-900 mb-1">
+                Marca
+              </label>
               <ComboBoxID
                 name="Seleccionar Marca"
                 options={Marcas}
@@ -199,10 +245,14 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-blue-900 mb-1">Descripción</label>
+            <label className="block text-sm font-medium text-blue-900 mb-1">
+              Descripción
+            </label>
             <textarea
               value={newProduct.Detalles || ""}
-              onChange={(e) => setNewProduct({ ...newProduct, Detalles: e.target.value })}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, Detalles: e.target.value })
+              }
               className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows="4"
               placeholder="Añadir descripción del producto..."
@@ -211,13 +261,16 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
 
           <div className="grid grid-cols-3 gap-6 items-start">
             <div className="flex flex-col items-center space-y-2">
-              <label className="text-sm font-medium text-blue-900">Vista Previa</label>
+              <label className="text-sm font-medium text-blue-900">
+                Vista Previa
+              </label>
               <div className="w-40 h-40 rounded-xl overflow-hidden border border-blue-200 bg-gray-100">
                 <img
                   src={
                     newProduct.archivoImagen
                       ? URL.createObjectURL(newProduct.archivoImagen)
-                      : newProduct.url_image || "https://via.placeholder.com/150"
+                      : newProduct.url_image ||
+                        "https://via.placeholder.com/150"
                   }
                   alt="Vista previa"
                   className="w-full h-full object-cover"

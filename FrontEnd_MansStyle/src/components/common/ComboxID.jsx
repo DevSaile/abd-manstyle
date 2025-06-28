@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
-const ComboBoxID = ({ name, options = [], selected, onSelect, enableSearchbar=true }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
-    const comboBoxRef = useRef(null);
-  
-    // Normaliza las opciones y filtra las undefined
-    const normalizedOptions = options
-      .filter(option => option !== undefined && option !== null)
-      .map(option => {
-        if (typeof option === 'string') {
-          return { label: option, value: option };
-        }
-        return option;
-      });
+const ComboBoxID = ({ name, options = [], selected, onSelect, enableSearchbar = true }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const comboBoxRef = useRef(null);
+
+  // Normaliza las opciones y filtra las undefined
+  const normalizedOptions = options
+    .filter(option => option !== undefined && option !== null)
+    .map(option => {
+      if (typeof option === 'string') {
+        return { label: option, value: option };
+      }
+      return option;
+    });
 
   const toggleDropdown = (e) => {
     e.stopPropagation();
@@ -22,10 +22,9 @@ const ComboBoxID = ({ name, options = [], selected, onSelect, enableSearchbar=tr
   };
 
   // Filtrado seguro
-  const filteredItems = normalizedOptions.filter(item => 
+  const filteredItems = normalizedOptions.filter(item =>
     item?.label?.toLowerCase()?.includes(searchTerm.toLowerCase())
   );
-
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -41,16 +40,15 @@ const ComboBoxID = ({ name, options = [], selected, onSelect, enableSearchbar=tr
   }, []);
 
   return (
-    <div className="relative" ref={comboBoxRef} onClick={(e) => e.stopPropagation()}>
+    <div className="relative w-full" ref={comboBoxRef} onClick={(e) => e.stopPropagation()}>
       <button
-        className="bg-gray-700 text-gray-100 font-bold py-2 px-4 rounded-lg inline-flex items-center justify-between w-full"
+        className="bg-white shadow-md text-gray-400 font-bold py-2 px-4 rounded-lg inline-flex items-center w-full overflow-y-auto md:text-base text-xs"
         onClick={(e) => {
           e.stopPropagation();
           e.preventDefault();
           toggleDropdown(e);
         }}
       >
-        {/* Muestra el label del item seleccionado o el nombre por defecto */}
         <span>{selected?.label || name}</span>
         <svg
           className="fill-current h-4 w-4 ml-2"
@@ -63,31 +61,33 @@ const ComboBoxID = ({ name, options = [], selected, onSelect, enableSearchbar=tr
 
       {isOpen && (
         <motion.div
-          className="absolute bg-gray-700 rounded-lg mt-1 w-full shadow-lg z-10"
+          className="absolute bg-white rounded-lg mt-1 w-full z-10"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.2 }}
           onClick={(e) => e.stopPropagation()}
         >
-         {enableSearchbar &&( <input
-            type="text"
-            className="bg-gray-700 text-white w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onClick={(e) => e.stopPropagation()}
-          />)}
-          <ul className=" overflow-y-auto custom-scrollbar mb-2">
+          {enableSearchbar && (
+            <input
+              type="text"
+              className="bg-white text-gray-800 placeholder-gray-400 rounded-lg pl-3 py-2 focus:outline-none focus:ring-2 w-full"
+              placeholder="Buscar..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
+          <ul className="max-h-40 overflow-y-auto custom-scrollbar mb-2">
             {filteredItems.length > 0 ? (
               filteredItems.map((item, index) => (
                 <li
                   key={index}
-                  className="hover:bg-gray-800 py-2 px-4 cursor-pointer"
+                  className="hover:bg-blue-100 py-2 px-4 cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
                     setIsOpen(false);
-                    onSelect(item); // Envía el objeto completo {label, value}
+                    onSelect(item);
                   }}
                 >
                   {item.label}

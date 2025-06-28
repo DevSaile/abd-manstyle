@@ -6,10 +6,6 @@ const ComboBox = ({
   options = [],
   onSelect,
   enableSearchBar = true,
-  bgColor = "bg-gray-700", // NEW: background color prop
-  dropdownBgColor = "bg-gray-700", // NEW: dropdown background color prop
-  inputBgColor = "bg-gray-700", // NEW: input background color prop
-  hoverBgColor = "hover:bg-gray-800", // NEW: hover color for options
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -40,14 +36,14 @@ const ComboBox = ({
     };
   }, []);
 
-  return (
+return (
     <div
       className="relative w-full"
       ref={comboBoxRef}
       onClick={(e) => e.stopPropagation()}
     >
       <button
-        className={`${bgColor} shadow-custom text-gray-400 font-bold py-2 px-4 rounded-lg inline-flex items-center w-full overflow-y-auto md:text-base text-xs`}
+        className="bg-white shadow-custom text-gray-400 font-bold py-2 px-4 rounded-lg inline-flex items-center w-full overflow-y-auto md:text-base text-xs"
         onClick={(e) => {
           e.stopPropagation();
           e.preventDefault();
@@ -65,7 +61,7 @@ const ComboBox = ({
       </button>
       {isOpen && (
         <motion.div
-          className={`absolute ${dropdownBgColor} rounded-lg mt-1 w-full z-10`}
+          className="absolute bg-white rounded-lg mt-1 w-full z-10"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
@@ -75,7 +71,7 @@ const ComboBox = ({
           {enableSearchBar && (
             <input
               type="text"
-              className={`${inputBgColor} text-white placeholder-gray-400 rounded-lg pl-3 py-2 focus:outline-none focus:ring-2 w-full`}
+              className="bg-white text-gray-800 placeholder-gray-400 rounded-lg pl-3 py-2 focus:outline-none focus:ring-2 w-full"
               placeholder="Buscar..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -87,7 +83,7 @@ const ComboBox = ({
               filteredItems.map((item, index) => (
                 <li
                   key={index}
-                  className={`${hoverBgColor} py-2 px-4 cursor-pointer`}
+                  className="hover:bg-blue-100 py-2 px-4 cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedOption(item);
