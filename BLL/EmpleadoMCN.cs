@@ -211,7 +211,7 @@ namespace BLL
                 contrasena = null, // por seguridad, puedes omitirla
                 correo = empleado.Email,
                 ID_Rol = empleado.ID_Rol,
-                NombreRol = empleado.Rol?.Puesto,
+                NombreRol = empleado.ID_Rol == 1 ? "Administrador" : "Empleado",
                 ID_Sucursal = empleado.ID_Sucursal,
                 NombreSucursal = empleado.Sucursal?.Nombre
             };

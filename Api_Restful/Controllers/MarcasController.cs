@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Security.Claims; // Necesario para acceder a Claims
+using System.Web; // Necesario para HttpContext
 
 namespace WebManStyle_ABD.Controllers
 {
@@ -51,6 +53,8 @@ namespace WebManStyle_ABD.Controllers
         }
 
         // Actualizar una marca
+        [Authorize(Roles = "Administrador")]
+
         [HttpPut]
         [Route("actualizar")]
         public IHttpActionResult ActualizarMarca([FromBody] MarcasDTO actualMarca)
@@ -66,6 +70,8 @@ namespace WebManStyle_ABD.Controllers
         }
 
         // Eliminar una marca por ID
+        [Authorize(Roles = "Administrador")]
+
         [HttpPut]
         [Route("eliminar")]
         public IHttpActionResult EliminarMarca([FromBody] MarcasDTO actualMarca)
@@ -81,6 +87,8 @@ namespace WebManStyle_ABD.Controllers
         }
 
         // Agregar una nueva marca
+        [Authorize(Roles = "Administrador")]
+
         [HttpPost]
         [Route("agregar")]
         public IHttpActionResult AgregarMarca([FromBody] MarcasDTO nuevaMarca)

@@ -1,20 +1,20 @@
 ﻿using BLL;
 using Models;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims; // Necesario para acceder a Claims
+using System.Web; 
 using System.Web.Http;
 
 namespace WebManStyle_ABD.Controllers
 {
     [RoutePrefix("api/Auth")]
-
-
     public class AuthController : ApiController
     {
-
         private readonly EmpleadoMCN MetodosEmpleado = new EmpleadoMCN();
         private readonly RolMCN MetodosRol = new RolMCN();
 
@@ -28,9 +28,43 @@ namespace WebManStyle_ABD.Controllers
             var empleado = MetodosEmpleado.ValidarLogin(datos.Usuario, datos.Contra);
 
             if (empleado == null)
-                return Unauthorized(); // 401 si no coincide usuario o contraseña
+                return Unauthorized();
 
-            return Ok(empleado); // Puedes devolver EmpleadoDTO o algo como token + info básica
+            var tokenRequest = new HttpRequestMessage(HttpMethod.Post, Request.RequestUri.GetLeftPart(UriPartial.Authority) + "/api/Auth/token");
+            tokenRequest.Content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("grant_type", "password"),
+                new KeyValuePair<string, string>("username", datos.Usuario),
+                new KeyValuePair<string, string>("password", datos.Contra)
+            });
+
+            using (var client = new HttpClient())
+            {
+                var response = client.SendAsync(tokenRequest).Result;
+                var responseContent = response.Content.ReadAsStringAsync().Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    JObject tokenResponse = JObject.Parse(responseContent);
+
+                    JObject empleadoData = new JObject
+                    {
+                        { "ID_Empleado", empleado.ID_Empleado },
+                        { "Id_Rol", empleado.ID_Rol },                        
+                        { "NombreUsuario", empleado.usuario },
+                        { "ID_Sucursal", empleado.ID_Sucursal }, 
+                        { "NombreRol", empleado.NombreRol }, 
+                    };
+
+                    tokenResponse.Add("empleado", empleadoData);
+
+                    return Ok(tokenResponse);
+                }
+                else
+                {
+                    return Content(response.StatusCode, JObject.Parse(responseContent));
+                }
+            }
         }
 
         [HttpPost]
@@ -45,7 +79,7 @@ namespace WebManStyle_ABD.Controllers
             if (empleado == null)
                 return NotFound();
 
-            var token = Guid.NewGuid().ToString(); 
+            var token = Guid.NewGuid().ToString();
 
             var guardado = MetodosEmpleado.GuardarTokenRecuperacion(empleado.correo, token);
 
@@ -92,5 +126,49 @@ namespace WebManStyle_ABD.Controllers
             return Ok(new { success = true, message = "Contraseña actualizada correctamente." });
         }
 
+        // --- EJEMPLOS DE ENDPOINTS PROTEGIDOS ---
+
+        [Authorize] // Solo usuarios autenticados pueden acceder
+        [HttpGet]
+        [Route("perfil")]
+        public IHttpActionResult GetPerfilUsuario()
+        {
+            // Acceder a la información del usuario autenticado (claims)
+            var identity = User.Identity as ClaimsIdentity;
+            if (identity == null)
+            {
+                return Unauthorized(); // Esto no debería pasar si [Authorize] funciona correctamente
+            }
+
+            string nombreUsuario = identity.FindFirst(ClaimTypes.Name)?.Value;
+            string idEmpleado = identity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            List<string> roles = identity.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList();
+
+            return Ok(new
+            {
+                id = idEmpleado,
+                usuario = nombreUsuario,
+                roles = roles,
+                mensaje = "¡Acceso autorizado!"
+            });
+        }
+
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
+        [HttpGet]
+        [Route("admin/usuarios")]
+        public IHttpActionResult GetUsuariosAdmin()
+        {
+            // Lógica para obtener usuarios (solo para administradores)
+            return Ok(new { message = "Lista de usuarios (solo para administradores)" });
+        }
+
+        [Authorize(Roles = "Administrador, Editor")] // Administradores o Editores
+        [HttpPost]
+        [Route("contenido/publicar")]
+        public IHttpActionResult PublicarContenido()
+        {
+            // Lógica para publicar contenido
+            return Ok(new { message = "Contenido publicado con éxito (Admin o Editor)" });
+        }
     }
 }
