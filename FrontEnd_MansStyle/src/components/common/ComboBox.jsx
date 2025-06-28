@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
-const ComboBox = ({
-  name,
-  options = [],
-  onSelect,
-  enableSearchBar = true,
-}) => {
+const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOption, setSelectedOption] = useState(name);
@@ -36,7 +31,7 @@ const ComboBox = ({
     };
   }, []);
 
-return (
+  return (
     <div
       className="relative w-full"
       ref={comboBoxRef}

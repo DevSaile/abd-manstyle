@@ -12,6 +12,33 @@ import BoughtCard from "@/components/registroscompra/BoughtCard";
 import { obtenerRegistroCompras } from "@/services/CompraHitorialService";
 import TopSection from "@/components/common/TopSection";
 import {motion} from "framer-motion";
+import * as XLSX from "xlsx";
+
+const exportToExcel = (compras) => {
+  const data = [];
+
+  compras.forEach((compra) => {
+    const { ID_Entrada, Fecha_Compra, NombreProveedor, Nombre_Sucursal, Estado, DetallesCompra } = compra;
+
+    DetallesCompra?.forEach((producto) => {
+      data.push({
+        "ID Entrada": ID_Entrada,
+        Fecha: new Date(Fecha_Compra).toLocaleDateString(),
+        Producto: producto.NombreProducto,
+        Cantidad: producto.Cantidad,
+        "Precio Unitario": producto.Precio_Compra,
+        "Total Producto": (producto.Cantidad * producto.Precio_Compra).toFixed(2),
+      });
+    });
+  });
+
+  const worksheet = XLSX.utils.json_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Reporte de Compras");
+  XLSX.writeFile(workbook, "reporte_compras.xlsx");
+};
+
+
 
 const RegistroCompra = () => {
   const [compras, setCompras] = useState([]);
@@ -192,6 +219,14 @@ const RegistroCompra = () => {
           <span className="ml-2">{orderAsc ? "Ascendente" : "Descendente"}</span>
         </button>
       </motion.div>
+            <div className="flex justify-end px-5">
+  <button
+    onClick={() => exportToExcel(comprasOrdenadas)}
+    className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg shadow transition"
+  >
+    Exportar a Excel
+  </button>
+</div>
 
       {/* Listado de Compras */}
       <motion.div className="flex flex-col gap-6 mx-9"
