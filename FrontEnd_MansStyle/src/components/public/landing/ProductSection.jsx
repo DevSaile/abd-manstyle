@@ -111,15 +111,15 @@ const ProductSection = () => {
   });
 
   // Color palette for dark interface
-  const comboBoxProps = {
-    bgColor: "bg-[#23272f]",
+   const comboBoxProps = {
+    bgColor: "bg-[#23272f] text-white",
     dropdownBgColor: "bg-[#23272f]",
-    inputBgColor: "bg-[#18181b]",
+    inputBgColor: "bg-[#23272f] text-white",
     hoverBgColor: "hover:bg-[#2563eb]/30",
   };
   console.log(`filterd produc ${filteredProducts}`);
 
-  return (
+ return (
     <section className="py-6 px-4 bg-[#18181b] rounded-xl">
       <div className="flex flex-col gap-4 mb-8">
         <input
@@ -154,12 +154,9 @@ const ProductSection = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mx-5 max-h-[660px] overflow-y-auto">
-        {
-        
-        filteredProducts.map((product) => (
-        
+        {filteredProducts.map((product) => (
           <CatalogProductCard
-           
+            key={product.id || product.Nombre}
             producto={product}
           />
         ))}

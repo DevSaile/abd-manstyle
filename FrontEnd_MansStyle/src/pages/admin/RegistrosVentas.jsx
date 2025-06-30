@@ -13,6 +13,8 @@ import StatCard from "@/components/common/StatCard";
 import SaleCard from "@/components/registrosventa/SalesCard";
 import TopSection from "../../components/common/TopSection";
 import { obtenerTodasLasVentas } from "@/services/VentasService";
+import * as XLSX from "xlsx";
+
 
 const RegistrosVenta = () => {
   const [ventas, setVentas] = useState([]);
@@ -36,6 +38,32 @@ const RegistrosVenta = () => {
       setTitle("Registro de Ventas");
     }, [setTitle]);
   
+    const exportToExcel = (ventas) => {
+  const data = [];
+
+  ventas.forEach((venta) => {
+    const { ID_Venta, Fecha_Venta, Detalles, NombreSucursal, NombreVendedor, Total } = venta;
+
+    (Detalles || []).forEach((producto) => {
+      data.push({
+        "ID Venta": ID_Venta,
+        Fecha: new Date(Fecha_Venta).toLocaleDateString(),
+        Sucursal: NombreSucursal,
+        Vendedor: NombreVendedor,
+        Producto: producto.NombreProducto,
+        Cantidad: producto.Cantidad,
+        "Precio Unitario": producto.PrecioProducto,
+        "Total Producto": (producto.Cantidad * producto.PrecioProducto).toFixed(2),
+        "Total Venta": Total,
+      });
+    });
+  });
+
+  const worksheet = XLSX.utils.json_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Reporte de Ventas");
+  XLSX.writeFile(workbook, "reporte_ventas.xlsx");
+};
 
   useEffect(() => {
     obtenerTodasLasVentas().then((data) => {
@@ -193,6 +221,12 @@ const RegistrosVenta = () => {
               {orderAsc ? "Ascendente" : "Descendente"}
             </span>
           </button>
+               <button
+        onClick={() => exportToExcel(ventasOrdenadas)}
+        className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg shadow transition"
+      >
+        Exportar a Excel
+      </button>
         </motion.div>
 
         <motion.div

@@ -1,7 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
-const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
+const ComboBox = ({
+  name,
+  options = [],
+  onSelect,
+  enableSearchBar = true,
+  bgColor = "bg-white",
+  dropdownBgColor = "bg-white",
+  inputBgColor = "bg-white",
+  hoverBgColor = "hover:bg-blue-100",
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOption, setSelectedOption] = useState(name);
@@ -38,7 +47,7 @@ const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
       onClick={(e) => e.stopPropagation()}
     >
       <button
-        className="bg-white shadow-custom text-gray-400 font-bold py-2 px-4 rounded-lg inline-flex items-center w-full overflow-y-auto md:text-base text-xs"
+        className={`${bgColor} shadow-custom text-gray-400 font-bold py-2 px-4 rounded-lg inline-flex items-center w-full overflow-y-auto md:text-base text-xs`}
         onClick={(e) => {
           e.stopPropagation();
           e.preventDefault();
@@ -56,7 +65,7 @@ const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
       </button>
       {isOpen && (
         <motion.div
-          className="absolute bg-white rounded-lg mt-1 w-full z-10"
+          className={`${dropdownBgColor} rounded-lg mt-1 w-full z-10 absolute`}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
@@ -66,7 +75,7 @@ const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
           {enableSearchBar && (
             <input
               type="text"
-              className="bg-white text-gray-800 placeholder-gray-400 rounded-lg pl-3 py-2 focus:outline-none focus:ring-2 w-full"
+              className={`${inputBgColor} text-gray-200 placeholder-gray-400 rounded-lg pl-3 py-2 focus:outline-none focus:ring-2 w-full`}
               placeholder="Buscar..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -78,7 +87,7 @@ const ComboBox = ({ name, options = [], onSelect, enableSearchBar = true }) => {
               filteredItems.map((item, index) => (
                 <li
                   key={index}
-                  className="hover:bg-blue-100 py-2 px-4 cursor-pointer"
+                  className={`${hoverBgColor} py-2 px-4 cursor-pointer`}
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedOption(item);
