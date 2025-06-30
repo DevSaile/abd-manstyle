@@ -41,7 +41,6 @@ namespace WebManStyle_ABD.Controllers
             return Ok(productos);
         }
 
-
         [HttpPost]
         [Route("agregar")]
         public IHttpActionResult AgregarProducto([FromBody] ProductoDTO nuevoProducto)
@@ -55,7 +54,7 @@ namespace WebManStyle_ABD.Controllers
 
             return Ok(new { mensaje = "Producto agregado correctamente.", ID_Producto = resultado });
         }
-
+        
         [HttpPut]
         [Route("actualizar/{id:int}")]
         public IHttpActionResult ActualizarProducto(int id, [FromBody] ProductoDTO productoActualizado)
@@ -108,7 +107,6 @@ namespace WebManStyle_ABD.Controllers
             });
         }
 
-
         [HttpPut]
         [Route("eliminar/{id:int}")] // Este de aqui baicamente es el que me ayuda a elimiarr el producto o cambiar el estado a inactivo o sea 0
 
@@ -137,17 +135,6 @@ namespace WebManStyle_ABD.Controllers
 
             return Ok(producto); // Retorna el producto si se encuentra
         }
-
-        /*[HttpGet]
-        [Route("marcas")]
-        public IHttpActionResult ObtenerMarcas()
-        {
-            var marcas = MetodosProducto.ObtenerMarcas();
-            if (marcas == null || marcas.Count == 0)
-                return NotFound();
-
-            return Ok(marcas);
-        }*/
 
         [HttpGet]
         [Route("sucursal/{idSucursal}")]

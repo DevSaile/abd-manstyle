@@ -14,10 +14,6 @@ namespace WebManStyle_ABD
             // Rutas de Web API
             config.MapHttpAttributeRoutes();
 
-            // Habilitar CORS globalmente
-            var cors = new EnableCorsAttribute("*", "*", "*"); // Permite acceso desde cualquier origen
-            config.EnableCors(cors);
-
             // Configuración y servicios de Web API
 
             config.Routes.MapHttpRoute(

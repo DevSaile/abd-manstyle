@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ParticlesBackground from "@/components/public/common/ParticlesBackground";
-import tiendaImg from "@/assest/login_image.webp";
+//import tiendaImg from "@/assest/login_image.webp";
 import { loginUsuario } from "@/services/LoginService";
 
 const Login = () => {
@@ -10,28 +10,40 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
       const response = await loginUsuario(usuario, contrasena);
-      if (response && response.ID_Empleado) {
-        const userRole = response.NombreRol;
-        const idSucursal = response.ID_Sucursal;
-        localStorage.setItem("usuario", JSON.stringify(response));
-        localStorage.setItem("rol", userRole);
-        localStorage.setItem("idSucursal", idSucursal);
+
+      if (response && response.access_token && response.empleado) {
+
+        const empleadoInfo = response.empleado;
+
+        const userRole = empleadoInfo.NombreRol; 
+        const idSucursal = empleadoInfo.ID_Sucursal; 
+        //const idEmpleado = empleadoInfo.ID_Empleado; 
+
+        localStorage.setItem("accessToken", response.access_token);
+
+        localStorage.setItem("usuario", JSON.stringify(empleadoInfo)); 
+        localStorage.setItem("rol", userRole); 
+        localStorage.setItem("idSucursal", idSucursal); 
         localStorage.setItem("isAuthenticated", "true");
-        console.log(response);
-        
-        navigate("/admin/inicio");
+
+        navigate("/admin/inicio"); 
       } else {
-        setError("Credenciales incorrectas");
+        setError(
+          "Credenciales incorrectas o datos de usuario incompletos en la respuesta."
+        );
       }
     } catch (err) {
-      setError("Credenciales incorrectas o error en el servidor");
+      console.error("Error durante el login:", err); 
+      setError(
+        "Credenciales incorrectas o error en el servidor. Intenta de nuevo."
+      );
+
     }
   };
 
