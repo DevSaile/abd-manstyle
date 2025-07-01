@@ -15,6 +15,7 @@ const BuyingPage = () => {
   const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [products, setProducts] = useState([]);
   const [showToast, setShowToast] = useState(false);
+  const [lastId, setLastId] = useState(null);
 
   const { setTitle } = useOutletContext();
   useEffect(() => {
@@ -25,10 +26,14 @@ const BuyingPage = () => {
     try {
       const productos = await ExtraerInfoCompra();
       setProducts(productos);
-      console.log("Productos cargados:", productos);
+      if (productos.length > 0) {
+        const lastProductId = productos[productos.length - 1].id;
+        setLastId(lastProductId);
+      }
     } catch (error) {
       console.error("Error al cargar productos:", error);
       setProducts([]);
+      setLastId(null);
     }
   };
   useEffect(() => {
@@ -85,7 +90,7 @@ const BuyingPage = () => {
       alert("El carrito está vacío");
       return;
     }
-      console.log(cartItems);
+    console.log(cartItems);
 
     try {
       const compraData = {
@@ -95,11 +100,11 @@ const BuyingPage = () => {
           ID_Producto: item.ID_Producto,
           Cantidad: item.quantity,
           Precio_Compra: item.buyingPrice || item.Precio_Producto,
-          ID_Sucursal: item.ID_Sucursal
+          ID_Sucursal: item.ID_Sucursal,
         })),
         Precio_Compra: cartItems.reduce(
           (total, item) =>
-        total + (item.buyingPrice || item.Precio_Producto) * item.quantity,
+            total + (item.buyingPrice || item.Precio_Producto) * item.quantity,
           0
         ),
         CantidadCompra: cartItems.reduce(
@@ -152,16 +157,16 @@ const BuyingPage = () => {
           {/* Lista de productos */}
           <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 auto-rows-min">
             {filteredProducts.map((product) => (
-         <ProductCardSales
-  key={product.ID_Producto}
-  name={product.Nombre}
-  price={product.Precio_Producto}
-  brand={product.Marca}
-  category={product.Descripcion_Categoria}
-  Sucursal={product.Descripcion_Sucursal}
-  stock={product.Stock}
-  onClick={() => addToCart(product)}
-/>
+              <ProductCardSales
+                key={product.ID_Producto}
+                name={product.Nombre}
+                price={product.Precio_Producto}
+                brand={product.Marca}
+                category={product.Descripcion_Categoria}
+                Sucursal={product.Descripcion_Sucursal}
+                stock={product.Stock}
+                onClick={() => addToCart(product)}
+              />
             ))}
           </div>
 
@@ -189,6 +194,7 @@ const BuyingPage = () => {
 
         <NewProduct
           openAdd={showAddProductModal}
+          siguienteId={lastId + 1}
           AddModalClose={() => setShowAddProductModal(false)}
           onProductAdded={() => {
             fetchProducts();

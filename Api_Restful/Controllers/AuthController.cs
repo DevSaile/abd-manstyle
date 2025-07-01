@@ -25,7 +25,7 @@ namespace WebManStyle_ABD.Controllers
             if (string.IsNullOrWhiteSpace(datos.Usuario) || string.IsNullOrWhiteSpace(datos.Contra))
                 return BadRequest("Usuario o contraseña vacíos.");
 
-            var empleado = MetodosEmpleado.ValidarLogin(datos.Usuario, datos.Contra);
+            var empleado = MetodosEmpleado.ValidarLogin (datos.Usuario, datos.Contra);
 
             if (empleado == null)
                 return Unauthorized();

@@ -4,10 +4,15 @@ import { Drawer } from "@rewind-ui/core";
 import { obtenerCategoriasActivas } from "@/services/CategoriasService";
 import { obtenerSucursales } from "@/services/SucursalService";
 import { agregarProducto } from "@/services/ProductosService";
-import { subirImagen } from "@/services/UploadService";
+import { subirImagen, eliminarImagen } from "@/services/UploadService";
 import { obtenerMarcas } from "@/services/MarcasService";
 
-const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
+const NewProduct = ({
+  onProductAdded,
+  openAdd,
+  AddModalClose,
+  siguienteId,
+}) => {
   const [newProduct, setNewProduct] = useState({
     Nombre: "",
     Precio_Venta: "",
@@ -48,31 +53,32 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validación: todos obligatorios menos imagen
-    if (
-      !newProduct.Nombre.trim() ||
-      !newProduct.Precio_Venta ||
-      !newProduct.ID_Marca ||
-      !newProduct.ID_Sucursal ||
-      !newProduct.ID_Categoria ||
-      !newProduct.Detalles.trim()
-    ) {
-      alert("Por favor, completa todos los campos obligatorios.");
-      return;
-    }
+      // Validación: todos obligatorios menos imagen
+      if (
+        !newProduct.Nombre.trim() ||
+        !newProduct.Precio_Venta ||
+        !newProduct.ID_Marca ||
+        !newProduct.ID_Sucursal ||
+        !newProduct.ID_Categoria ||
+        !newProduct.Detalles.trim()
+      ) {
+          alert("Por favor, completa todos los campos obligatorios.");
+          return;
+        }
+
 
     let urlFinal = "";
 
     try {
+      
       if (newProduct.archivoImagen) {
-        const resultado = await subirImagen(newProduct.archivoImagen);
+        const extension = newProduct.archivoImagen.name.split('.').pop();
+        const nombreFinal = `Producto_${siguienteId}.${extension}`;
+        const resultado = await subirImagen(newProduct.archivoImagen, nombreFinal);
+
         if (typeof resultado === "string") {
           urlFinal = resultado;
-        } else if (
-          resultado &&
-          typeof resultado === "object" &&
-          resultado.url
-        ) {
+        } else if (resultado?.url) {
           urlFinal = resultado.url;
         } else {
           throw new Error("La imagen subida no devolvió una URL válida");
@@ -83,6 +89,7 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
         urlFinal = "";
       }
 
+      // Crear DTO para el producto
       const productoDTO = {
         Nombre: newProduct.Nombre,
         ID_Marca: newProduct.ID_Marca,
@@ -96,13 +103,25 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
         url_image: urlFinal,
       };
 
+      // Guardar producto
       const response = await agregarProducto(productoDTO);
+
+      // Validar respuesta
       if (!response?.ID_Producto) {
+        // Si falla, eliminar la imagen subida
+        if (urlFinal && !esURLValida(newProduct.url_image)) {
+          await eliminarImagen(urlFinal);
+        }
+
         alert("Error al agregar el producto");
         return;
       }
+
+      // Todo bien
       if (onProductAdded) onProductAdded();
       AddModalClose();
+
+      // Reset form
       setNewProduct({
         Nombre: "",
         Precio_Compra: "",
@@ -115,10 +134,17 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
         Cantidad: "",
         archivoImagen: null,
       });
+
     } catch (error) {
+      // Si algo falla, eliminar imagen si era local
+      if (urlFinal && !esURLValida(newProduct.url_image)) {
+        await eliminarImagen(urlFinal);
+      }
+
       alert("Ocurrió un error: " + error.message);
     }
   };
+
 
   return (
     <Drawer

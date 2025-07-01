@@ -1,18 +1,32 @@
 import api from "../Api";
 
-export const subirImagen = async (file) => {
-    const formData = new FormData();
-    formData.append("file", file); 
+export const subirImagen = async (file, nombreFinal) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("nombreFinal", nombreFinal); 
 
-    try {
-        const response = await api.post("upload/uploadimagen", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
-        return response.data; // debería devolver la URL o ruta
-    } catch (error) {
-        console.error("Error al subir imagen:", error);
-        return null;
-    }
+  try {
+    const response = await api.post("/upload/uploadimagen", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al subir imagen:", error);
+    return null;
+  }
 };
+
+export const eliminarImagen = async (imageUrl) => {
+  try {
+    const response = await api.delete(`/upload/eliminarimagen`, {
+      params: { imageUrl },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al eliminar imagen:", error);
+    return null;
+  }
+};
+
