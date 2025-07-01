@@ -5,6 +5,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleCardClick = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
+  const isAdmin = localStorage.getItem("rol") === "Administrador" ? true : false;
 
   // Destructure product properties for easier access
   const {
@@ -76,6 +77,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              
             >
               <button
                 className="absolute top-4 right-4 text-gray-400 hover:text-blue-500 text-2xl"
@@ -131,7 +133,9 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
                   <span className="block text-slate-900 text-base whitespace-pre-line">{descripcion}</span>
                 </div>
                 <div className="flex flex-col gap-2 pt-2">
-        <button
+       {isAdmin && (
+        <>
+         <button
   onClick={() => {
     onEdit?.(product);
     handleClose();
@@ -149,6 +153,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
 >
   Eliminar producto
 </button>
+</>)}
                 </div>
               </div>
             </motion.div>
