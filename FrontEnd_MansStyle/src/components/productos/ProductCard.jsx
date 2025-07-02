@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import ModalDescarte from "./ModalDescarte";
 
-const ProductCard = ({ product, onEdit, onDelete }) => {
+const ProductCard = ({ product, onEdit, onDelete, onDiscard }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [openDescarte, setOpenDescarte] = useState(false);
+
   const handleCardClick = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
-  const isAdmin = localStorage.getItem("rol") === "Administrador" ? true : false;
+  const isAdmin =
+    localStorage.getItem("rol") === "Administrador" ? true : false;
 
   // Destructure product properties for easier access
   const {
@@ -17,16 +21,24 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
     Marca: brand,
     Descripcion_Sucursal: sucursal,
     Detalles: descripcion,
+    ID_Producto,
   } = product;
+
+  // Maneja la confirmación del descarte
+  const handleConfirmDescarte = (cantidadDescarte) => {
+    if (onDiscard) {
+      onDiscard(product, cantidadDescarte);
+    }
+  };
 
   return (
     <>
       <motion.div
         layoutId={`card-${name}`}
-        onClick={()=>{
+        onClick={() => {
           handleCardClick();
         }}
-  className="bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 shadow-md transition-transform cursor-pointer flex flex-col h-full"
+        className="bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 shadow-md transition-transform cursor-pointer flex flex-col h-full"
         initial={{
           boxShadow: "-6px 6px 1px rgba(0, 0, 0, 0.15)",
         }}
@@ -44,15 +56,11 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
         }}
         style={{ transformStyle: "preserve-3d", perspective: 1000 }}
       >
-  <div className="w-full h-[60%] aspect-square max-h-[60%] rounded-lg overflow-hidden border border-blue-100 mb-3 bg-gray-100 self-center">
-  <img
-    src={image}
-    alt={name}
-    className="w-full h-full object-cover"
-  />
-</div>
-  <div className="flex-1 flex flex-col justify-between px-4 pb-4">
-            <div>
+        <div className="w-full h-[60%] aspect-square max-h-[60%] rounded-lg overflow-hidden border border-blue-100 mb-3 bg-gray-100 self-center">
+          <img src={image} alt={name} className="w-full h-full object-cover" />
+        </div>
+        <div className="flex-1 flex flex-col justify-between px-4 pb-4">
+          <div>
             <h3 className="text-base font-semibold text-slate-800">{name}</h3>
             <p className="text-xs text-blue-600 font-medium">{category}</p>
           </div>
@@ -77,7 +85,6 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              
             >
               <button
                 className="absolute top-4 right-4 text-gray-400 hover:text-blue-500 text-2xl"
@@ -107,11 +114,15 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
                   </div>
                   <div className="flex flex-wrap gap-2 justify-between">
                     <span className="text-gray-400">Sucursal:</span>
-                    <span className="font-semibold text-blue-700">{sucursal}</span>
+                    <span className="font-semibold text-blue-700">
+                      {sucursal}
+                    </span>
                   </div>
                   <div className="flex flex-wrap gap-2 justify-between">
                     <span className="text-gray-400">Categoría:</span>
-                    <span className="font-semibold text-blue-700">{category}</span>
+                    <span className="font-semibold text-blue-700">
+                      {category}
+                    </span>
                   </div>
                   <div className="flex flex-wrap gap-2 justify-between">
                     <span className="text-gray-400">Stock:</span>
@@ -119,7 +130,9 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
                   </div>
                   <div className="flex flex-wrap gap-2 justify-between">
                     <span className="text-gray-400">Precio:</span>
-                    <span className="font-semibold text-blue-700">${price}</span>
+                    <span className="font-semibold text-blue-700">
+                      ${price}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -127,39 +140,61 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
               {/* Right: Product name + description + actions */}
               <div className="flex-1 flex flex-col justify-start">
                 <div className="mb-4">
-                  <span className="block text-2xl font-bold text-blue-700 mb-2">{name}</span>
+                  <span className="block text-2xl font-bold text-blue-700 mb-2">
+                    {name}
+                  </span>
                 </div>
                 <div className="bg-blue-50 rounded-xl p-4 mb-4 border border-blue-100">
-                  <span className="block text-slate-900 text-base whitespace-pre-line">{descripcion}</span>
+                  <span className="block text-slate-900 text-base whitespace-pre-line">
+                    {descripcion}
+                  </span>
                 </div>
                 <div className="flex flex-col gap-2 pt-2">
-       {isAdmin && (
-        <>
-         <button
-  onClick={() => {
-    onEdit?.(product);
-    handleClose();
-  }}
-  className="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-lg text-white font-semibold transition"
->
-  Editar producto
-</button>
-<button
-  onClick={() => {
-    onDelete?.(product);
-    handleClose();
-  }}
-  className="bg-white hover:bg-blue-100 px-4 py-2 rounded-lg text-blue-700 font-semibold border border-blue-700 transition"
->
-  Eliminar producto
-</button>
-</>)}
+                  {isAdmin && (
+                    <>
+                      <button
+                        onClick={() => {
+                          onEdit?.(product);
+                          handleClose();
+                        }}
+                        className="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-lg text-white font-semibold transition"
+                      >
+                        Editar producto
+                      </button>
+                      <div className="flex justify-center gap-2">
+                        <button
+                          onClick={() => {
+                            onDelete?.(product);
+                            handleClose();
+                          }}
+                          className="bg-white hover:bg-blue-100 px-4 py-2 rounded-lg text-blue-700 font-semibold border border-blue-700 transition"
+                        >
+                          Eliminar
+                        </button>
+                        <button
+                          onClick={() => setOpenDescarte(true)}
+                          className="bg-white hover:bg-blue-100 px-4 py-2 rounded-lg text-blue-700 font-semibold border border-blue-700 transition"
+                        >
+                          Descartar
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
+
+      {/* Modal para descartar productos */}
+      <ModalDescarte
+        open={openDescarte}
+        onClose={() => setOpenDescarte(false)}
+        onConfirm={handleConfirmDescarte}
+        maxCantidad={stock}
+        productoNombre={name}
+      />
     </>
   );
 };

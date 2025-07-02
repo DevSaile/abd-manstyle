@@ -153,7 +153,7 @@ const NewProduct = ({
       onClose={AddModalClose}
       position="right"
       size="xl"
-      className="bg-white text-blue-900 border-l border-blue-200 shadow-2xl"
+      className="bg-white text-blue-900 border-l border-blue-200 shadow-2xl lg:w-5/12"
       overlayCloseOnClick={false}
     >
       <div className="flex flex-col h-full">

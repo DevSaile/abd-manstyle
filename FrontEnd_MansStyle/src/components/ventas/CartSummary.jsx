@@ -35,7 +35,7 @@ const CartSummary = ({
         {item.Nombre}
       </h3>
       <p className="text-xs text-blue-700">
-        ${item.Precio_Producto?.toFixed(2)}
+        C${item.Precio_Producto?.toFixed(2)}
       </p>
     </div>
 
@@ -102,7 +102,7 @@ const CartSummary = ({
       {/* Total */}
       <div className="border-t border-blue-200 pt-4 flex justify-between text-blue-900 font-semibold text-lg">
         <span>Total:</span>
-        <span>${total.toFixed(2)}</span>
+        <span>C${total.toFixed(2)}</span>
       </div>
 
       {/* Monto dado */}
@@ -126,7 +126,7 @@ const CartSummary = ({
       {/* Cambio */}
       <div className="mt-4 flex justify-between text-blue-900 font-semibold text-lg">
         <span>Cambio:</span>
-        <span>${exchange.toFixed(2)}</span>
+        <span>C${exchange.toFixed(2)}</span>
       </div>
     </div>
   );

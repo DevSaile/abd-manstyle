@@ -7,17 +7,12 @@ import {
   ChevronUp,
   ShoppingBag,
   Truck,
-  Building,
-  CheckCircle,
-  XCircle,
+
 } from "lucide-react";
 
 const BoughtCard = ({
   id,
   date,
-  proveedor,
-  sucursal,
-  status,
   amount,
   total,
   products = [],
@@ -150,3 +145,5 @@ const BoughtCard = ({
 };
 
 export default BoughtCard;
+
+

@@ -60,11 +60,7 @@ const ProductCardSales = ({
                 {category}
               </span>
             )}
-            {Sucursal && (
-              <span className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded">
-                {Sucursal}
-              </span>
-            )}
+      
             <span className="text-[10px] text-gray-400 ml-2">Stock: {stock}</span>
           </div>
         </div>

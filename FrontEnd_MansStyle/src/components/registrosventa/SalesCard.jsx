@@ -6,7 +6,8 @@ import {
   Calendar,
   DollarSign,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  StoreIcon
 } from "lucide-react";
 
 const SaleCard = ({
@@ -38,7 +39,7 @@ const SaleCard = ({
               <span>Empleado: {employee || "N/A"}</span>
             </div>
             <div className="flex items-center text-sm text-blue-900">
-              <UserCircle className="mr-2 text-green-400" size={18} />
+              <StoreIcon className="mr-2 text-green-400" size={18} />
               <span>Sucursal: {client || "N/A"}</span>
             </div>
           </div>
@@ -109,20 +110,21 @@ const SaleCard = ({
               </tbody>
             </table>
 
-            <div className="mt-4 text-sm text-blue-900">
-              <p>
-                Cantidad Recibida:{" "}
-                <span className="text-blue-700">
+             <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
+              <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                <p className="text-blue-700">Cantidad Recibida:</p>
+                <p className="text-xl font-bold text-green-700">
                   C${parseFloat(amountGiven || 0).toFixed(2)}
-                </span>
-              </p>
-              <p>
-                Cambio:{" "}
-                <span className="text-blue-700">
+                </p>
+              </div>
+
+              <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                <p className="text-blue-700">Cambio:</p>
+                <p className="text-xl font-bold text-blue-700">
                   C${parseFloat(exchange || 0).toFixed(2)}
-                </span>
-              </p>
-            </div>
+                </p>
+              </div>
+              </div>
           </motion.div>
         )}
       </AnimatePresence>
