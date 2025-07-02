@@ -75,6 +75,7 @@ const NewProduct = ({
       if (newProduct.archivoImagen) {
         const extension = newProduct.archivoImagen.name.split('.').pop();
         const nombreFinal = `Producto_${siguienteId}.${extension}`;
+        console.log("Nombre final de la imagen:", nombreFinal);
         const resultado = await subirImagen(newProduct.archivoImagen, nombreFinal);
 
         if (typeof resultado === "string") {
@@ -82,6 +83,7 @@ const NewProduct = ({
         } else if (resultado?.url) {
           urlFinal = resultado.url;
         } else {
+          console.error("Error al subir la imagen:", resultado);
           throw new Error("La imagen subida no devolvió una URL válida");
         }
       } else if (esURLValida(newProduct.url_image)) {

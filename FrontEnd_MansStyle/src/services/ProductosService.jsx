@@ -21,6 +21,17 @@ export const ExtraerInfoCompra = async () => {
     }
 };
 
+export const GetIDTotals = async () => {
+
+    try {
+        const response = await api.get("/productos/totalsID");
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener ID Totals:", error);
+        return [];
+    }
+}
+
 // Agregar un nuevo producto
 export const agregarProducto = async (producto) => {
     try {

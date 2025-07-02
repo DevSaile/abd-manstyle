@@ -4,9 +4,10 @@ import { motion } from "framer-motion";
 import {
   eliminarProducto,
   obtenerProductoPorID,
-  obtenerProductos
+  obtenerProductos,
 } from "@/services/ProductosService";
 
+import { eliminarImagen } from "../../services/UploadService";
 import useProductos from "@/hooks/useProducts";
 import ComboBox from "@/components/common/ComboBox";
 import ProductCard from "@/components/productos/ProductCard";
@@ -17,7 +18,7 @@ import { useOutletContext } from "react-router-dom";
 import TopSection from "../../components/common/TopSection";
 
 const ProductsPage = () => {
-const { productos, recargar } = useProductos(); // ✅ Correcto
+  const { productos, recargar } = useProductos(); // ✅ Correcto
 
   const [openDetails, setOpenDetails] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -158,30 +159,30 @@ const { productos, recargar } = useProductos(); // ✅ Correcto
   ]);
 
   const deletefuncion = async () => {
-  if (!selectedProducto?.ID_Producto) {
-    alert("No se ha seleccionado ningún producto para eliminar.");
-    return;
-  }
+    if (!selectedProducto?.ID_Producto) {
+      alert("Seleccione un producto.");
+      return;
+    }
 
-  try {
-    const productoEliminado = {
-      ID_Producto: selectedProducto.ID_Producto,
-      Estado: 0,
-    };
+    try {
+      // Eliminar imagen (si es local)
+      const url = selectedProducto.url_image;
+      if (url && url.includes("/uploads/")) {
+        
+        await eliminarImagen(url); // ¡Ahora maneja URLs completas!
+      }
 
-     await eliminarProducto(
-      selectedProducto.ID_Producto,
-      productoEliminado
-    );
-
-  } catch (error) {
-    alert(error.response?.data?.message || "Error al eliminar el producto");
-  } finally {
-    // SIEMPRE refresca la lista, aunque haya error
-    await recargar(); // ✅ Refresca productos desde el hook
-
-  }
-};
+      // Eliminar producto de la base de datos
+      await eliminarProducto(selectedProducto.ID_Producto, {
+        ID_Producto: selectedProducto.ID_Producto,
+        Estado: 0,
+      });
+    } catch (error) {
+      alert(error.response?.data?.message || "Error al eliminar");
+    } finally {
+      await recargar();
+    }
+  };
 
   return (
     <div className="flex-column relative z-10">
@@ -239,7 +240,6 @@ const { productos, recargar } = useProductos(); // ✅ Correcto
               onDelete={() => handleDelete(product)}
             />
           ))}
-
         </motion.div>
 
         <Modal
@@ -261,26 +261,24 @@ const { productos, recargar } = useProductos(); // ✅ Correcto
             >
               Cancel
             </button>
-         <button
-   onClick={async () => {
-      await deletefuncion();
-    
-      setOpenDelete(false);
-      recargar(); // ✅ recargar productos después de eliminar
-    
-  }}
-  className="bg-red-600 text-gray-100 hover:bg-red-500 px-6 py-2 rounded-lg transition duration-200"
->
-  Delete
-</button>
+            <button
+              onClick={async () => {
+                await deletefuncion();
+
+                setOpenDelete(false);
+                recargar(); // ✅ recargar productos después de eliminar
+              }}
+              className="bg-red-600 text-gray-100 hover:bg-red-500 px-6 py-2 rounded-lg transition duration-200"
+            >
+              Delete
+            </button>
           </div>
         </Modal>
 
         <ModalEditar
           openEdit={openEdit}
           EditModalClose={() => setOpenEdit(false)}
-       refrescarProductos={recargar} // ✅ recargar viene del hook useProductos
-
+          refrescarProductos={recargar} // ✅ recargar viene del hook useProductos
           fetchProductoByID={obtenerProductoPorID}
           productoID={selectedProducto?.ID_Producto || null}
         />

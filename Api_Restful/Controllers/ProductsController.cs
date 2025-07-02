@@ -31,6 +31,15 @@ namespace WebManStyle_ABD.Controllers
         }
 
         [HttpGet]
+        [Route("totalsID")]
+        public IHttpActionResult ObtenerIDtotales()
+        {
+            var productos = MetodosProducto.getmaxID();
+
+            return Ok(productos);
+        }
+
+        [HttpGet]
         [Route("InfoDeCompra")]
         public IHttpActionResult ExtraerInfoCompra()
         {

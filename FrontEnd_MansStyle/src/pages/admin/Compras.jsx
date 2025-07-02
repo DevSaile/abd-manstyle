@@ -8,6 +8,7 @@ import { ExtraerInfoCompra } from "@/services/ProductosService";
 import { agregarCompraProducto } from "@/services/CompraHitorialService";
 import { ShowToast } from "@/components/common/ShowToast";
 import { useOutletContext } from "react-router-dom";
+import { GetIDTotals } from "../../services/ProductosService";
 
 const BuyingPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -26,10 +27,9 @@ const BuyingPage = () => {
     try {
       const productos = await ExtraerInfoCompra();
       setProducts(productos);
-      if (productos.length > 0) {
-        const lastProductId = productos[productos.length - 1].id;
-        setLastId(lastProductId);
-      }
+      const lastProductId = await GetIDTotals();
+      setLastId(lastProductId);
+      
     } catch (error) {
       console.error("Error al cargar productos:", error);
       setProducts([]);
@@ -161,10 +161,11 @@ const BuyingPage = () => {
                 key={product.ID_Producto}
                 name={product.Nombre}
                 price={product.Precio_Producto}
-                brand={product.Marca}
+                brand={product.Descripcion_Marca}
+                image={product.url_image}
                 category={product.Descripcion_Categoria}
                 Sucursal={product.Descripcion_Sucursal}
-                stock={product.Stock}
+                stock={product.Cantidad}
                 onClick={() => addToCart(product)}
               />
             ))}

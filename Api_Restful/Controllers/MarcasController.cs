@@ -52,8 +52,6 @@ namespace WebManStyle_ABD.Controllers
             return Ok(marca);
         }
 
-        // Actualizar una marca
-        [Authorize(Roles = "Administrador")]
 
         [HttpPut]
         [Route("actualizar")]
@@ -69,8 +67,6 @@ namespace WebManStyle_ABD.Controllers
             return Ok("Marca actualizada correctamente.");
         }
 
-        // Eliminar una marca por ID
-        [Authorize(Roles = "Administrador")]
 
         [HttpPut]
         [Route("eliminar")]
@@ -86,8 +82,6 @@ namespace WebManStyle_ABD.Controllers
             return Ok("Estado de la Marca actualizado correctamente.");
         }
 
-        // Agregar una nueva marca
-        [Authorize(Roles = "Administrador")]
 
         [HttpPost]
         [Route("agregar")]

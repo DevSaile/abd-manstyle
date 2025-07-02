@@ -38,7 +38,7 @@ namespace WebManStyle_ABD.Controllers
                     var originalFileName = file.Headers.ContentDisposition.FileName.Trim('\"');
                     var extension = Path.GetExtension(originalFileName);
 
-                    var nombreFinal = provider.FormData["nombreFinal"]; // 👈
+                    var nombreFinal = provider.FormData["nombreFinal"]; 
 
                     var safeName = !string.IsNullOrEmpty(nombreFinal)
                         ? Path.GetFileNameWithoutExtension(nombreFinal).Replace(" ", "_") + extension
@@ -62,31 +62,38 @@ namespace WebManStyle_ABD.Controllers
 
         [HttpDelete]
         [Route("eliminarimagen")]
-        public IHttpActionResult EliminarImagen([FromUri] string imageUrl)
+        public IHttpActionResult EliminarImagen()
         {
             try
             {
+                var imageUrl = HttpContext.Current.Request.QueryString["imageUrl"];
                 if (string.IsNullOrWhiteSpace(imageUrl))
-                    return BadRequest("URL inválida");
+                    return BadRequest("URL no proporcionada.");
 
-                // Obtener la ruta física
-                var serverBase = Request.RequestUri.GetLeftPart(UriPartial.Authority);
-                var relativePath = imageUrl.Replace(serverBase, "").Replace("/", "\\");
+                // Validar que sea una ruta de /uploads/
+                if (!imageUrl.StartsWith("/uploads/", StringComparison.OrdinalIgnoreCase))
+                    return BadRequest("La imagen debe estar en /uploads/.");
 
-                var filePath = HttpContext.Current.Server.MapPath("~" + relativePath);
+                // Convertir a ruta física
+                var physicalPath = HttpContext.Current.Server.MapPath("~" + imageUrl.Replace("/", "\\"));
 
-                if (!File.Exists(filePath))
-                    return NotFound();
+                // Debug (revisa la ventana "Output" en Visual Studio)
+                System.Diagnostics.Debug.WriteLine($"Eliminando: {physicalPath}");
 
-                File.Delete(filePath);
+                if (File.Exists(physicalPath))
+                {
+                    File.Delete(physicalPath);
+                    return Ok(new { message = "Imagen eliminada." });
+                }
 
-                return Ok(new { mensaje = "Imagen eliminada correctamente" });
+                return NotFound();
             }
             catch (Exception ex)
             {
                 return InternalServerError(ex);
             }
         }
+
 
     }
 }

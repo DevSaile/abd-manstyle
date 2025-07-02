@@ -20,13 +20,15 @@ export const subirImagen = async (file, nombreFinal) => {
 
 export const eliminarImagen = async (imageUrl) => {
   try {
-    const response = await api.delete(`/upload/eliminarimagen`, {
-      params: { imageUrl },
+
+    const urlRelativa = new URL(imageUrl).pathname;
+    const response = await api.delete("/upload/eliminarimagen", {
+      params: { imageUrl: urlRelativa }, 
     });
     return response.data;
   } catch (error) {
     console.error("Error al eliminar imagen:", error);
-    return null;
+    throw error; 
   }
 };
 
