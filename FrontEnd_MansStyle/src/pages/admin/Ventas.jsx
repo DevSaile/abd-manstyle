@@ -140,7 +140,11 @@ const CashierPage = () => {
                 key={product.ID_Producto}
                 name={product.Nombre}
                 price={product.Precio_Producto}
+                brand={product.Descripcion_Marca}
                 image={product.url_image}
+                category={product.Descripcion_Categoria}
+                Sucursal={product.Descripcion_Sucursal}
+                stock={product.Cantidad}
                 onClick={() => addToCart(product)}
               />
             ))}
