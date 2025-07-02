@@ -69,6 +69,8 @@ namespace Models
 
         public int MaxRegister { get; set; }
 
+        public int Descarte { get; set; }
+
 
     }
 

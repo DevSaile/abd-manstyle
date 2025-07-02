@@ -97,3 +97,15 @@ export const obtenerProductosPorSucursal = async (idSucursal) => {
         return []; // Devuelve un array vacío en caso de error
     }
 };
+
+export const DescartarProducto = async (id, productoDescartado) => {
+    try {
+        const response = await api.put(`/productos/descartar/${id}`, productoDescartado);
+        return response.data; 
+    } catch (error) {
+        console.log(productoDescartado)
+
+        console.error("Error al descartar producto:", error);
+        return null; 
+    }
+}

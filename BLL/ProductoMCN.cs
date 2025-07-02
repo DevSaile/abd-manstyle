@@ -219,19 +219,8 @@ namespace BLL
 
                 }).ToList();
 
-            return resultado; // Esto ahora devuelve List<ProductoDTO>
+            return resultado; 
         }
-
-        /*public List<string> ObtenerMarcas()
-        {
-            var marcasUnicas = db.Producto
-                .Where(p => p.Estado == 1) // Filtra productos activos
-                .Select(p => p.Marca.ToLower()) // Convierte las marcas a minúsculas para comparación
-                .Distinct() // Elimina duplicados después de normalizar el caso
-                .ToList();
-
-            return marcasUnicas;
-        }*/
 
         public int AgregarProducto(ProductoDTO produ)
         {
@@ -350,6 +339,39 @@ namespace BLL
                 }
 
                 newProdu.Estado = 0;
+
+                db.Entry(newProdu).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                return newProdu.ID_Producto;
+
+            }
+            catch
+            {
+
+                return -1;
+
+
+            }
+
+        }
+
+        public int DescartarProductos(ProductoDTO produ)
+        {
+
+            try
+            {
+
+                Producto newProdu = db.Producto.Find(produ.ID_Producto);
+
+                if (newProdu is null)
+                {
+
+                    return -1;
+
+                }
+
+                newProdu.Cantidad -= produ.Descarte;
 
                 db.Entry(newProdu).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();

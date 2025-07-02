@@ -134,6 +134,23 @@ namespace WebManStyle_ABD.Controllers
             return Ok("Estado del producto actualizado correctamente.");
         }
 
+        [HttpPut]
+        [Route("descartar/{id:int}")] // Este de aqui baicamente es el que me ayuda a descartar el producto o cambiar el estado a inactivo o sea 0
+        public IHttpActionResult DescartarProducto(int id, [FromBody] ProductoDTO productoDescartado)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (id != productoDescartado.ID_Producto)
+                return BadRequest($"El ID del producto no coincide");
+
+            int resultado = MetodosProducto.DescartarProductos(productoDescartado);
+            if (resultado == -1)
+                return NotFound();
+
+            return Ok("Estado del producto actualizado correctamente.");
+        }
+
         [HttpGet]
         [Route("{id:int}")]
         public IHttpActionResult BuscarProductoPorID(int id)

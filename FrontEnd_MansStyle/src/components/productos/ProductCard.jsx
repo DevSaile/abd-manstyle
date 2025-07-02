@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ModalDescarte from "./ModalDescarte";
+import { DescartarProducto } from "../../services/productosService";
 
 const ProductCard = ({ product, onEdit, onDelete, onDiscard }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,11 +25,28 @@ const ProductCard = ({ product, onEdit, onDelete, onDiscard }) => {
     ID_Producto,
   } = product;
 
-  // Maneja la confirmación del descarte
-  const handleConfirmDescarte = (cantidadDescarte) => {
+  const handleConfirmDescarte = async (cantidadDescarte) => {
+    
     if (onDiscard) {
       onDiscard(product, cantidadDescarte);
     }
+
+      if (!product?.ID_Producto) return;
+
+      try {
+
+        await DescartarProducto(product.ID_Producto, {
+          ID_Producto: product.ID_Producto,
+          Descarte: cantidadDescarte,
+        });
+
+
+      } catch (error) {
+
+        console.error("Error al descartar el producto:", error);
+
+      }
+
   };
 
   return (
