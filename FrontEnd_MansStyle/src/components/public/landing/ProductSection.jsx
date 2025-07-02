@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import CatalogProductCard from "../catalog/CatalogProductCard";
 import ComboBox from "../../common/ComboBox";
 import useProductos from "../../../hooks/useProducts";
+import { CircleAlert } from "lucide-react";
 
 const ProductSection = () => {
-  const  {productos}  = useProductos();
-
+  const { productos } = useProductos();
 
   // Selected filters
   const [selectedCategory, setSelectedCategory] = useState("Todos");
@@ -83,7 +83,10 @@ const ProductSection = () => {
     ) {
       setSelectedSucursal("Todos");
     }
-    if (selectedBrand !== "Todos" && !marcasDisponibles.includes(selectedBrand)) {
+    if (
+      selectedBrand !== "Todos" &&
+      !marcasDisponibles.includes(selectedBrand)
+    ) {
       setSelectedBrand("Todos");
     }
     if (
@@ -103,7 +106,8 @@ const ProductSection = () => {
       selectedBrand === "Todos" ||
       (p.Marca && p.Marca.toLowerCase() === selectedBrand.toLowerCase());
     const matchSucursal =
-      selectedSucursal === "Todos" || p.Descripcion_Sucursal === selectedSucursal;
+      selectedSucursal === "Todos" ||
+      p.Descripcion_Sucursal === selectedSucursal;
     const matchSearch =
       !searchTerm ||
       (p.Nombre && p.Nombre.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -111,7 +115,7 @@ const ProductSection = () => {
   });
 
   // Color palette for dark interface
-   const comboBoxProps = {
+  const comboBoxProps = {
     bgColor: "bg-[#23272f] text-white",
     dropdownBgColor: "bg-[#23272f]",
     inputBgColor: "bg-[#23272f] text-white",
@@ -119,17 +123,25 @@ const ProductSection = () => {
   };
   console.log(`filterd produc ${filteredProducts}`);
 
- return (
+  return (
     <section className="py-6 px-4 bg-[#18181b] rounded-xl">
       <div className="flex flex-col gap-4 mb-8">
-        <input
-          type="text"
-          className="w-full bg-[#23272f] text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#2563eb] placeholder-gray-400"
-          placeholder="Buscar productos"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <div className="flex gap-5 justify-center rounded">
+        <div className="flex items-center gap-5">
+          <input
+            type="text"
+            className="w-full bg-[#23272f] text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#2563eb] placeholder-gray-400"
+            placeholder="Buscar productos"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <div className="relative group">
+            <CircleAlert className="text-white cursor-pointer" size={20} />
+            <div className="absolute top-1/2 right-full mr-2 -translate-y-1/2 w-64 p-2 text-center bg-gray-800 text-sm text-white rounded-lg shadow-lg opacity-0 group-hover:opacity-80 transition-opacity z-50">
+              Seleccione un producto para ver mas detalles.
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-5 justify-center items-center rounded">
           <ComboBox
             name={"Categoria"}
             options={filteredCategories}

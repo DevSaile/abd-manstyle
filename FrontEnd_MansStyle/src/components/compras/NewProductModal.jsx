@@ -185,8 +185,7 @@ const NewProduct = ({
                 onChange={(e) =>
                   setNewProduct({ ...newProduct, Nombre: e.target.value })
                 }
-                className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
+                className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div className="col-span-2">
@@ -199,8 +198,7 @@ const NewProduct = ({
                 onChange={(e) =>
                   setNewProduct({ ...newProduct, Precio_Venta: e.target.value })
                 }
-                className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
+                className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
@@ -278,7 +276,7 @@ const NewProduct = ({
               onChange={(e) =>
                 setNewProduct({ ...newProduct, Detalles: e.target.value })
               }
-              className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows="4"
               placeholder="Añadir descripción del producto..."
             />
@@ -289,7 +287,7 @@ const NewProduct = ({
               <label className="text-sm font-medium text-blue-900">
                 Vista Previa
               </label>
-              <div className="w-40 h-40 rounded-xl overflow-hidden border border-blue-200 bg-gray-100">
+              <div className="w-40 h-40 rounded-xl overflow-hidden border border-blue-500 bg-gray-100">
                 <img
                   src={
                     newProduct.archivoImagen
@@ -337,7 +335,7 @@ const NewProduct = ({
                       archivoImagen: null,
                     })
                   }
-                  className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="https://..."
                 />
               </div>
@@ -348,7 +346,7 @@ const NewProduct = ({
             <button
               type="button"
               onClick={AddModalClose}
-              className="bg-blue-100 text-blue-700 hover:bg-blue-200 px-6 py-2 rounded-lg transition duration-200 border border-blue-200"
+              className="bg-blue-100 text-blue-700 hover:bg-blue-200 px-6 py-2 rounded-lg transition duration-200 border border-blue-500"
             >
               Cancelar
             </button>

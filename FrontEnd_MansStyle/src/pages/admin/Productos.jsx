@@ -1,4 +1,3 @@
-// src/pages/ProductsPage.jsx
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -6,7 +5,6 @@ import {
   obtenerProductoPorID,
   obtenerProductos,
 } from "@/services/ProductosService";
-
 import { eliminarImagen } from "../../services/UploadService";
 import useProductos from "@/hooks/useProducts";
 import ComboBox from "@/components/common/ComboBox";
@@ -16,9 +14,10 @@ import { Modal } from "@rewind-ui/core";
 import ModalDetalles from "@/components/productos/ModalDetalles";
 import { useOutletContext } from "react-router-dom";
 import TopSection from "../../components/common/TopSection";
+import ShowToast from "@/components/common/ShowToast";
 
 const ProductsPage = () => {
-  const { productos, recargar } = useProductos(); // ✅ Correcto
+  const { productos, recargar } = useProductos();
 
   const [openDetails, setOpenDetails] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -35,6 +34,11 @@ const ProductsPage = () => {
   const [selectedProducto, setSelectedProduct] = useState(null);
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+
+  // Toast states
+  const [openToastDelete, setOpenToastDelete] = useState(false);
+  const [openToastEdit, setOpenToastEdit] = useState(false);
+
   const handleEdit = (product) => {
     setSelectedProduct(product);
     setOpenEdit(true);
@@ -44,6 +48,7 @@ const ProductsPage = () => {
     setSelectedProduct(product);
     setOpenDelete(true);
   };
+
   const { setTitle } = useOutletContext();
   useEffect(() => {
     setTitle("Productos");
@@ -158,31 +163,30 @@ const ProductsPage = () => {
     productos,
   ]);
 
+  // Eliminar producto con toast
   const deletefuncion = async () => {
-    if (!selectedProducto?.ID_Producto) {
-      alert("Seleccione un producto.");
-      return;
-    }
+    if (!selectedProducto?.ID_Producto) return;
 
     try {
-      // Eliminar imagen (si es local)
       const url = selectedProducto.url_image;
       if (url && url.includes("/uploads/")) {
-        
-        await eliminarImagen(url); // ¡Ahora maneja URLs completas!
+        await eliminarImagen(url);
       }
 
-      // Eliminar producto de la base de datos
       await eliminarProducto(selectedProducto.ID_Producto, {
         ID_Producto: selectedProducto.ID_Producto,
         Estado: 0,
       });
-    } catch (error) {
-      alert(error.response?.data?.message || "Error al eliminar");
-    } finally {
+
+      setOpenToastDelete(true); // Mostrar toast de eliminación
       await recargar();
+    } catch (error) {
+      // Puedes agregar un toast de error si lo deseas
     }
   };
+
+  // Para ModalEditar, pasa un callback para mostrar el toast al guardar
+
 
   return (
     <div className="flex-column relative z-10">
@@ -245,32 +249,34 @@ const ProductsPage = () => {
         <Modal
           open={openDelete}
           onClose={() => setOpenDelete(false)}
-          title="Confirm Delete"
-          size="l"
-          className="bg-gray-800 text-gray-100 border border-gray-700 rounded-lg shadow-2xl p-6 grid grid-cols-2"
-          transition={{ duration: 1.5 }}
+          title="Eliminar producto"
+          size="md"
+          className="bg-white text-blue-900 border border-blue-200 rounded-xl shadow-2xl p-8 grid grid-cols-2"
+          transition={{ duration: 0.3 }}
         >
-          <p className="text-gray-300 text-lg text-center mb-6 col-span-2">
-            Are you sure you want to delete this product?{" "}
-            <strong>{selectedProducto?.Nombre}</strong>
+          <p className="text-blue-800 text-lg text-center mb-6 col-span-2">
+            ¿Seguro que quieres eliminar el producto{" "}
+            <strong className="text-blue-900">
+              {selectedProducto?.Nombre}
+            </strong>
+            ?
           </p>
-          <div className="content-center justify-center flex gap-4 col-span-2">
+          <div className="flex justify-center gap-4 col-span-2">
             <button
               onClick={() => setOpenDelete(false)}
-              className="bg-gray-700 text-gray-300 hover:bg-gray-600 px-6 py-2 rounded-lg transition duration-200"
+              className="bg-blue-100 text-blue-700 hover:bg-blue-200 px-6 py-2 rounded-lg border border-blue-200 transition"
             >
-              Cancel
+              Cancelar
             </button>
             <button
               onClick={async () => {
                 await deletefuncion();
-
                 setOpenDelete(false);
-                recargar(); // ✅ recargar productos después de eliminar
+                recargar();
               }}
-              className="bg-red-600 text-gray-100 hover:bg-red-500 px-6 py-2 rounded-lg transition duration-200"
+              className="bg-red-600 text-white hover:bg-red-500 px-6 py-2 rounded-lg transition"
             >
-              Delete
+              Eliminar
             </button>
           </div>
         </Modal>
@@ -278,7 +284,7 @@ const ProductsPage = () => {
         <ModalEditar
           openEdit={openEdit}
           EditModalClose={() => setOpenEdit(false)}
-          refrescarProductos={recargar} // ✅ recargar viene del hook useProductos
+          refrescarProductos={recargar}
           fetchProductoByID={obtenerProductoPorID}
           productoID={selectedProducto?.ID_Producto || null}
         />
@@ -287,6 +293,17 @@ const ProductsPage = () => {
           openDetails={openDetails}
           DetailsModalClose={() => setOpenDetails(false)}
           product={selectedProducto}
+        />
+
+   
+        <ShowToast
+          show={openToastDelete}
+          onClose={() => setOpenToastDelete(false)}
+          message="Producto eliminado correctamente"
+          iconType="success"
+          color="red"
+          tone="solid"
+          position="bottom-right"
         />
       </main>
     </div>

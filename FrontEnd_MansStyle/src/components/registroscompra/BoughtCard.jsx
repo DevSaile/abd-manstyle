@@ -46,9 +46,9 @@ const BoughtCard = ({
         
 
         {/* Información resumida alineada en fila */}
-        <div className="mt-2 flex justify-between items-center gap-4 text-sm text-blue-700">
+        <div className="mt-2 flex justify-between items-center gap-4 text-sm text-blue-950">
            <h3 className="font-bold text-lg flex items-center text-blue-900">
-            <Truck className="mr-2 text-blue-400" size={18} />
+            <Truck className="mr-2 text-blue-950" size={18} />
             Compra #{id}
           </h3>
           <div className="flex items-center">

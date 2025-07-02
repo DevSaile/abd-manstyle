@@ -33,22 +33,22 @@ const SaleCard = ({
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           {/* Empleado y Sucursal */}
           <div className="flex flex-row gap-6 flex-1">
-            <div className="flex items-center text-sm text-blue-700">
+            <div className="flex items-center text-sm text-blue-900">
               <User className="mr-2 text-blue-400" size={18} />
               <span>Empleado: {employee || "N/A"}</span>
             </div>
-            <div className="flex items-center text-sm text-blue-700">
+            <div className="flex items-center text-sm text-blue-900">
               <UserCircle className="mr-2 text-green-400" size={18} />
               <span>Sucursal: {client || "N/A"}</span>
             </div>
           </div>
           {/* Fecha y Total */}
           <div className="flex flex-row gap-6 flex-1 md:justify-end">
-            <div className="flex items-center text-sm text-blue-700">
+            <div className="flex items-center text-sm text-blue-900">
               <Calendar className="mr-2 text-yellow-400" size={18} />
               <span>Fecha: {date || "Sin fecha"}</span>
             </div>
-            <div className="flex items-center text-sm text-blue-700">
+            <div className="flex items-center text-sm text-blue-900">
               <DollarSign className="mr-2 text-purple-400" size={18} />
               <span>Total: C${parseFloat(total || 0).toFixed(2)}</span>
             </div>
@@ -59,7 +59,7 @@ const SaleCard = ({
         <div className="flex justify-center mt-4">
           <button
             onClick={() => setExpanded(!expanded)}
-            className="text-blue-500 hover:text-blue-700 transition flex items-center"
+            className="text-blue-500 hover:text-blue-900 transition flex items-center"
           >
             {expanded ? (
               <>

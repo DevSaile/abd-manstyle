@@ -182,7 +182,7 @@ const CategoryTable = ({
                                             disabled={!isEditing}
                                             className={`w-full bg-transparent border rounded-md px-2 py-1 text-blue-900 ${
                                                 isEditing
-                                                    ? "border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                    ? "border-blue- focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                     : "border-transparent"
                                             }`}
                                         />

@@ -141,7 +141,7 @@ const BuyingPage = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Buscar productos..."
-            className="w-8/12 bg-white text-blue-900 placeholder-blue-400 rounded-lg px-4 py-2 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-8/12 bg-white text-blue-900 placeholder-blue-400 rounded-lg px-4 py-2 border  border-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           <button

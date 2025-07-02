@@ -292,7 +292,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
             onClose={() => onClose(false)}
             position="right"
             size="xl"
-            className="bg-white text-blue-900 border-l border-blue-200 shadow-2xl"
+            className="bg-white text-blue-900 border-l border-blue-400 shadow-2xl"
         >
             <div className="flex flex-col h-full">
                 <div className="flex items-center justify-between px-6 py-4 border-b border-blue-200 bg-white">
@@ -318,7 +318,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                             onChange={handleChange}
                             onFocus={() => handleFocus("Nombre")}
                             onBlur={() => handleBlur("Nombre")}
-                            className={`w-full bg-white text-blue-900 rounded-lg px-4 py-2 transition-colors duration-200 border border-blue-200
+                            className={`w-full bg-white text-blue-900 rounded-lg px-4 py-2 transition-colors duration-200 border border-blue-500
                                 ${isInvalid("Nombre") ? "border-2 border-red-500" : ""}
                                 focus:border-blue-500`}
                             required
@@ -341,7 +341,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                             onChange={handleChange}
                             onFocus={() => handleFocus("Cedula")}
                             onBlur={() => handleBlur("Cedula")}
-                            className={`w-full bg-white text-blue-900 rounded-lg px-4 py-2 transition-colors duration-200 border border-blue-200
+                            className={`w-full bg-white text-blue-900 rounded-lg px-4 py-2 transition-colors duration-200 border border-blue-500
                                 ${isInvalid("Cedula") ? "border-2 border-red-500" : ""}
                                 focus:border-blue-500`}
                             placeholder="###-######-####X"
@@ -363,7 +363,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                             value={formData.Edad}
                             readOnly
                             
-                            className="w-full bg-blue-50 text-blue-900 rounded-lg px-4 py-2 border border-blue-200"
+                            className="w-full bg-blue-50 text-blue-900 rounded-lg px-4 py-2 border border-blue-500"
                         />
                     </div>
 
@@ -375,7 +375,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                             name="FechaDeNacimiento"
                             value={formData.FechaDeNacimiento}
                             onChange={handleChange}
-                            className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200"
+                            className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border  border-blue-500"
                         />
                     </div>
 
@@ -389,7 +389,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                             onChange={handleChange}
                             onFocus={() => handleFocus("NombreDeUsuario")}
                             onBlur={() => handleBlur("NombreDeUsuario")}
-                            className={`w-full bg-white text-blue-900 rounded-lg px-4 py-2 transition-colors duration-200 border border-blue-200
+                            className={`w-full bg-white text-blue-900 rounded-lg px-4 py-2 transition-colors duration-200 border  border-blue-500
                                 ${isInvalid("NombreDeUsuario") ? "border-2 border-red-500" : ""}
                                 focus:border-blue-500`}
                             placeholder="ej: usuario123"
@@ -407,9 +407,10 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                         <input
                             type="password"
                             name="Contraseña"
+                            placeholder="********"
                             value={formData.Contraseña}
                             onChange={handleChange}
-                            className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border border-blue-200"
+                            className="w-full bg-white text-blue-900 rounded-lg px-4 py-2 border  border-blue-500"
                         />
                     </div>
 
@@ -463,7 +464,7 @@ const ManageUser = ({ open, onClose, userData, OnUserComplete }) => {
                             onChange={handleChange}
                             onFocus={() => handleFocus("Email")}
                             onBlur={() => handleBlur("Email")}
-                            className={`w-full bg-white text-blue-900 rounded-lg px-4 py-2 transition-colors duration-200 border border-blue-200
+                            className={`w-full bg-white text-blue-900 rounded-lg px-4 py-2 transition-colors duration-200 border  border-blue-500
                                 ${isInvalid("Email") ? "border-2 border-red-500" : ""}
                                 focus:border-blue-500`}
                             required
