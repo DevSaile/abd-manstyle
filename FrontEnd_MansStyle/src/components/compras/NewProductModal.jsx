@@ -6,6 +6,7 @@ import { obtenerSucursales } from "@/services/SucursalService";
 import { agregarProducto } from "@/services/ProductosService";
 import { subirImagen, eliminarImagen } from "@/services/UploadService";
 import { obtenerMarcas } from "@/services/MarcasService";
+import ShowToast from "../common/ShowToast";
 
 const NewProduct = ({
   onProductAdded,
@@ -28,6 +29,8 @@ const NewProduct = ({
   const [categorias, setCategorias] = useState([]);
   const [sucursales, setSucursales] = useState([]);
   const [Marcas, setMarcas] = useState([]);
+  const [showToast, setShowToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -53,24 +56,22 @@ const NewProduct = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-      // Validación: todos obligatorios menos imagen
-      if (
-        !newProduct.Nombre.trim() ||
-        !newProduct.Precio_Venta ||
-        !newProduct.ID_Marca ||
-        !newProduct.ID_Sucursal ||
-        !newProduct.ID_Categoria ||
-        !newProduct.Detalles.trim()
-      ) {
-          alert("Por favor, completa todos los campos obligatorios.");
-          return;
-        }
-
+    // Validación: todos obligatorios menos imagen
+    if (
+      !newProduct.Nombre.trim() ||
+      !newProduct.Precio_Venta ||
+      !newProduct.ID_Marca ||
+      !newProduct.ID_Sucursal ||
+      !newProduct.ID_Categoria ||
+      !newProduct.Detalles.trim()
+    ) {
+      setShowErrorToast(true);
+      return;
+    }
 
     let urlFinal = "";
 
     try {
-      
       if (newProduct.archivoImagen) {
         const extension = newProduct.archivoImagen.name.split('.').pop();
         const nombreFinal = `Producto_${siguienteId}.${extension}`;
@@ -112,14 +113,14 @@ const NewProduct = ({
         if (urlFinal && !esURLValida(newProduct.url_image)) {
           await eliminarImagen(urlFinal);
         }
-
-        alert("Error al agregar el producto");
+        setShowErrorToast(true);
         return;
       }
 
       // Todo bien
       if (onProductAdded) onProductAdded();
       AddModalClose();
+      setShowToast(true);
 
       // Reset form
       setNewProduct({
@@ -140,11 +141,9 @@ const NewProduct = ({
       if (urlFinal && !esURLValida(newProduct.url_image)) {
         await eliminarImagen(urlFinal);
       }
-
-      alert("Ocurrió un error: " + error.message);
+      setShowErrorToast(true);
     }
   };
-
 
   return (
     <Drawer
@@ -360,6 +359,24 @@ const NewProduct = ({
           </div>
         </form>
       </div>
+      <ShowToast
+        show={showToast}
+        onClose={() => setShowToast(false)}
+        message="Producto agregado correctamente"
+        iconType="success"
+        color="green"
+        tone="solid"
+        position="bottom-right"
+      />
+      <ShowToast
+        show={showErrorToast}
+        onClose={() => setShowErrorToast(false)}
+        message="Error al agregar el producto. Verifica los campos."
+        iconType="error"
+        color="red"
+        tone="solid"
+        position="bottom-left"
+      />
     </Drawer>
   );
 };
