@@ -10,6 +10,7 @@ import { ShowToast } from "@/components/common/ShowToast";
 import { useOutletContext } from "react-router-dom";
 
 const UsersPage = () => {
+  const [openToastDelete, setOpenToastDelete] = useState(false);
   const [userData, setUserData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [openEdit, setOpenEdit] = useState(false);
@@ -81,26 +82,26 @@ const UsersPage = () => {
   };
 
   // En tu componente UsersPage
-  const handleDeleteUser = async () => {
-    if (!selectedUser) return;
+const handleDeleteUser = async () => {
+  if (!selectedUser) return;
 
-    try {
-      const resultado = await eliminarEmpleado({
-        ID_Empleado: selectedUser.ID_Empleado,
-        Estado: 0, // Cambiar a inactivo
-      });
+  try {
+    const resultado = await eliminarEmpleado({
+      ID_Empleado: selectedUser.ID_Empleado,
+      Estado: 0, // Cambiar a inactivo
+    });
 
-      if (resultado) {
-        alert("Usuario eliminado correctamente");
-        cargarUsuarios(); // Refrescar la lista
-      } else {
-        throw new Error("No se recibió confirmación");
-      }
-    } catch (error) {
-      console.error("Error eliminando usuario:", error);
-      alert("Error al eliminar usuario");
+    if (resultado) {
+      setOpenToastDelete(true); // Mostrar toast de eliminación
+      cargarUsuarios(); // Refrescar la lista
+    } else {
+      throw new Error("No se recibió confirmación");
     }
-  };
+  } catch (error) {
+    console.error("Error eliminando usuario:", error);
+    // Puedes agregar un toast de error si lo deseas
+  }
+};
 
   return (
     <div className="flex-1 overflow-auto relative z-10">
@@ -157,7 +158,18 @@ const UsersPage = () => {
           onClose={() => setOpenToastCreate(false)}
           message="Usuario creado correctamente"
           type="success"
+          
         />
+
+        <ShowToast
+  show={openToastDelete}
+  onClose={() => setOpenToastDelete(false)}
+  message="Usuario eliminado correctamente"
+  iconType="success"
+  color="red"
+  tone="solid"
+  position="bottom-right"
+/>
       </main>
     </div>
   );

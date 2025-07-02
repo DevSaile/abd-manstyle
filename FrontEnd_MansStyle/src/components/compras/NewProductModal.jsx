@@ -6,6 +6,8 @@ import { obtenerSucursales } from "@/services/SucursalService";
 import { agregarProducto } from "@/services/ProductosService";
 import { subirImagen } from "@/services/UploadService";
 import { obtenerMarcas } from "@/services/MarcasService";
+import ShowToast from "../common/ShowToast";
+
 
 const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
   const [newProduct, setNewProduct] = useState({
@@ -23,6 +25,8 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
   const [categorias, setCategorias] = useState([]);
   const [sucursales, setSucursales] = useState([]);
   const [Marcas, setMarcas] = useState([]);
+  const [showErrorToast, setShowErrorToast] = useState(false);
+
 
   useEffect(() => {
     Promise.all([
@@ -49,17 +53,17 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
     e.preventDefault();
 
     // Validación: todos obligatorios menos imagen
-    if (
-      !newProduct.Nombre.trim() ||
-      !newProduct.Precio_Venta ||
-      !newProduct.ID_Marca ||
-      !newProduct.ID_Sucursal ||
-      !newProduct.ID_Categoria ||
-      !newProduct.Detalles.trim()
-    ) {
-      alert("Por favor, completa todos los campos obligatorios.");
-      return;
-    }
+ if (
+  !newProduct.Nombre.trim() ||
+  !newProduct.Precio_Venta ||
+  !newProduct.ID_Marca ||
+  !newProduct.ID_Sucursal ||
+  !newProduct.ID_Categoria ||
+  !newProduct.Detalles.trim()
+) {
+  setShowErrorToast(true);
+  return;
+}
 
     let urlFinal = "";
 
@@ -98,9 +102,9 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
 
       const response = await agregarProducto(productoDTO);
       if (!response?.ID_Producto) {
-        alert("Error al agregar el producto");
-        return;
-      }
+  setShowErrorToast(true);
+  return;
+}
       if (onProductAdded) onProductAdded();
       AddModalClose();
       setNewProduct({
@@ -334,6 +338,16 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
           </div>
         </form>
       </div>
+     
+<ShowToast
+  show={showErrorToast}
+  onClose={() => setShowErrorToast(false)}
+  message="Error al agregar el producto. Verifica los campos."
+  iconType="error"
+  color="red"
+  tone="solid"
+  position="bottom-left"
+/>
     </Drawer>
   );
 };

@@ -203,7 +203,7 @@ const BuyingPage = () => {
           iconType="success"
           shadowColor="green"
           tone="solid"
-          position="bottom-right"
+          position="bottom-left"
         />
       </main>
     </motion.div>

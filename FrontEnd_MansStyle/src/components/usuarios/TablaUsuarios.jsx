@@ -148,12 +148,16 @@ const UsersTable = ({
                     >
                       Editar
                     </button>
-                    <button
-                      className="text-red-600 hover:text-red-800"
-                      onClick={() => onDeleteClick(user)}
-                    >
-                      Eliminar
-                    </button>
+                    {user.NombreRol !== "Administrador" && (
+                      <>
+                        <button
+                          className="text-red-600 hover:text-red-800"
+                          onClick={() => onDeleteClick(user)}
+                        >
+                          Eliminar
+                        </button>
+                      </>
+                    )}
                   </td>
                 </motion.tr>
               ))
