@@ -25,6 +25,7 @@ const BuyingPage = () => {
     try {
       const productos = await ExtraerInfoCompra();
       setProducts(productos);
+      console.log("Productos cargados:", productos);
     } catch (error) {
       console.error("Error al cargar productos:", error);
       setProducts([]);
@@ -151,13 +152,16 @@ const BuyingPage = () => {
           {/* Lista de productos */}
           <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 auto-rows-min">
             {filteredProducts.map((product) => (
-              <ProductCardSales
-                key={product.ID_Producto}
-                name={product.Nombre}
-                price={product.Precio_Producto}
-                image={product.url_image}
-                onClick={() => addToCart(product)}
-              />
+         <ProductCardSales
+  key={product.ID_Producto}
+  name={product.Nombre}
+  price={product.Precio_Producto}
+  brand={product.Marca}
+  category={product.Descripcion_Categoria}
+  Sucursal={product.Descripcion_Sucursal}
+  stock={product.Stock}
+  onClick={() => addToCart(product)}
+/>
             ))}
           </div>
 

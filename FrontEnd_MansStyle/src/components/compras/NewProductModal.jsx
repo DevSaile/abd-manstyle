@@ -10,7 +10,6 @@ import { obtenerMarcas } from "@/services/MarcasService";
 const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
   const [newProduct, setNewProduct] = useState({
     Nombre: "",
-    Precio_Compra: "",
     Precio_Venta: "",
     ID_Marca: "",
     Detalles: "",
@@ -52,7 +51,6 @@ const NewProduct = ({ onProductAdded, openAdd, AddModalClose }) => {
     // Validación: todos obligatorios menos imagen
     if (
       !newProduct.Nombre.trim() ||
-      !newProduct.Precio_Compra ||
       !newProduct.Precio_Venta ||
       !newProduct.ID_Marca ||
       !newProduct.ID_Sucursal ||

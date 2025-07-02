@@ -59,7 +59,6 @@ const UsersPage = () => {
       alert("Error al cargar los usuarios");
     }
 
-    console.log("Usuarios cargados:", userData);
   };
 
   const formatDateForInput = (dateString) => {
