@@ -36,7 +36,9 @@ namespace BLL
                                  Precio_Producto = p.Precio_Producto,
                                  Precio_Compra = p.Precio_Compra,
                                  Detalles = p.DetalleS,
-                                 url_image = p.Image_URL
+                                 url_image = p.Image_URL,
+                                 Descripcion_Marca = p.Marcas.Nombre,
+                                 Descripcion_Sucursal = p.Sucursal.Nombre
 
                              }).ToList();
 
