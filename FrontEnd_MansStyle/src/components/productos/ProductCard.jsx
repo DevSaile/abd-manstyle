@@ -180,16 +180,17 @@ const ProductCard = ({
                             onDelete?.(product);
                             handleClose();
                           }}
-                          className="bg-white hover:bg-blue-100 px-4 py-2 rounded-lg text-blue-700 font-semibold border border-blue-700 transition"
+                          className="bg-white hover:bg-blue-100 px-4 py-2 rounded-lg text-blue-700 font-semibold border border-blue-700 transition w-full"
                         >
                           Eliminar
                         </button>
+                        {stock>0 && (
                         <button
                           onClick={() => setOpenDescarte(true)}
                           className="bg-white hover:bg-blue-100 px-4 py-2 rounded-lg text-blue-700 font-semibold border border-blue-700 transition"
                         >
                           Descartar
-                        </button>
+                        </button>)}
                       </div>
                     </>
                   )}

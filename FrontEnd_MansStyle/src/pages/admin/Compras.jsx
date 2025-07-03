@@ -17,6 +17,9 @@ const BuyingPage = () => {
   const [products, setProducts] = useState([]);
   const [showToast, setShowToast] = useState(false);
   const [lastId, setLastId] = useState(null);
+  const [showToastCompra, setShowToastCompra] = useState(false);
+  const [priceLeft, setPriceLeft] = useState(false);
+
 
   const { setTitle } = useOutletContext();
   useEffect(() => {
@@ -90,6 +93,18 @@ const BuyingPage = () => {
       alert("El carrito está vacío");
       return;
     }
+
+      const faltanPrecios = cartItems.some(
+    (item) =>
+      item.buyingPrice === undefined ||
+      item.buyingPrice === "" ||
+      isNaN(item.buyingPrice) ||
+      Number(item.buyingPrice) <= 0
+  );
+  if (faltanPrecios) {
+    setPriceLeft(true);
+    return;
+  }
     console.log(cartItems);
 
     try {
@@ -116,8 +131,9 @@ const BuyingPage = () => {
       const resultado = await agregarCompraProducto(compraData);
 
       if (resultado) {
-        alert("Compra registrada exitosamente!");
         setCartItems([]);
+          setShowToastCompra(true); // Activa el toast al finalizar compra
+
       } else {
         alert("Error al registrar la compra");
       }
@@ -181,6 +197,8 @@ const BuyingPage = () => {
               updateCartItemQuantity={updateCartItemQuantity}
               updateCartItemPrice={updateCartItemPrice}
               removeFromCart={removeFromCart}
+              priceLeft={priceLeft}
+              setPriceLeft={setPriceLeft}
             />
             <button
               onClick={handleCompletePurchase}
@@ -212,6 +230,16 @@ const BuyingPage = () => {
           tone="solid"
           position="bottom-left"
         />
+
+        <ShowToast
+  show={showToastCompra}
+  onClose={() => setShowToastCompra(false)}
+  message="¡Compra registrada exitosamente!"
+  iconType="success"
+  shadowColor="green"
+  tone="solid"
+  position="bottom-left"
+/>
       </main>
     </motion.div>
   );

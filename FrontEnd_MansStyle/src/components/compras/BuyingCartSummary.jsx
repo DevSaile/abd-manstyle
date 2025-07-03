@@ -7,12 +7,14 @@ const CartSummaryBuying = ({
   updateCartItemQuantity,
   updateCartItemPrice,
   removeFromCart,
+  priceLeft,
+  setPriceLeft,
 }) => {
   const total = cartItems.reduce(
     (sum, item) => sum + item.quantity * (item.buyingPrice || 0),
     0
   );
-
+  console.log("Cart Items:", cartItems);
   return (
     <div className="space-y-4 overflow-y-auto bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 shadow-md p-8 w-full">
       {cartItems.map((item) => (
@@ -38,14 +40,26 @@ const CartSummaryBuying = ({
               Precio de compra: C$
               <input
                 type="number"
-                value={item.buyingPrice || ""}
+                value={
+                  item.buyingPrice
+                }
                 onChange={(e) => {
-                  const newPrice = parseFloat(e.target.value) || 0;
+                  const newPrice = parseFloat(e.target.value);
                   updateCartItemPrice(item.ID_Producto, newPrice);
+                  // Si el precio es válido, desactiva el error visual
+                  if (priceLeft) {
+                    setPriceLeft(false);
+                  }
                 }}
-                className="w-14 bg-white text-blue-900 border border-blue-200 rounded-lg px-1 py-0.5 focus:outline-none focus:ring-2 focus:ring-blue-500 ml-1 text-xs"
+                min="0"
+                className={
+                  "w-14 bg-white text-blue-900 border border-blue-200 rounded-lg px-1 py-0.5 focus:outline-none ml-1 text-xs " +
+                  (priceLeft && !item.buyingPrice
+                    ? "ring-2 ring-red-500 border-red-400"
+                    : "focus:ring-2 focus:ring-blue-500")
+                }
                 placeholder="Precio"
-              />
+              />{" "}
             </p>
           </div>
 
@@ -87,10 +101,7 @@ const CartSummaryBuying = ({
             <button
               className="bg-blue-100 text-blue-700 px-1 py-0.5 rounded-r hover:bg-blue-200 border border-blue-200 text-sm"
               onClick={() =>
-                updateCartItemQuantity(
-                  item.ID_Producto,
-                  (item.quantity) + 1
-                )
+                updateCartItemQuantity(item.ID_Producto, item.quantity + 1)
               }
             >
               +
