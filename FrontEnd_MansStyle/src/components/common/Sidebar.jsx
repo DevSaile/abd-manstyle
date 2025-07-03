@@ -63,7 +63,7 @@ const Sidebar = ({ isSidebarOpen }) => {
     userRole === "Administrador"
       ? SIDEBAR_ITEMS
       : SIDEBAR_ITEMS.filter((item) =>
-          ["Productos", "Ventas"].includes(item.name)
+          ["Productos", "Venta"].includes(item.name)
         );
 
   const handleLogout = () => {
