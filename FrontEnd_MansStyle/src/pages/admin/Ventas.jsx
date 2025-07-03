@@ -22,6 +22,7 @@ const CashierPage = () => {
     if (storedSucursalId) {
       obtenerProductosPorSucursal(storedSucursalId).then((productosData) => {
         setProducts(productosData);
+        console.log("Productos cargados:", productosData);
       });
     }
   }, []);
@@ -109,6 +110,7 @@ const CashierPage = () => {
     (product) =>
       product.Nombre.toLowerCase().includes(searchTerm.toLowerCase()) &&
       product.Cantidad > 0
+      
   );
 
   return (
@@ -137,10 +139,14 @@ const CashierPage = () => {
           <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 auto-rows-min">
             {filteredProducts.map((product) => (
               <ProductCardSales
-                key={product.ID_Producto}
+             key={product.ID_Producto}
                 name={product.Nombre}
                 price={product.Precio_Producto}
+                brand={product.Descripcion_Marca}
                 image={product.url_image}
+                category={product.Descripcion_Categoria}
+                Sucursal={product.Descripcion_Sucursal}
+                stock={product.Cantidad}
                 onClick={() => addToCart(product)}
               />
             ))}
