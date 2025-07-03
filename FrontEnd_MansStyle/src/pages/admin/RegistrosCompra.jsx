@@ -250,21 +250,7 @@ const RegistroCompra = () => {
             className="input-filter"
           />
         </div>
-        <div className="flex flex-col w-44">
-          <label className="text-slate-900 text-sm mb-1">Sucursal</label>
-          <select
-            value={sucursal}
-            onChange={(e) => setSucursal(e.target.value)}
-            className="input-filter"
-          >
-            <option value="">Todas</option>
-            {sucursales.map((suc) => (
-              <option key={suc} value={suc}>
-                {suc}
-              </option>
-            ))}
-          </select>
-        </div>
+       
         <button
           type="button"
           onClick={() => setOrderAsc((prev) => !prev)}
