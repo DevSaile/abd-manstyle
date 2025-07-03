@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ModalDescarte from "./ModalDescarte";
-import { DescartarProducto } from "../../services/productosService";
+import { DescartarProducto } from "@/services/productosService";
 
-const ProductCard = ({ product, onEdit, onDelete, onDiscard }) => {
+const ProductCard = ({
+  product,
+  onEdit,
+  onDelete,
+  refrescarProductos,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [openDescarte, setOpenDescarte] = useState(false);
 
@@ -26,28 +31,18 @@ const ProductCard = ({ product, onEdit, onDelete, onDiscard }) => {
   } = product;
 
   const handleConfirmDescarte = async (cantidadDescarte) => {
-    
-    if (onDiscard) {
-      onDiscard(product, cantidadDescarte);
+    if (!product?.ID_Producto) return;
+
+    try {
+      await DescartarProducto(product.ID_Producto, {
+        ID_Producto: product.ID_Producto,
+        Descarte: cantidadDescarte,
+      });
+      refrescarProductos();
+    } catch (error) {
+      console.error("Error al descartar el producto:", error);
     }
-
-      if (!product?.ID_Producto) return;
-
-      try {
-
-        await DescartarProducto(product.ID_Producto, {
-          ID_Producto: product.ID_Producto,
-          Descarte: cantidadDescarte,
-        });
-
-
-      } catch (error) {
-
-        console.error("Error al descartar el producto:", error);
-
-      }
-
-  };
+    };
 
   return (
     <>
@@ -208,7 +203,9 @@ const ProductCard = ({ product, onEdit, onDelete, onDiscard }) => {
       {/* Modal para descartar productos */}
       <ModalDescarte
         open={openDescarte}
-        onClose={() => setOpenDescarte(false)}
+        onClose={() => {
+          setOpenDescarte(false);
+        }}
         onConfirm={handleConfirmDescarte}
         maxCantidad={stock}
         productoNombre={name}

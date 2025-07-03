@@ -242,6 +242,7 @@ const ProductsPage = () => {
               product={product}
               onEdit={() => handleEdit(product)}
               onDelete={() => handleDelete(product)}
+               refrescarProductos={recargar}
             />
           ))}
         </motion.div>
