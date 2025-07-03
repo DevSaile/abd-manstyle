@@ -24,12 +24,12 @@ const SIDEBAR_ITEMS = [
     href: "/admin/productos",
   },
   {
-    name: "Compras",
+    name: "Compra",
     icon: ShoppingCart,
     href: "/admin/compra",
   },
   {
-    name: "Ventas",
+    name: "Venta",
     icon: DollarSign,
     href: "/admin/venta",
   },

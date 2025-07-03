@@ -6,13 +6,17 @@ import { CheckCircle } from "lucide-react";
 import { obtenerProductosPorSucursal } from "../../services/ProductosService";
 import { agregarVenta } from "../../services/VentasService";
 import { useOutletContext } from "react-router-dom";
+import ShowToast from "@/components/common/ShowToast"; // Importa el componente ShowToast
 
 const CashierPage = () => {
+  const [showToast, setShowToast] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
   const [amountGiven, setAmountGiven] = useState(""); // Nuevo estado
   const { setTitle } = useOutletContext();
+  const [amountError, setAmountError] = useState(false);
+
   useEffect(() => {
     setTitle("Ventas");
   }, [setTitle]);
@@ -31,6 +35,11 @@ const CashierPage = () => {
       const existingItem = prevCart.find(
         (item) => item.ID_Producto === product.ID_Producto
       );
+
+        if (existingItem && existingItem.quantity >= product.Cantidad) {
+      // Opcional: muestra un toast o mensaje de error aquí
+      return prevCart;
+    }
       return existingItem
         ? prevCart.map((item) =>
             item.ID_Producto === product.ID_Producto
@@ -61,7 +70,7 @@ const CashierPage = () => {
 
   const handleSale = async () => {
     if (cartItems.length === 0) {
-      alert("Selecciona un cliente y agrega productos al carrito.");
+    setAmountError(false);
       return;
     }
 
@@ -72,8 +81,10 @@ const CashierPage = () => {
 
     const pago = parseFloat(amountGiven);
     if (isNaN(pago) || pago < total) {
-      alert("El monto pagado no es válido o es insuficiente.");
+    setAmountError(true);
       return;
+    }else{
+      setAmountError(false);
     }
 
     const venta = {
@@ -97,7 +108,7 @@ const CashierPage = () => {
     const resultado = await agregarVenta(venta);
 
     if (resultado) {
-      alert("Venta registrada correctamente.");
+  setShowToast(true);
       setCartItems([]);
       setAmountGiven("");
     } else {
@@ -119,7 +130,6 @@ const CashierPage = () => {
       transition={{ delay: 0.2 }}
     >
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
-        {/* ComboBoxes for Cliente */}
         <div className="mb-4 flex gap-4">
           {/* Search Input */}
           <input
@@ -161,6 +171,9 @@ const CashierPage = () => {
               removeFromCart={removeFromCart}
               amountGiven={amountGiven}
               setAmountGiven={setAmountGiven}
+              amountError={amountError}
+              setAmountError={setAmountError}
+
             />
             <button
               onClick={handleSale}
@@ -172,7 +185,18 @@ const CashierPage = () => {
           </div>
         </div>
       </main>
+
+      <ShowToast
+  show={showToast}
+  onClose={() => setShowToast(false)}
+  message="Venta registrada correctamente"
+  iconType="success"
+  color="green"
+  tone="solid"
+  position="bottom-right"
+/>
     </motion.div>
+    
   );
 };
 

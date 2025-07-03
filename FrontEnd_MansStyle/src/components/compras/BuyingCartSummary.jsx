@@ -89,7 +89,7 @@ const CartSummaryBuying = ({
               onClick={() =>
                 updateCartItemQuantity(
                   item.ID_Producto,
-                  (item.quantity || 1) + 1
+                  (item.quantity) + 1
                 )
               }
             >

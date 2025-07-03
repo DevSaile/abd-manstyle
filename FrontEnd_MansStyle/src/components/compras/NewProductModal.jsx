@@ -209,7 +209,7 @@ const NewProduct = ({
                 Sucursal
               </label>
               <ComboBoxID
-                name="Seleccionar Sucursal"
+                name="Sucursal"
                 enableSearchbar={false}
                 options={sucursales}
                 selected={{
@@ -230,7 +230,7 @@ const NewProduct = ({
                 Categoría
               </label>
               <ComboBoxID
-                name="Seleccionar Categoria"
+                name="Categoria"
                 options={categorias}
                 selected={{
                   label: newProduct.Nombre_Categoria || "",
@@ -250,7 +250,7 @@ const NewProduct = ({
                 Marca
               </label>
               <ComboBoxID
-                name="Seleccionar Marca"
+                name="Marca"
                 options={Marcas}
                 selected={{
                   label: newProduct.Nombre_Marca || "",
@@ -359,15 +359,7 @@ const NewProduct = ({
           </div>
         </form>
       </div>
-      <ShowToast
-        show={showToast}
-        onClose={() => setShowToast(false)}
-        message="Producto agregado correctamente"
-        iconType="success"
-        color="green"
-        tone="solid"
-        position="bottom-right"
-      />
+ 
       <ShowToast
         show={showErrorToast}
         onClose={() => setShowErrorToast(false)}

@@ -6,13 +6,14 @@ const CartSummary = ({
   removeFromCart,
   amountGiven,
   setAmountGiven,
+  amountError,
+  setAmountError
 }) => {
   const total = cartItems.reduce(
     (sum, item) => sum + item.quantity * item.Precio_Producto,
     0
   );
   const exchange = Math.max((parseFloat(amountGiven) || 0) - total, 0);
-
   return (
     <div className="space-y-4 overflow-y-auto bg-white rounded-xl border border-slate-300 ring-1 ring-blue-500/30 shadow-md p-8 w-full max-w-2xl mx-auto">
    {cartItems.map((item) => (
@@ -82,9 +83,12 @@ const CartSummary = ({
         onClick={() =>
           updateCartItemQuantity(
             item.ID_Producto,
-            (item.quantity || 1) + 1
+            (item.quantity || 1) + 1,
+           
           )
         }
+  disabled={item.quantity >= item.Cantidad}
+
       >
         +
       </button>
@@ -117,8 +121,21 @@ const CartSummary = ({
           type="number"
           id="amountGiven"
           value={amountGiven}
-          onChange={(e) => setAmountGiven(e.target.value)}
-          className="w-full bg-white text-blue-900 border border-blue-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+ onChange={(e) => {
+    setAmountGiven(e.target.value);
+    if (amountError && e.target.value) {
+      // Si hay error y el usuario escribe algo, quita el error visual
+      setAmountGiven(e.target.value);
+      if (parseFloat(e.target.value) > 0) {
+        // Llama a setAmountError(false) si está disponible como prop
+        if (typeof amountError !== "undefined" && typeof setAmountError === "function") {
+          setAmountError(false);
+        }
+      }
+    }
+  }}           className={`w-full bg-white text-blue-900 rounded-lg px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+    amountError ? "border-red-500 ring-1 ring-red-500" : "border-blue-200"
+  }`}
           placeholder="Ingrese el monto entregado por el cliente"
         />
       </div>
