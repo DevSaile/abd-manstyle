@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "https://localhost:44381/api", // Base URL con HTTPS
+    baseURL: "http://www.apimanstyle.somee.com/api", // Usa HTTP (Somee Free no incluye HTTPS)
     headers: {
         "Content-Type": "application/json",
     },
