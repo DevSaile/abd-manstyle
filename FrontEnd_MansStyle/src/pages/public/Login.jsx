@@ -32,7 +32,13 @@ const Login = () => {
         localStorage.setItem("idSucursal", idSucursal); 
         localStorage.setItem("isAuthenticated", "true");
 
-        navigate("/admin/inicio"); 
+        if(userRole === "Administrador") {
+        navigate("/admin/inicio");
+        }
+        else{
+                  navigate("/admin/venta");
+
+        }
       } else {
         setError(
           "Credenciales incorrectas o datos de usuario incompletos en la respuesta."
