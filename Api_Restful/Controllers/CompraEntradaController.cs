@@ -14,23 +14,9 @@ namespace WebManStyle_ABD.Controllers
 
     public class CompraEntradaController : ApiController
     {
-        //IMPORTANTE AQUI VOY A CAMBIAR PARA UTILIZAR LOS NUEVOS METODOS DE AGREGAR COMPRA Y AGRUPAR LAS COMPRAS PARA MOSTRARLAS
         private readonly Compra_EntradaMCN MetodosCompraEntrada = new Compra_EntradaMCN();
 
-        // Agregar una nueva compra de producto
-        /*[HttpPost]
-        [Route("agregar")]
-        public IHttpActionResult AgregarCompraProducto([FromBody] Compra_EntradaDTO nuevaCompra)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var resultado = MetodosCompraEntrada.AgregarProducto(nuevaCompra);
-            if (!resultado)
-                return InternalServerError(new Exception("Error al registrar la compra."));
-
-            return Ok("Compra registrada correctamente.");
-        }*/
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
 
         [HttpPost]
         [Route("agregar")]
@@ -57,6 +43,7 @@ namespace WebManStyle_ABD.Controllers
 
             return Ok(registros);
         }*/
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
 
         [HttpGet]
         [Route("")]

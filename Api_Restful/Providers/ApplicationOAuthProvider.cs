@@ -17,7 +17,6 @@ namespace WebManStyle_ABD.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
             string usuario = context.UserName;
             string password = context.Password;

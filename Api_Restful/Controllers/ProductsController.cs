@@ -50,6 +50,8 @@ namespace WebManStyle_ABD.Controllers
             return Ok(productos);
         }
 
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
+
         [HttpPost]
         [Route("agregar")]
         public IHttpActionResult AgregarProducto([FromBody] ProductoDTO nuevoProducto)
@@ -63,7 +65,9 @@ namespace WebManStyle_ABD.Controllers
 
             return Ok(new { mensaje = "Producto agregado correctamente.", ID_Producto = resultado });
         }
-        
+
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
+
         [HttpPut]
         [Route("actualizar/{id:int}")]
         public IHttpActionResult ActualizarProducto(int id, [FromBody] ProductoDTO productoActualizado)
@@ -94,6 +98,8 @@ namespace WebManStyle_ABD.Controllers
             });
         }
 
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
+
         [HttpPut]
         [Route("actualizarExistente/{id:int}")]
         public IHttpActionResult ActualizarProductoExistente(int id, [FromBody] ProductoDTO productoActualizado)
@@ -116,6 +122,8 @@ namespace WebManStyle_ABD.Controllers
             });
         }
 
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
+
         [HttpPut]
         [Route("eliminar/{id:int}")] // Este de aqui baicamente es el que me ayuda a elimiarr el producto o cambiar el estado a inactivo o sea 0
 
@@ -133,6 +141,8 @@ namespace WebManStyle_ABD.Controllers
 
             return Ok("Estado del producto actualizado correctamente.");
         }
+
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
 
         [HttpPut]
         [Route("descartar/{id:int}")] // Este de aqui baicamente es el que me ayuda a descartar el producto o cambiar el estado a inactivo o sea 0

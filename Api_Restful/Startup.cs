@@ -23,8 +23,6 @@ namespace WebManStyle_ABD
         {
             HttpConfiguration config = new HttpConfiguration();
 
-            app.UseCors(CorsOptions.AllowAll); 
-
             config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
@@ -32,7 +30,7 @@ namespace WebManStyle_ABD
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            var corsAttr = new EnableCorsAttribute("http://localhost:5173", "*", "*"); 
+            var corsAttr = new EnableCorsAttribute("https://variedadesmanstyle.vercel.app", "*", "*"); 
             config.EnableCors(corsAttr); 
 
             ConfigureOAuth(app);
@@ -54,11 +52,11 @@ namespace WebManStyle_ABD
 
             OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
             {
-                AllowInsecureHttp = true, 
+                AllowInsecureHttp = false, 
                 TokenEndpointPath = new PathString("/api/Auth/token"), 
-                AccessTokenExpireTimeSpan = TimeSpan.FromHours(1), 
+                AccessTokenExpireTimeSpan = TimeSpan.FromHours(24), 
                 Provider = new ApplicationOAuthProvider(), 
-                AccessTokenFormat = new CustomJwtFormat("https://localhost:44381", signingKey) 
+                AccessTokenFormat = new CustomJwtFormat("https://www.apimanstyle.somee.com", signingKey) 
             };
 
             app.UseOAuthAuthorizationServer(OAuthServerOptions);
@@ -76,7 +74,7 @@ namespace WebManStyle_ABD
             TokenValidationParameters validationParameters = new TokenValidationParameters()
             {
                 ValidateIssuer = true, 
-                ValidIssuer = "https://localhost:44381", 
+                ValidIssuer = "https://www.apimanstyle.somee.com", 
                 ValidateAudience = false, 
                 ValidateLifetime = true, 
                 IssuerSigningKey = signingKey, 

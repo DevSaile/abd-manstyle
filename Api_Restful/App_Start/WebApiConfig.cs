@@ -11,7 +11,7 @@ namespace WebManStyle_ABD
     {
         public static void Register(HttpConfiguration config)
         {
-            // Rutas de Web API
+            /*// Rutas de Web API
             config.MapHttpAttributeRoutes();
 
             // Configuración y servicios de Web API
@@ -20,7 +20,7 @@ namespace WebManStyle_ABD
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-            );
+            );*/
         }
     }
 }

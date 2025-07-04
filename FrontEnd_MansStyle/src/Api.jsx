@@ -1,10 +1,23 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://www.apimanstyle.somee.com/api", // Usa HTTP (Somee Free no incluye HTTPS)
+    baseURL: "https://localhost:44381/api", 
     headers: {
         "Content-Type": "application/json",
     },
 });
+
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`; 
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export default api;

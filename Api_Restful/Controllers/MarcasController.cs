@@ -52,6 +52,7 @@ namespace WebManStyle_ABD.Controllers
             return Ok(marca);
         }
 
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
 
         [HttpPut]
         [Route("actualizar")]
@@ -67,6 +68,7 @@ namespace WebManStyle_ABD.Controllers
             return Ok("Marca actualizada correctamente.");
         }
 
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
 
         [HttpPut]
         [Route("eliminar")]
@@ -82,7 +84,7 @@ namespace WebManStyle_ABD.Controllers
             return Ok("Estado de la Marca actualizado correctamente.");
         }
 
-
+        [Authorize]
         [HttpPost]
         [Route("agregar")]
         public IHttpActionResult AgregarMarca([FromBody] MarcasDTO nuevaMarca)

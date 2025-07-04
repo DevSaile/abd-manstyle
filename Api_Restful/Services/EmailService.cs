@@ -18,7 +18,7 @@ namespace WebManStyle_ABD.Services
                 var fromPassword = "xjjl lxdg xpie wbso"; 
                 const string subject = "Recuperación de contraseña";
                 string body = $"<h2>Recuperar tu contraseña</h2><p>Para recuperar tu contraseña haz click en el siguiente enlace:</p>" +
-                              $"<a href='https://localhost:5173/resetear-contrasena/{token}'>Recuperar Contraseña</a>";
+                              $"<a href='https://variedadesmanstyle.vercel.app/resetear-contrasena/{token}'>Recuperar Contraseña</a>";
 
                 var smtp = new SmtpClient
                 {

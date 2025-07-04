@@ -65,6 +65,7 @@ namespace WebManStyle_ABD.Controllers
         }
 
         // Actualizar una categoría
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
         [HttpPut]
         [Route("actualizar")]
         public IHttpActionResult ActualizarCategoria([FromBody] CategoriaDTO actualcate)
@@ -80,6 +81,8 @@ namespace WebManStyle_ABD.Controllers
         }
 
         // Cambiar estado de una categoría (Eliminar/Inactivar)
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
+
         [HttpPut]
         [Route("eliminar")]
         public IHttpActionResult EliminarCategoria([FromBody] CategoriaDTO actualcate)
@@ -95,6 +98,8 @@ namespace WebManStyle_ABD.Controllers
         }
 
         // Agregar una nueva categoría
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
+
         [HttpPost]
         [Route("agregar")]
         public IHttpActionResult AgregarCategoria([FromBody] CategoriaDTO nuevaCategoria)

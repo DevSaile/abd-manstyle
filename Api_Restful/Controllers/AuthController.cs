@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims; // Necesario para acceder a Claims
-using System.Web; 
+using System.Security.Claims; 
+using System.Web;
 using System.Web.Http;
 
 namespace WebManStyle_ABD.Controllers
@@ -25,7 +25,7 @@ namespace WebManStyle_ABD.Controllers
             if (string.IsNullOrWhiteSpace(datos.Usuario) || string.IsNullOrWhiteSpace(datos.Contra))
                 return BadRequest("Usuario o contraseña vacíos.");
 
-            var empleado = MetodosEmpleado.ValidarLogin (datos.Usuario, datos.Contra);
+            var empleado = MetodosEmpleado.ValidarLogin(datos.Usuario, datos.Contra);
 
             if (empleado == null)
                 return Unauthorized();
@@ -50,19 +50,46 @@ namespace WebManStyle_ABD.Controllers
                     JObject empleadoData = new JObject
                     {
                         { "ID_Empleado", empleado.ID_Empleado },
-                        { "Id_Rol", empleado.ID_Rol },                        
+                        { "Id_Rol", empleado.ID_Rol },
                         { "NombreUsuario", empleado.usuario },
-                        { "ID_Sucursal", empleado.ID_Sucursal }, 
-                        { "NombreRol", empleado.NombreRol }, 
+                        { "ID_Sucursal", empleado.ID_Sucursal },
+                        { "NombreRol", empleado.NombreRol },
                     };
 
                     tokenResponse.Add("empleado", empleadoData);
 
                     return Ok(tokenResponse);
                 }
-                else
+                else 
                 {
-                    return Content(response.StatusCode, JObject.Parse(responseContent));
+                    System.Diagnostics.Debug.WriteLine($"Error al obtener token. Status Code: {response.StatusCode}. Content: {responseContent}");
+
+                    try
+                    {
+                        JObject errorContent = JObject.Parse(responseContent);
+
+                        return Content(response.StatusCode, errorContent);
+                    }
+                    catch (Newtonsoft.Json.JsonReaderException)
+                    {
+                        var errorContent = new JObject
+                        {
+                            { "error", "server_error" },
+                            { "error_description", $"Unexpected response format from token endpoint. Status: {response.StatusCode}. Content: {responseContent.Substring(0, Math.Min(responseContent.Length, 200))}..." }
+                        };
+
+                        return Content(response.StatusCode, errorContent);
+                    }
+                    catch (Exception ex)
+                    {
+                        var errorContent = new JObject
+                        {
+                            { "error", "parsing_error" },
+                            { "error_description", $"An unexpected error occurred while parsing token response: {ex.Message}" }
+                        };
+
+                        return Content(response.StatusCode, errorContent);
+                    }
                 }
             }
         }
@@ -126,49 +153,5 @@ namespace WebManStyle_ABD.Controllers
             return Ok(new { success = true, message = "Contraseña actualizada correctamente." });
         }
 
-        // --- EJEMPLOS DE ENDPOINTS PROTEGIDOS ---
-
-        [Authorize] // Solo usuarios autenticados pueden acceder
-        [HttpGet]
-        [Route("perfil")]
-        public IHttpActionResult GetPerfilUsuario()
-        {
-            // Acceder a la información del usuario autenticado (claims)
-            var identity = User.Identity as ClaimsIdentity;
-            if (identity == null)
-            {
-                return Unauthorized(); // Esto no debería pasar si [Authorize] funciona correctamente
-            }
-
-            string nombreUsuario = identity.FindFirst(ClaimTypes.Name)?.Value;
-            string idEmpleado = identity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            List<string> roles = identity.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList();
-
-            return Ok(new
-            {
-                id = idEmpleado,
-                usuario = nombreUsuario,
-                roles = roles,
-                mensaje = "¡Acceso autorizado!"
-            });
-        }
-
-        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
-        [HttpGet]
-        [Route("admin/usuarios")]
-        public IHttpActionResult GetUsuariosAdmin()
-        {
-            // Lógica para obtener usuarios (solo para administradores)
-            return Ok(new { message = "Lista de usuarios (solo para administradores)" });
-        }
-
-        [Authorize(Roles = "Administrador, Editor")] // Administradores o Editores
-        [HttpPost]
-        [Route("contenido/publicar")]
-        public IHttpActionResult PublicarContenido()
-        {
-            // Lógica para publicar contenido
-            return Ok(new { message = "Contenido publicado con éxito (Admin o Editor)" });
-        }
     }
 }

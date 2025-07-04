@@ -13,10 +13,12 @@ using System.Web;
 
 namespace WebManStyle_ABD.Controllers
 {
-    [RoutePrefix("api/upload")] 
+    [RoutePrefix("api/upload")]
 
     public class UploadController : ApiController
     {
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
+
         [HttpPost]
         [Route("uploadimagen")]
         public async Task<HttpResponseMessage> UploadImagen()
@@ -38,7 +40,7 @@ namespace WebManStyle_ABD.Controllers
                     var originalFileName = file.Headers.ContentDisposition.FileName.Trim('\"');
                     var extension = Path.GetExtension(originalFileName);
 
-                    var nombreFinal = provider.FormData["nombreFinal"]; 
+                    var nombreFinal = provider.FormData["nombreFinal"];
 
                     var safeName = !string.IsNullOrEmpty(nombreFinal)
                         ? Path.GetFileNameWithoutExtension(nombreFinal).Replace(" ", "_") + extension
@@ -59,6 +61,7 @@ namespace WebManStyle_ABD.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
 
         [HttpDelete]
         [Route("eliminarimagen")]

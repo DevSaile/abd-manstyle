@@ -71,6 +71,8 @@ namespace WebManStyle_ABD.Controllers
         }
 
         // Agregar empleado
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
+
         [HttpPost]
         [Route("agregar")]
         public IHttpActionResult AgregarEmpleado([FromBody] EmpleadoDTO nuevoEmpleado)
@@ -91,6 +93,8 @@ namespace WebManStyle_ABD.Controllers
         }
 
         // Actualizar empleado
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
+
         [HttpPut]
         [Route("actualizar")]
         public IHttpActionResult ActualizarEmpleado([FromBody] EmpleadoDTO empleadoActualizado)
@@ -105,6 +109,8 @@ namespace WebManStyle_ABD.Controllers
         }
 
         // Eliminar empleado (cambiar estado a inactivo)
+        [Authorize(Roles = "Administrador")] // Solo usuarios con el rol "Administrador"
+
         [HttpPut]
         [Route("eliminar")]
         public IHttpActionResult EliminarEmpleado([FromBody] EmpleadoDTO empleadoEliminado)
